@@ -3,7 +3,7 @@ import { styled, TextField, Button, Typography, Link } from "@mui/material";
 import React from "react";
 
 const Wrapper = styled("div")`
-  flex: 3;
+  flex: 1.5;
   width: 50%;
   display: flex;
   flex-direction: column;
