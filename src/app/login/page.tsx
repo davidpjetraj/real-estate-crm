@@ -51,7 +51,7 @@ export default function LoginPage() {
     if (token) {
       router.push("/dashboard");
     }
-  }, []);
+  }, [router]);
 
   const handleLogin = async () => {
     try {
@@ -65,9 +65,14 @@ export default function LoginPage() {
       } else {
         console.warn("Login succeeded but returned nothing.");
       }
-    } catch (error: any) {
-      console.error("Login error:", error.message);
-      alert("Login failed: " + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Login error:", error.message);
+        alert("Login failed: " + error.message);
+      } else {
+        console.error("An unknown error occurred:", error);
+        alert("Login failed: An unknown error occurred.");
+      }
     }
   };
   // const handleVerify = async () => {

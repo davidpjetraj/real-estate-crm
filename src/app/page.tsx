@@ -1,6 +1,7 @@
 "use client";
 
 import { Grid, styled } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -79,7 +80,7 @@ export default function Home() {
     if (token) {
       router.push("/dashboard");
     }
-  }, []);
+  }, [router]);
   return (
     <Wrapper>
       <Grid container spacing={4}>
@@ -102,7 +103,12 @@ export default function Home() {
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <div className="right">
-            <img src="/image.png" />
+            <Image
+              src="/image.png"
+              alt="Real Estate Dashboard Image"
+              width={500}
+              height={300}
+            />
           </div>
         </Grid>
       </Grid>

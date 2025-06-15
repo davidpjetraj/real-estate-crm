@@ -54,8 +54,12 @@ export default function RegisterPage() {
           localStorage.setItem("refresh_token", data.register.refresh_token);
           window.location.href = "/dashboard";
         }
-      } catch (error: any) {
-        alert("Registration error: " + error.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          alert("Registration error: " + error.message);
+        } else {
+          alert("Registration failed: An unknown error occurred.");
+        }
       }
     },
   });

@@ -21,7 +21,7 @@ export default function Dashboard() {
     if (!token) {
       router.push("/");
     }
-  }, []);
+  }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
