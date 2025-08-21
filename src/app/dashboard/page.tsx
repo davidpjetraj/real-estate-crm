@@ -23,9 +23,11 @@ const Content = styled(Box)`
   flex: 1;
   min-width: 0;
   padding: 24px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: ${({ theme }) => theme.palette.background.paper};
+  border-radius: ${({ theme }) => theme.shape.borderRadius}px;
+  border: 1px solid ${({ theme }) => theme.palette.divider};
+  box-shadow: none;
+  overflow: hidden;
 `;
 
 const TopBar = styled("div")`
@@ -34,12 +36,12 @@ const TopBar = styled("div")`
   justify-content: space-between;
   gap: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
 `;
 
 const CenterDate = styled("div")`
   text-align: center;
-  color: #6b7280;
+  color: ${({ theme }) => theme.palette.text.secondary};
   margin: 16px 0 8px;
 `;
 
