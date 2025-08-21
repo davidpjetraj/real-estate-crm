@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+html,
+body,
+#__next {
+  width: 100%;
+  height: 100%;
+}
+
+/* Remove default margin to allow full-bleed layouts */
+body {
+  margin: 0;
+}

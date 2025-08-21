@@ -2,12 +2,21 @@
 import { alpha, darken, lighten, styled } from "@mui/material";
 
 import Link from "next/link";
+import { Button } from "@mui/material";
+import { usePathname } from "next/navigation";
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
+import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import DomainAddOutlinedIcon from "@mui/icons-material/DomainAddOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 
 const Wrapper = styled("div")`
   z-index: 0;
   overflow: hidden;
   display: flex;
   width: 70px;
+  height: 100vh;
   ${({ theme }) => theme.breakpoints.down("lg")} {
     width: 0;
     position: fixed;
@@ -19,6 +28,7 @@ const Wrapper = styled("div")`
 
   &.opened {
     width: 340px;
+    height: 100vh;
     @media (max-width: 600px) {
       width: 100vw;
       height: 100vh;
@@ -227,12 +237,72 @@ const LinkItem = styled(Link)`
 `;
 
 export default function Sidebar() {
+  const pathname = usePathname();
   return (
-    <Wrapper>
-      <LinkItem href="/dashboard">Dashboard</LinkItem>
-      <LinkItem href="/logout">Dashboard</LinkItem>
-      <LinkItem href="/login">Dashboard</LinkItem>
-      <LinkItem href="/register">Dashboard</LinkItem>
+    <Wrapper className="opened">
+      <div className="wrapper">
+        <div className="items">
+          <LinkItem
+            href="/dashboard"
+            className={pathname === "/dashboard" ? "active" : ""}
+          >
+            <div className="icon">
+              <DashboardOutlinedIcon />
+            </div>
+            <span>Dashboard</span>
+          </LinkItem>
+          <LinkItem
+            href="/team"
+            className={pathname?.startsWith("/team") ? "active" : ""}
+          >
+            <div className="icon">
+              <GroupOutlinedIcon />
+            </div>
+            <span>Team</span>
+          </LinkItem>
+          <LinkItem
+            href="/property"
+            className={pathname?.startsWith("/property") ? "active" : ""}
+          >
+            <div className="icon">
+              <ApartmentOutlinedIcon />
+            </div>
+            <span>Property</span>
+          </LinkItem>
+          <LinkItem
+            href="/request"
+            className={pathname?.startsWith("/request") ? "active" : ""}
+          >
+            <div className="icon">
+              <AssignmentOutlinedIcon />
+            </div>
+            <span>Request</span>
+          </LinkItem>
+          <LinkItem
+            href="/builder"
+            className={pathname?.startsWith("/builder") ? "active" : ""}
+          >
+            <div className="icon">
+              <DomainAddOutlinedIcon />
+            </div>
+            <span>Builder</span>
+          </LinkItem>
+          <LinkItem
+            href="/client"
+            className={pathname?.startsWith("/client") ? "active" : ""}
+          >
+            <div className="icon">
+              <PeopleAltOutlinedIcon />
+            </div>
+            <span>Client</span>
+          </LinkItem>
+        </div>
+        <div className="bottom">
+          <Button variant="contained" color="primary">
+            Invite members
+          </Button>
+        </div>
+      </div>
     </Wrapper>
   );
 }
