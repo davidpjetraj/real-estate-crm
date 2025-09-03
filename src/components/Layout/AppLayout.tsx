@@ -13,8 +13,8 @@ interface AppLayoutProps {
 const Wrapper = styled("div")`
   display: flex;
   height: 100vh;
-  gap: 16px;
-  padding: 6px;
+  gap: 10px;
+  padding: 16px;
   ${({ theme }) => theme.breakpoints.down("lg")} {
     padding: 0;
     height: 100%;
