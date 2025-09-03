@@ -23,6 +23,7 @@ import DomainAddOutlinedIcon from "@mui/icons-material/DomainAddOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import InviteMemberDialog from "../Dialog/InviteMemberDialog";
+import Logo from "@/app/logo";
 
 const Wrapper = styled("div")`
   z-index: 0;
@@ -247,7 +248,6 @@ const LinkItem = styled(Link)`
   }
 `;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Item({ href, children, icon, ...rest }: any) {
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 1024px)");
@@ -290,6 +290,7 @@ export default function Sidebar() {
         <div className="sidebar-header">
           <div className="left">
             <div className="side">
+              {open && <Logo width={50} height={50} />}
               <IconButton onClick={onToggle}>
                 <MenuIcon />
               </IconButton>
