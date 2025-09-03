@@ -1,17 +1,18 @@
 "use client";
 
-import { Container, Typography } from "@mui/material";
-import AppLayout from "@/components/Layout/AppLayout";
+import React from "react";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import PageLayout from "@/components/Layout/PageLayout";
 
 export default function RequestPage() {
   return (
-    <AppLayout>
-      <Container maxWidth="lg">
-        <Typography variant="h4" sx={{ mb: 2 }}>
-          Request
-        </Typography>
-        <Typography color="text.secondary">Coming soon…</Typography>
-      </Container>
-    </AppLayout>
+    <PageLayout
+      title="Request"
+      icon={<AssignmentOutlinedIcon />}
+      showLogout={true}
+    >
+      <p>Request management coming soon…</p>
+      <p>This page will contain request handling and tracking features.</p>
+    </PageLayout>
   );
 }

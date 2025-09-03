@@ -1,17 +1,18 @@
 "use client";
 
-import { Container, Typography } from "@mui/material";
-import AppLayout from "@/components/Layout/AppLayout";
+import React from "react";
+import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
+import PageLayout from "@/components/Layout/PageLayout";
 
 export default function PropertyPage() {
   return (
-    <AppLayout>
-      <Container maxWidth="lg">
-        <Typography variant="h4" sx={{ mb: 2 }}>
-          Property
-        </Typography>
-        <Typography color="text.secondary">Coming soon…</Typography>
-      </Container>
-    </AppLayout>
+    <PageLayout
+      title="Property"
+      icon={<ApartmentOutlinedIcon />}
+      showLogout={true}
+    >
+      <p>Property management coming soon…</p>
+      <p>This page will contain property listing and management features.</p>
+    </PageLayout>
   );
 }

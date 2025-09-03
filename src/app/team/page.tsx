@@ -1,17 +1,14 @@
 "use client";
 
-import { Container, Typography } from "@mui/material";
-import AppLayout from "@/components/Layout/AppLayout";
+import React from "react";
+import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
+import PageLayout from "@/components/Layout/PageLayout";
 
 export default function TeamPage() {
   return (
-    <AppLayout>
-      <Container maxWidth="lg">
-        <Typography variant="h4" sx={{ mb: 2 }}>
-          Team
-        </Typography>
-        <Typography color="text.secondary">Coming soon…</Typography>
-      </Container>
-    </AppLayout>
+    <PageLayout title="Team" icon={<GroupOutlinedIcon />} showLogout={true}>
+      <p>Team management coming soon…</p>
+      <p>This page will contain team member management features.</p>
+    </PageLayout>
   );
 }

@@ -27,7 +27,9 @@ const Wrapper = styled("div")`
   overflow: hidden;
   display: flex;
   width: 70px;
-  border-right: 1px solid ${({ theme }) => theme.palette.divider};
+  height: 100%;
+  border-radius: ${({ theme }) => theme.shape.borderRadius}px;
+  border: 1px solid ${({ theme }) => theme.palette.divider};
   ${({ theme }) => theme.breakpoints.down("lg")} {
     width: 0;
     position: fixed;
@@ -39,7 +41,7 @@ const Wrapper = styled("div")`
 
   &.opened {
     width: 340px;
-    height: 100vh;
+    height: 100%;
     @media (max-width: 600px) {
       width: 100vw;
       height: 100vh;
