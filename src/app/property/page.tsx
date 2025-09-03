@@ -9,7 +9,7 @@ export default function PropertyPage() {
     <PageLayout
       title="Property"
       icon={<ApartmentOutlinedIcon />}
-      showLogout={true}
+      showProfile={true}
     >
       <p>Property management coming soon…</p>
       <p>This page will contain property listing and management features.</p>

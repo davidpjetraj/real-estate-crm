@@ -9,7 +9,7 @@ export default function ClientPage() {
     <PageLayout
       title="Client"
       icon={<PeopleAltOutlinedIcon />}
-      showLogout={true}
+      showProfile={true}
     >
       <p>Client management coming soon…</p>
       <p>This page will contain client relationship and management features.</p>

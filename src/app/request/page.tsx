@@ -9,7 +9,7 @@ export default function RequestPage() {
     <PageLayout
       title="Request"
       icon={<AssignmentOutlinedIcon />}
-      showLogout={true}
+      showProfile={true}
     >
       <p>Request management coming soon…</p>
       <p>This page will contain request handling and tracking features.</p>

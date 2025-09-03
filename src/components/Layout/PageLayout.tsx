@@ -1,10 +1,10 @@
 "use client";
 
-import { Box, Button, styled } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Box, styled } from "@mui/material";
 import React from "react";
 import AppLayout from "./AppLayout";
 import ThemeSwitcher from "../ThemeSwitcher";
+import Profile from "../Profile";
 
 const Content = styled(Box)`
   flex: 1;
@@ -37,7 +37,7 @@ interface PageLayoutProps {
   title: string;
   icon: React.ReactNode;
   showDate?: boolean;
-  showLogout?: boolean;
+  showProfile?: boolean;
   topBarActions?: React.ReactNode;
 }
 
@@ -46,17 +46,9 @@ export default function PageLayout({
   title,
   icon,
   showDate = false,
-  showLogout = false,
+  showProfile = true,
   topBarActions,
 }: PageLayoutProps) {
-  const router = useRouter();
-
-  const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    router.push("/login");
-  };
-
   return (
     <AppLayout>
       <Content>
@@ -65,17 +57,7 @@ export default function PageLayout({
           <h1>{title}</h1>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <ThemeSwitcher />
-            {topBarActions ||
-              (showLogout && (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleLogout}
-                  sx={{ borderRadius: "12px" }}
-                >
-                  Logout
-                </Button>
-              ))}
+            {topBarActions || (showProfile && <Profile />)}
           </div>
         </TopBar>
         {showDate && (

@@ -9,7 +9,7 @@ export default function BuilderComplexPage() {
     <PageLayout
       title="Builder"
       icon={<DomainAddOutlinedIcon />}
-      showLogout={true}
+      showProfile={true}
     >
       <p>Builder management coming soon…</p>
       <p>

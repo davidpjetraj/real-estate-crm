@@ -10,7 +10,7 @@ export default function Dashboard() {
       title="Dashboard"
       icon={<DashboardOutlinedIcon />}
       showDate={true}
-      showLogout={true}
+      showProfile={true}
     >
       <p>Welcome to the dashboard!</p>
       <p>This is a protected route.</p>
