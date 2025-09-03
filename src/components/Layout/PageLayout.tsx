@@ -9,7 +9,7 @@ import Profile from "../Profile";
 const Content = styled(Box)`
   flex: 1;
   min-width: 0;
-  padding: 24px;
+  padding: 10px;
   background-color: ${({ theme }) => theme.palette.background.paper};
   border-radius: ${({ theme }) => theme.shape.borderRadius}px;
   border: 1px solid ${({ theme }) => theme.palette.divider};
@@ -20,8 +20,8 @@ const Content = styled(Box)`
 const TopBar = styled("div")`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  justify-content: flex-start;
+  gap: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
 `;
@@ -55,7 +55,14 @@ export default function PageLayout({
         <TopBar>
           <div className="icon">{icon}</div>
           <h1>{title}</h1>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginLeft: "auto",
+            }}
+          >
             <ThemeSwitcher />
             {topBarActions || (showProfile && <Profile />)}
           </div>
