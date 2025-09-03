@@ -1,22 +1,33 @@
 "use client";
-import { alpha, darken, lighten, styled } from "@mui/material";
+import {
+  alpha,
+  Backdrop,
+  Button,
+  darken,
+  IconButton,
+  lighten,
+  styled,
+  useMediaQuery,
+} from "@mui/material";
 
+import classNames from "classnames";
 import Link from "next/link";
-import { Button } from "@mui/material";
 import { usePathname } from "next/navigation";
+import { useSettingsContext } from "../settings";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import DomainAddOutlinedIcon from "@mui/icons-material/DomainAddOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const Wrapper = styled("div")`
   z-index: 0;
   overflow: hidden;
   display: flex;
   width: 70px;
-  height: 100vh;
+  border-right: 1px solid ${({ theme }) => theme.palette.divider};
   ${({ theme }) => theme.breakpoints.down("lg")} {
     width: 0;
     position: fixed;
@@ -64,9 +75,7 @@ const Wrapper = styled("div")`
       display: flex;
     }
     .sidebar-header {
-      border-radius: ${({ theme }) => theme.shape.borderRadius}px;
       overflow: hidden;
-      border: 1px solid ${({ theme }) => theme.palette.divider};
       ${({ theme }) => theme.breakpoints.down("lg")} {
         border-top: 0;
         border-bottom: 0;
@@ -116,10 +125,8 @@ const Wrapper = styled("div")`
   }
 
   .sidebar-header {
-    border-radius: ${({ theme }) => theme.shape.borderRadius}px;
     overflow: hidden;
     width: 100%;
-    border: 1px solid ${({ theme }) => theme.palette.divider};
     background-color: ${({ theme }) => theme.palette.background.paper};
 
     .left {
@@ -236,73 +243,102 @@ const LinkItem = styled(Link)`
   }
 `;
 
-export default function Sidebar() {
+function Item({ href, children, icon, ...rest }: any) {
   const pathname = usePathname();
+  const isMobile = useMediaQuery("(max-width: 1024px)");
+  const { onToggle } = useSettingsContext();
   return (
-    <Wrapper className="opened">
-      <div className="wrapper">
-        <div className="items">
-          <LinkItem
-            href="/dashboard"
-            className={pathname === "/dashboard" ? "active" : ""}
-          >
-            <div className="icon">
-              <DashboardOutlinedIcon />
+    <LinkItem
+      href={href}
+      onClick={isMobile ? onToggle : undefined}
+      className={classNames({
+        active: pathname.includes(rest.includes),
+      })}
+      {...rest}
+    >
+      <div className="icon">{icon}</div>
+      {children}
+    </LinkItem>
+  );
+}
+
+export default function Sidebar() {
+  const { open, onToggle } = useSettingsContext();
+  const isMobile = useMediaQuery("(max-width: 1024px)");
+
+  return (
+    <>
+      <Backdrop
+        open={open && isMobile}
+        style={{
+          backdropFilter: "blur(5px)",
+          zIndex: 1198,
+        }}
+        onClick={onToggle}
+      />
+      <Wrapper
+        className={classNames({
+          opened: open,
+        })}
+      >
+        <div className="sidebar-header">
+          <div className="left">
+            <div className="side">
+              <IconButton onClick={onToggle}>
+                <MenuIcon />
+              </IconButton>
             </div>
-            <span>Dashboard</span>
-          </LinkItem>
-          <LinkItem
-            href="/team"
-            className={pathname?.startsWith("/team") ? "active" : ""}
-          >
-            <div className="icon">
-              <GroupOutlinedIcon />
+          </div>
+
+          <div className="wrapper sidebar-wrapper">
+            <div className="items">
+              <Item
+                href="/dashboard"
+                icon={<DashboardOutlinedIcon />}
+                includes="dashboard"
+              >
+                <span>Dashboard</span>
+              </Item>
+              <Item href="/team" icon={<GroupOutlinedIcon />} includes="team">
+                <span>Team</span>
+              </Item>
+              <Item
+                href="/property"
+                icon={<ApartmentOutlinedIcon />}
+                includes="property"
+              >
+                <span>Property</span>
+              </Item>
+              <Item
+                href="/request"
+                icon={<AssignmentOutlinedIcon />}
+                includes="request"
+              >
+                <span>Request</span>
+              </Item>
+              <Item
+                href="/builder"
+                icon={<DomainAddOutlinedIcon />}
+                includes="builder"
+              >
+                <span>Builder</span>
+              </Item>
+              <Item
+                href="/client"
+                icon={<PeopleAltOutlinedIcon />}
+                includes="client"
+              >
+                <span>Client</span>
+              </Item>
             </div>
-            <span>Team</span>
-          </LinkItem>
-          <LinkItem
-            href="/property"
-            className={pathname?.startsWith("/property") ? "active" : ""}
-          >
-            <div className="icon">
-              <ApartmentOutlinedIcon />
+            <div className="bottom">
+              <Button variant="contained" color="primary">
+                Invite members
+              </Button>
             </div>
-            <span>Property</span>
-          </LinkItem>
-          <LinkItem
-            href="/request"
-            className={pathname?.startsWith("/request") ? "active" : ""}
-          >
-            <div className="icon">
-              <AssignmentOutlinedIcon />
-            </div>
-            <span>Request</span>
-          </LinkItem>
-          <LinkItem
-            href="/builder"
-            className={pathname?.startsWith("/builder") ? "active" : ""}
-          >
-            <div className="icon">
-              <DomainAddOutlinedIcon />
-            </div>
-            <span>Builder</span>
-          </LinkItem>
-          <LinkItem
-            href="/client"
-            className={pathname?.startsWith("/client") ? "active" : ""}
-          >
-            <div className="icon">
-              <PeopleAltOutlinedIcon />
-            </div>
-            <span>Client</span>
-          </LinkItem>
+          </div>
         </div>
-        <div className="bottom">
-          <Button variant="contained" color="primary">
-            Invite members
-          </Button>
-        </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
+    </>
   );
 }

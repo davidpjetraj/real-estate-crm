@@ -1,23 +1,10 @@
 "use client";
 
-import Sidebar from "@/components/Sidebar";
 import { Box, Button, styled } from "@mui/material";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-
-const Wrapper = styled("div")`
-  padding: 24px;
-  min-height: 100vh;
-  box-sizing: border-box;
-`;
-
-const LayoutRow = styled("div")`
-  display: flex;
-  gap: 16px;
-  padding: 0;
-  min-height: calc(100vh - 48px);
-`;
+import AppLayout from "@/components/Layout/AppLayout";
 
 const Content = styled(Box)`
   flex: 1;
@@ -47,12 +34,6 @@ const CenterDate = styled("div")`
 
 export default function Dashboard() {
   const router = useRouter();
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      router.push("/");
-    }
-  }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
@@ -61,38 +42,33 @@ export default function Dashboard() {
   };
 
   return (
-    <>
-      <Wrapper>
-        <LayoutRow>
-          <Sidebar />
-          <Content>
-            <TopBar>
-              <div className="icon">
-                <DashboardOutlinedIcon />
-              </div>
-              <h1>Dashboard</h1>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleLogout}
-                sx={{ borderRadius: "12px" }}
-              >
-                Logout
-              </Button>
-            </TopBar>
-            <CenterDate>
-              {new Date().toLocaleDateString(undefined, {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-              })}
-            </CenterDate>
-            <p>Welcome to the dashboard!</p>
-            <p>This is a protected route.</p>
-            <p>You should be able to see this only if you are logged in.</p>
-          </Content>
-        </LayoutRow>
-      </Wrapper>
-    </>
+    <AppLayout>
+      <Content>
+        <TopBar>
+          <div className="icon">
+            <DashboardOutlinedIcon />
+          </div>
+          <h1>Dashboard</h1>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleLogout}
+            sx={{ borderRadius: "12px" }}
+          >
+            Logout
+          </Button>
+        </TopBar>
+        <CenterDate>
+          {new Date().toLocaleDateString(undefined, {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+          })}
+        </CenterDate>
+        <p>Welcome to the dashboard!</p>
+        <p>This is a protected route.</p>
+        <p>You should be able to see this only if you are logged in.</p>
+      </Content>
+    </AppLayout>
   );
 }
