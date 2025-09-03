@@ -13,6 +13,7 @@ import {
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { useSettingsContext } from "../settings";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
@@ -21,6 +22,7 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import DomainAddOutlinedIcon from "@mui/icons-material/DomainAddOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
+import InviteMemberDialog from "../Dialog/InviteMemberDialog";
 
 const Wrapper = styled("div")`
   z-index: 0;
@@ -245,6 +247,7 @@ const LinkItem = styled(Link)`
   }
 `;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Item({ href, children, icon, ...rest }: any) {
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 1024px)");
@@ -267,6 +270,7 @@ function Item({ href, children, icon, ...rest }: any) {
 export default function Sidebar() {
   const { open, onToggle } = useSettingsContext();
   const isMobile = useMediaQuery("(max-width: 1024px)");
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
 
   return (
     <>
@@ -334,13 +338,21 @@ export default function Sidebar() {
               </Item>
             </div>
             <div className="bottom">
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setInviteDialogOpen(true)}
+              >
                 Invite members
               </Button>
             </div>
           </div>
         </div>
       </Wrapper>
+      <InviteMemberDialog
+        open={inviteDialogOpen}
+        onClose={() => setInviteDialogOpen(false)}
+      />
     </>
   );
 }
