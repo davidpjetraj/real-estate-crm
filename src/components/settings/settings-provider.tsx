@@ -41,10 +41,20 @@ export function SettingsProvider({
     setHelpCenter((prev) => !prev);
   }, []);
 
+  const onUpdate = useCallback(
+    (name: string, value: string | number | boolean) => {
+      update((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    },
+    [update]
+  );
+
   const memoizedValue = useMemo(
     () => ({
       ...state,
-      onUpdate: update,
+      onUpdate: onUpdate,
       onReset: reset,
       open: openDrawer,
       helpCenter: helpCenter,
@@ -61,7 +71,7 @@ export function SettingsProvider({
       onOpenDrawer,
       onToggleDrawer,
       onToggleHelp,
-      update,
+      onUpdate,
       reset,
     ]
   );
