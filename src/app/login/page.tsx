@@ -1,10 +1,21 @@
 "use client";
 
 import { gql, useMutation } from "@apollo/client";
-import { Button, TextField, Box, styled } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Box,
+  styled,
+  CircularProgress,
+  Alert,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const Wrapper = styled("div")`
   display: flex;
@@ -28,22 +39,18 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-// const VERIFY_LOGIN = gql`
-//   mutation VerifyLogin($input: VerifyLoginInput!) {
-//     verifyLogin(input: $input) {
-//       access_token
-//       refresh_token
-//     }
-//   }
-// `;
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("Email-i nuk është i vlefshëm")
+    .required("Email-i është i detyrueshëm"),
+  password: Yup.string()
+    .min(6, "Fjalëkalimi duhet të ketë të paktën 6 karaktere")
+    .required("Fjalëkalimi është i detyrueshëm"),
+});
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  //   const [code, setCode] = useState("");
-  //   const [showVerify, setShowVerify] = useState(false);
-  const [login] = useMutation(LOGIN_MUTATION);
-  const [password, setPassword] = useState("");
-  //   const [verifyLogin] = useMutation(VERIFY_LOGIN);
+  const [login, { loading, error }] = useMutation(LOGIN_MUTATION);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -53,28 +60,30 @@ export default function LoginPage() {
     }
   }, [router]);
 
-  const handleLogin = async () => {
-    try {
-      const { data } = await login({
-        variables: { input: { email, password } },
-      });
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      try {
+        const { data } = await login({
+          variables: { input: values },
+        });
 
-      if (data?.login) {
-        localStorage.setItem("access_token", data.login);
-        window.location.href = "/dashboard";
-      } else {
-        console.warn("Login succeeded but returned nothing.");
+        if (data?.login) {
+          localStorage.setItem("access_token", data.login);
+          router.push("/dashboard");
+        } else {
+          console.warn("Login succeeded but returned nothing.");
+        }
+      } catch (error: unknown) {
+        console.error("Login error:", error);
+        // Error is handled by Apollo Client and displayed via the error state
       }
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error("Login error:", error.message);
-        alert("Login failed: " + error.message);
-      } else {
-        console.error("An unknown error occurred:", error);
-        alert("Login failed: An unknown error occurred.");
-      }
-    }
-  };
+    },
+  });
   // const handleVerify = async () => {
   //   const { data } = await verifyLogin({
   //     variables: { input: { email, password } },
@@ -87,53 +96,79 @@ export default function LoginPage() {
   return (
     <>
       <Wrapper>
-        <Box sx={{ p: 4, maxWidth: 400, mx: "auto" }}>
+        <Box
+          component="form"
+          onSubmit={formik.handleSubmit}
+          sx={{ p: 4, maxWidth: 400, mx: "auto" }}
+        >
           <h1>Mirë se erdhët përsëri!</h1>
+
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error.message}
+            </Alert>
+          )}
+
           <TextField
             label="Email"
             fullWidth
             variant="outlined"
             margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            disabled={loading}
           />
+
           <TextField
             label="Password"
             fullWidth
             variant="outlined"
             margin="normal"
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            disabled={loading}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="start"
+                    disabled={loading}
+                  >
+                    {showPassword ? "👁️" : "👁️‍🗨️"}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
-          {/* {showVerify ? (
-        <>
-          <TextField
-            label="Verification Code"
-            fullWidth
-            margin="normal"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
-
-          <Button variant="contained" fullWidth onClick={handleVerify}>
-            Verify
-          </Button>
-        </>
-      ) : (
-        <Button variant="contained" fullWidth onClick={handleLogin}>
-          Send Code
-        </Button>
-      )} */}
 
           <Button
             variant="contained"
             color="primary"
             size="large"
             fullWidth
-            onClick={handleLogin}
+            type="submit"
+            disabled={loading || !formik.isValid}
+            sx={{ mt: 2 }}
           >
-            Vazhdo
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Vazhdo"
+            )}
           </Button>
+
           <Button
             variant="contained"
             color="primary"
@@ -141,6 +176,7 @@ export default function LoginPage() {
             fullWidth
             LinkComponent={Link}
             href="/register"
+            disabled={loading}
             sx={{ mt: 2, backgroundColor: "#f50057", borderRadius: "12px" }}
           >
             Nuk keni llogari? Regjistrohuni
