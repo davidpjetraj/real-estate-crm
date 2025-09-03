@@ -5,7 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { darkTheme, lightTheme } from "@/lib/theme";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import { useState, createContext, useContext, ReactNode } from "react";
+import React, { useState, createContext, useContext, ReactNode } from "react";
 
 interface ThemeContextType {
   isDarkMode: boolean;
@@ -40,8 +40,25 @@ export function CustomThemeProvider({ children }: ThemeProviderProps) {
     setIsDarkMode(newMode);
     if (typeof window !== "undefined") {
       localStorage.setItem("theme-mode", newMode ? "dark" : "light");
+      // Add or remove dark class to html element for Tailwind CSS
+      if (newMode) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
     }
   };
+
+  // Set initial dark class on mount
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (isDarkMode) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    }
+  }, [isDarkMode]);
 
   const currentTheme = isDarkMode ? darkTheme : lightTheme;
 

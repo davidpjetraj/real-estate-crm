@@ -1,8 +1,8 @@
 import React from "react";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import PageLayout from "@/components/Layout/PageLayout";
-import DashboardInfo from "@/components/Dashboard/Info";
+import KanbanDashboard from "@/components/Dashboard/KanbanDashboard";
 import { Metadata } from "next";
+import DashboardInfo from "@/components/Dashboard/Info";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -10,13 +10,9 @@ export const metadata: Metadata = {
 
 export default function Dashboard() {
   return (
-    <PageLayout
-      title="Dashboard"
-      icon={<DashboardOutlinedIcon />}
-      showDate={false}
-      showProfile={true}
-    >
+    <PageLayout title="Dashboard" showDate={false} showProfile={true}>
       <DashboardInfo />
+      <KanbanDashboard />
     </PageLayout>
   );
 }
