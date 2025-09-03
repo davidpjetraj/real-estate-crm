@@ -179,6 +179,13 @@ export default function RegisterPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   onMouseDown={(e) => e.preventDefault()}
                   disabled={loading}
+                  edge="start"
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                  }}
                 >
                   {showPassword ? "👁️" : "👁️‍🗨️"}
                 </IconButton>
@@ -212,6 +219,13 @@ export default function RegisterPage() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   onMouseDown={(e) => e.preventDefault()}
                   disabled={loading}
+                  edge="start"
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                  }}
                 >
                   {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
                 </IconButton>

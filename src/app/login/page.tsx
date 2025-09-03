@@ -143,8 +143,14 @@ export default function LoginPage() {
                     aria-label="toggle password visibility"
                     onClick={() => setShowPassword(!showPassword)}
                     onMouseDown={(e) => e.preventDefault()}
-                    edge="start"
                     disabled={loading}
+                    edge="start"
+                    sx={{
+                      position: "absolute",
+                      right: 8,
+                      top: "20%",
+                      transform: "translateY(-50%)",
+                    }}
                   >
                     {showPassword ? "👁️" : "👁️‍🗨️"}
                   </IconButton>
