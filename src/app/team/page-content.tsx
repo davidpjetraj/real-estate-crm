@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import PageLayout from "@/components/Layout/PageLayout";
 // import { Table } from "@/components/Table";
 // import { Button } from "@mui/material";
@@ -12,7 +11,7 @@ import PageLayout from "@/components/Layout/PageLayout";
 export default function TeamPage() {
   // const router = useRouter();
   return (
-    <PageLayout title="Team" icon={<GroupOutlinedIcon />} showProfile={true}>
+    <PageLayout title="Team" showProfile={true}>
       <div>Team</div>
       {/* <Table
         columns={teamColumns}
