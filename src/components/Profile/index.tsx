@@ -59,9 +59,11 @@ export default function Profile() {
         <MenuItem sx={{ m: 1 }} onClick={popover.onClose}>
           Preferences
         </MenuItem>
+        <Divider sx={{ borderStyle: "dashed" }} />
         <MenuItem sx={{ m: 1 }} onClick={popover.onClose}>
           Security
         </MenuItem>
+        <Divider sx={{ borderStyle: "dashed" }} />
         <MenuItem sx={{ m: 1, color: "error.main" }} onClick={handleLogout}>
           Logout
         </MenuItem>

@@ -22,7 +22,9 @@ const TopBar = styled("div")`
   align-items: center;
   justify-content: flex-start;
   gap: 20px;
-  padding-bottom: 12px;
+  height: 64px;
+  padding: 0 10px;
+  margin: -10px -10px 0 -10px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
 `;
 
@@ -35,7 +37,6 @@ const CenterDate = styled("div")`
 interface PageLayoutProps {
   children: React.ReactNode;
   title: string;
-  icon: React.ReactNode;
   showDate?: boolean;
   showProfile?: boolean;
   topBarActions?: React.ReactNode;
@@ -44,7 +45,6 @@ interface PageLayoutProps {
 export default function PageLayout({
   children,
   title,
-  icon,
   showDate = false,
   showProfile = true,
   topBarActions,
@@ -53,7 +53,6 @@ export default function PageLayout({
     <AppLayout>
       <Content>
         <TopBar>
-          <div className="icon">{icon}</div>
           <h1>{title}</h1>
           <div
             style={{
