@@ -3,18 +3,17 @@
 import React from "react";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import PageLayout from "@/components/Layout/PageLayout";
+import DashboardInfo from "@/components/Dashboard/Info";
 
 export default function Dashboard() {
   return (
     <PageLayout
       title="Dashboard"
       icon={<DashboardOutlinedIcon />}
-      showDate={true}
+      showDate={false}
       showProfile={true}
     >
-      <p>Welcome to the dashboard!</p>
-      <p>This is a protected route.</p>
-      <p>You should be able to see this only if you are logged in.</p>
+      <DashboardInfo />
     </PageLayout>
   );
 }
