@@ -4,17 +4,17 @@ import "./globals.css";
 import { ReactNode } from "react";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "@/lib/apollo-client";
-import { ThemeProvider, CssBaseline } from "@mui/material";
-import { darkTheme } from "@/lib/theme";
+import { CssBaseline } from "@mui/material";
+import { CustomThemeProvider } from "@/components/ThemeSwitcher";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <ThemeProvider theme={darkTheme}>
+        <CustomThemeProvider>
           <CssBaseline />
           <ApolloProvider client={client}>{children}</ApolloProvider>
-        </ThemeProvider>
+        </CustomThemeProvider>
       </body>
     </html>
   );

@@ -4,6 +4,7 @@ import { Box, Button, styled } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React from "react";
 import AppLayout from "./AppLayout";
+import ThemeSwitcher from "../ThemeSwitcher";
 
 const Content = styled(Box)`
   flex: 1;
@@ -62,17 +63,20 @@ export default function PageLayout({
         <TopBar>
           <div className="icon">{icon}</div>
           <h1>{title}</h1>
-          {topBarActions ||
-            (showLogout && (
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleLogout}
-                sx={{ borderRadius: "12px" }}
-              >
-                Logout
-              </Button>
-            ))}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <ThemeSwitcher />
+            {topBarActions ||
+              (showLogout && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleLogout}
+                  sx={{ borderRadius: "12px" }}
+                >
+                  Logout
+                </Button>
+              ))}
+          </div>
         </TopBar>
         {showDate && (
           <CenterDate>

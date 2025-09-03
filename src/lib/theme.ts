@@ -23,3 +23,27 @@ export const darkTheme = createTheme({
     borderRadius: 12,
   },
 });
+
+export const lightTheme = createTheme({
+  palette: {
+    mode: "light",
+    background: {
+      default: "#f8fafc",
+      paper: "#ffffff",
+    },
+    text: {
+      primary: "#1f2937",
+      secondary: "#6b7280",
+    },
+    primary: {
+      main: "#3b82f6", // blue
+    },
+    secondary: {
+      main: "#60a5fa", // light blue
+    },
+    divider: "#e5e7eb",
+  },
+  shape: {
+    borderRadius: 12,
+  },
+});
