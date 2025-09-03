@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const Wrapper = styled("div")`
   display: flex;
@@ -233,7 +234,6 @@ export default function RegisterPage() {
             ),
           }}
         />
-
         <Button
           variant="contained"
           fullWidth
@@ -247,6 +247,22 @@ export default function RegisterPage() {
             "Regjistrohuni"
           )}
         </Button>
+
+        <Box sx={{ textAlign: "center", mt: 2 }}>
+          <span style={{ color: "#666" }}>
+            Keni llogari?{" "}
+            <Link
+              href="/login"
+              style={{
+                color: "#1976d2",
+                textDecoration: "none",
+                fontWeight: "500",
+              }}
+            >
+              Kyçu
+            </Link>
+          </span>
+        </Box>
       </Box>
     </Wrapper>
   );
