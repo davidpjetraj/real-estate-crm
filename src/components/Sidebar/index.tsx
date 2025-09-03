@@ -339,7 +339,7 @@ export default function Sidebar() {
             </div>
             <div className="bottom">
               <Button
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 onClick={() => setInviteDialogOpen(true)}
               >
