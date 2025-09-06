@@ -37,7 +37,7 @@ const Wrapper = styled("div")`
 
 export default function DashboardInfo() {
   const { data } = useQuery(GET_CURRENT_USER);
-  const user = data?.me;
+  const user = data?.account;
 
   function generateGreetings() {
     const currentHour = parseInt(djs().format("HH"), 10);
