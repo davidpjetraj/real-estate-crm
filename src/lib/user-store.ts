@@ -10,6 +10,7 @@ export interface UserData {
   phone?: string;
   birthday?: string;
   status?: string;
+  avatar?: string;
   created_at?: string;
 }
 
