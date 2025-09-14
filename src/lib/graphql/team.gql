@@ -11,9 +11,9 @@ query Teams($input: GetAllTeamsInput!) {
         phone
         birthday
         status
+        avatar
         deleted
         created_at
-        avatar
       }
     }
     pageInfo {
@@ -39,6 +39,7 @@ query TeamDetails($input: GetTeamByIDInput!) {
     phone
     birthday
     status
+    avatar
     deleted
     created_at
   }
@@ -54,6 +55,7 @@ mutation CreateTeam($input: CreateTeamInput!) {
     phone
     birthday
     status
+    avatar
     deleted
     created_at
   }
@@ -69,6 +71,7 @@ mutation UpdateTeam($input: UpdateTeamInput!) {
     phone
     birthday
     status
+    avatar
     deleted
     created_at
   }
