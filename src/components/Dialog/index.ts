@@ -1,1 +1,2 @@
-export * from './Dialog';
+export * from "./Dialog";
+export { default as CreateTeamMemberDialog } from "./CreateTeamMemberDialog";

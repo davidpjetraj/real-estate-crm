@@ -1,31 +1,66 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PageLayout from "@/components/Layout/PageLayout";
-// import { Table } from "@/components/Table";
-// import { Button } from "@mui/material";
-// import { PlusIcon } from "@/components/icons/PlusIcon";
+import { Table } from "@/components/Table";
+import { Button } from "@mui/material";
+import { PlusIcon } from "@/components/icons/PlusIcon";
 // import { useRouter } from "next/navigation";
-// import { teamColumns } from "../../../store/useTeam";
+import { useTeam } from "../../../store/useTeam";
+import { CreateTeamMemberDialog } from "@/components/Dialog";
 
 export default function TeamPage() {
   // const router = useRouter();
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const getData = useTeam((state) => state.getData);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  const handleAddTeam = () => {
+    setIsCreateDialogOpen(true);
+  };
+
+  // const handleEditTeam = (team: any) => {
+  //   router.push(`/team/edit/${team.id}`);
+  // };
+
+  // const handleDeleteTeam = (team: any) => {
+  //   if (window.confirm(`Are you sure you want to delete ${team.name}?`)) {
+  //     teamStore.getState().removeItem(team.id);
+  //   }
+  // };
+
+  const handleCloseCreateDialog = () => {
+    setIsCreateDialogOpen(false);
+  };
+
+  const columns = useTeam((state) => state.columns);
+  const addItem = useTeam((state) => state.addItem);
+
   return (
     <PageLayout title="Team" showProfile={true}>
-      <div>Team</div>
-      {/* <Table
-        columns={teamColumns}
+      <Table
+        columns={columns}
+        store={useTeam}
         rightActions={
           <Button
             variant="contained"
             size="medium"
             startIcon={<PlusIcon width={16} height={16} />}
-            onClick={() => router.push("/team/create")}
+            onClick={handleAddTeam}
           >
-            Erstellen
+            Add Team Member
           </Button>
         }
-      /> */}
+      />
+
+      <CreateTeamMemberDialog
+        open={isCreateDialogOpen}
+        onClose={handleCloseCreateDialog}
+        onSuccess={addItem}
+      />
     </PageLayout>
   );
 }
