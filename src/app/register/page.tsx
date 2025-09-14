@@ -16,6 +16,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { userStore } from "../../lib/user-store";
 
 const Wrapper = styled("div")`
   display: flex;
@@ -97,6 +98,15 @@ export default function RegisterPage() {
         if (data?.register?.access_token) {
           localStorage.setItem("access_token", data.register.access_token);
           localStorage.setItem("refresh_token", data.register.refresh_token);
+
+          // Store user data in user store
+          userStore.saveUserData({
+            first_name: values.first_name,
+            last_name: values.last_name,
+            name: `${values.first_name} ${values.last_name}`,
+            email: values.email,
+          });
+
           router.push("/dashboard");
         }
       } catch (error: unknown) {

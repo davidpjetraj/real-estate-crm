@@ -4,16 +4,18 @@ import { Box, Divider, IconButton, MenuItem, Typography } from "@mui/material";
 import { CustomPopover, usePopover } from "../shared/popover";
 import MemberAvatar from "../shared/Avatar";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
-import { useQuery } from "@apollo/client";
-import { GET_CURRENT_USER } from "@/lib/graphql/user";
+import { useRef, useEffect } from "react";
+import { useAccountQuery } from "../../lib/graphql/generated/graphql";
+import { useUserData } from "../../hooks/use-user-data";
 
 export default function Profile() {
   const popover = usePopover();
   const router = useRouter();
   const anchorRef = useRef<HTMLButtonElement>(null);
 
-  const { data } = useQuery(GET_CURRENT_USER);
+  // Use the user store for managing user data
+  const { userData } = useUserData();
+  const { data, error } = useAccountQuery();
 
   const handleLogout = () => {
     popover.onClose();
@@ -22,12 +24,30 @@ export default function Profile() {
     router.push("/login");
   };
 
+  // Handle expired token only (not permission issues)
+  useEffect(() => {
+    if (
+      error &&
+      error.message.includes("Unauthorized") &&
+      !error.message.includes("autorizimin")
+    ) {
+      console.log("Token expired, redirecting to login...");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      router.push("/login");
+    }
+  }, [error, router]);
+
   // Use real user data if available, otherwise show loading or fallback
-  const user = data?.me;
+  const user = data?.account;
+
+  // Use user data from query if available, otherwise fallback to user store
   const displayName = user
     ? `${user.first_name} ${user.last_name}`
+    : userData?.first_name && userData?.last_name
+    ? `${userData.first_name} ${userData.last_name}`
     : "Loading...";
-  const displayEmail = user?.email || "";
+  const displayEmail = user?.email || userData?.email || "";
 
   return (
     <>
@@ -56,8 +76,14 @@ export default function Profile() {
           </Typography>
         </Box>
         <Divider sx={{ borderStyle: "dashed" }} />
-        <MenuItem sx={{ m: 1 }} onClick={popover.onClose}>
-          Preferences
+        <MenuItem
+          sx={{ m: 1 }}
+          onClick={() => {
+            popover.onClose();
+            router.push("/settings");
+          }}
+        >
+          Profile Settings
         </MenuItem>
         <Divider sx={{ borderStyle: "dashed" }} />
         <MenuItem sx={{ m: 1 }} onClick={popover.onClose}>

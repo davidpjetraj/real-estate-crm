@@ -2,8 +2,11 @@ import { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "http://localhost:4000/graphql", // Replace with your GraphQL endpoint
-  documents: ["src/**/*.{ts,tsx}", "!src/lib/graphql/generated/**/*"],
+  schema: "https://real-estate-server-ornc.onrender.com/graphql",
+  documents: [
+    "src/**/*.{ts,tsx,gql,graphql}",
+    "!src/lib/graphql/generated/**/*",
+  ],
   generates: {
     "src/lib/graphql/generated/graphql.tsx": {
       plugins: [

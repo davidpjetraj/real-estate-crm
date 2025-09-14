@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { userStore } from "../../lib/user-store";
 
 const Wrapper = styled("div")`
   display: flex;
@@ -74,6 +75,12 @@ export default function LoginPage() {
 
         if (data?.login) {
           localStorage.setItem("access_token", data.login);
+
+          // Store user email in user store (we don't have name from login)
+          userStore.saveUserData({
+            email: values.email,
+          });
+
           router.push("/dashboard");
         } else {
           console.warn("Login succeeded but returned nothing.");
