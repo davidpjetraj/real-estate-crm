@@ -88,19 +88,6 @@ const authLink = setContext(async (operation, { headers }) => {
 
   const { access_token } = await getTokens();
 
-  console.log(
-    "Apollo auth link - access_token:",
-    access_token ? `${access_token.substring(0, 20)}...` : "No token"
-  );
-
-  // Debug: Log the full token for debugging (remove in production)
-  if (access_token) {
-    console.log("Full access token:", access_token);
-    console.log("Token length:", access_token.length);
-  } else {
-    console.log("No access token found in getTokens()");
-  }
-
   return {
     headers: {
       ...headers,
@@ -121,9 +108,6 @@ const errorLink = onError(
             if (operation.operationName === "refreshToken") return;
 
             // Skip refresh token logic for now to prevent auto-logout
-            console.log(
-              "Authentication error detected, but not auto-logging out"
-            );
             return;
 
             const observable = new Observable<FetchResult<Record<string, any>>>(
@@ -167,7 +151,7 @@ const errorLink = onError(
       }
     }
 
-    if (networkError) console.log(`[Network error]: ${networkError}`);
+    if (networkError) console.error(`[Network error]: ${networkError}`);
   }
 );
 
@@ -193,12 +177,12 @@ export const apolloClient = new ApolloClient({
 // Request a refresh token to then stores and returns the access_token.
 const refreshToken = async () => {
   if (isRefreshTokenRequestPending) {
-    console.warn("refresh token request already running");
+    console.error("refresh token request already running");
     await new Promise((resolve) => setTimeout(resolve, 2000)); // await 2 second
     return;
   }
   try {
-    console.warn("requesting new refresh token");
+    console.error("requesting new refresh token");
     isRefreshTokenRequestPending = true;
 
     const { refresh_token } = await getTokens();
@@ -248,11 +232,10 @@ function AuthInitializer({ children }: { children: React.ReactNode }) {
         // Check if we have tokens but no user data
         const { access_token } = await getTokens();
         if (access_token && (!user || !user.first_name)) {
-          console.log("Initializing auth - fetching account data");
           await getAccount({});
         }
       } catch (error) {
-        console.log("Auth initialization error:", error);
+        console.error("Auth initialization error:", error);
       } finally {
         setIsInitialized(true);
       }

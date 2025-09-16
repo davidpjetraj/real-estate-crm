@@ -1,10 +1,11 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { TeamsDocument } from "../src/lib/graphql/generated/graphql";
-import { TableColumn, TRCell } from "../src/components/Table";
+import { TeamModel, TeamsDocument } from "../src/lib/graphql/generated/graphql";
+import { TableColumn, TRCell, IDataStore } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
+import { Chip, IconButton } from "@mui/material";
 
-export const teamColumns: TableColumn<any>[] = [
+export const teamColumns: TableColumn<TeamModel>[] = [
   {
     accessorFn: (row) => row,
     label: "Name",
@@ -22,7 +23,7 @@ export const teamColumns: TableColumn<any>[] = [
     },
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as any;
+      const info = getValue() as TeamModel;
       return <TRCell>{info?.name || "-"}</TRCell>;
     },
   },
@@ -37,8 +38,9 @@ export const teamColumns: TableColumn<any>[] = [
       quickFilter: true,
       type: "search",
     },
+    footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as any;
+      const info = getValue() as TeamModel;
       return <TRCell>{info?.email || "-"}</TRCell>;
     },
   },
@@ -48,8 +50,9 @@ export const teamColumns: TableColumn<any>[] = [
     accessorKey: "phone",
     size: 150,
     minSize: 120,
+    footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as any;
+      const info = getValue() as TeamModel;
       return <TRCell>{info?.phone || "-"}</TRCell>;
     },
   },
@@ -68,20 +71,18 @@ export const teamColumns: TableColumn<any>[] = [
         { label: "Deactivated", value: "deactivated" },
       ],
     },
+    footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as any;
+      const info = getValue() as TeamModel;
       const status = info?.status || "active";
+      const capitalizedStatus =
+        status.charAt(0).toUpperCase() + status.slice(1);
       return (
         <TRCell>
-          <span
-            className={`px-2 py-1 rounded-full text-xs ${
-              status === "active"
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
-            }`}
-          >
-            {status}
-          </span>
+          <Chip
+            label={capitalizedStatus}
+            color={status === "active" ? "success" : "error"}
+          />
         </TRCell>
       );
     },
@@ -96,15 +97,56 @@ export const teamColumns: TableColumn<any>[] = [
       enabled: true,
       quickSort: false,
     },
+    footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as any;
+      const info = getValue() as TeamModel;
       const date = info?.created_at
         ? new Date(info.created_at).toLocaleDateString("en-US")
         : "-";
       return <TRCell>{date}</TRCell>;
     },
   },
+  {
+    accessorFn: (row) => row,
+    label: "Actions",
+    accessorKey: "actions",
+    size: 120,
+    minSize: 100,
+    disableHidable: true,
+    footer: (props) => props.column.id,
+    cell: () => {
+      return (
+        <TRCell>
+          <IconButton></IconButton>
+        </TRCell>
+      );
+    },
+  },
 ];
+
+export const simpleTeamColumns: any = teamColumns.map((column) => {
+  return {
+    id: column.accessorKey,
+    label: column.label,
+    disableHidable: column.disableHidable,
+    hidden: column.hidden,
+  };
+});
+
+export interface TeamState extends IDataStore {
+  data: any;
+  loading: boolean;
+  loadingMore: boolean;
+  openCustomize: boolean;
+  search: string;
+  teamStatus: any;
+  addItem: (item: TeamModel) => void;
+  removeItem: (id: string) => void;
+  updateItem: (item: TeamModel) => void;
+  setSearch: (payload: string) => void;
+  setOpenCustomize: (open: boolean) => void;
+  changeTeamStatus: (status: any) => void;
+}
 
 // Helper functions
 const extractNodes = (data: any) => {
@@ -130,7 +172,7 @@ const prepareFilters = (filters: any[]) => {
     }));
 };
 
-export const useTeam = create<any>()(
+export const useTeam = create<TeamState>()(
   persist(
     (set, get) => ({
       columns: teamColumns,
@@ -396,12 +438,11 @@ export const useTeam = create<any>()(
     {
       name: "team-storage",
       storage: createJSONStorage(() => sessionStorage),
-      partialize: (state: any) => {
+      partialize: (state: TeamState) => {
         return {
           data: state.data,
           filters: state.filters,
           sort: state.sort,
-          columns: state.columns,
         };
       },
     }

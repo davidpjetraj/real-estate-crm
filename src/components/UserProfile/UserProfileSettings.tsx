@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useUserData } from "../../hooks/use-user-data";
+import useAuth from "../../../store/useAuth";
 
 const validationSchema = Yup.object({
   first_name: Yup.string()
@@ -29,17 +29,17 @@ const validationSchema = Yup.object({
 });
 
 export default function UserProfileSettings() {
-  const { userData, updateUserData } = useUserData();
+  const { user, setUser } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
   const formik = useFormik({
     initialValues: {
-      first_name: userData?.first_name || "",
-      last_name: userData?.last_name || "",
-      name: userData?.name || "",
-      email: userData?.email || "",
-      phone: userData?.phone || "",
+      first_name: user?.first_name || "",
+      last_name: user?.last_name || "",
+      name: user?.name || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
     },
     validationSchema,
     enableReinitialize: true,
@@ -48,8 +48,7 @@ export default function UserProfileSettings() {
       setSuccessMessage("");
 
       try {
-        // Update the user data
-        updateUserData({
+        setUser({
           ...values,
           name: `${values.first_name} ${values.last_name}`,
         });
@@ -92,7 +91,6 @@ export default function UserProfileSettings() {
               error={
                 formik.touched.first_name && Boolean(formik.errors.first_name)
               }
-              helperText={formik.touched.first_name && formik.errors.first_name}
             />
             <TextField
               fullWidth
@@ -104,7 +102,6 @@ export default function UserProfileSettings() {
               error={
                 formik.touched.last_name && Boolean(formik.errors.last_name)
               }
-              helperText={formik.touched.last_name && formik.errors.last_name}
             />
           </Box>
 
@@ -117,7 +114,6 @@ export default function UserProfileSettings() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
             sx={{ mb: 2 }}
           />
 
@@ -129,7 +125,6 @@ export default function UserProfileSettings() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.phone && Boolean(formik.errors.phone)}
-            helperText={formik.touched.phone && formik.errors.phone}
             sx={{ mb: 3 }}
           />
 

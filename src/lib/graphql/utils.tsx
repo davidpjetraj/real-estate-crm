@@ -19,35 +19,18 @@ export const getTokens = async () => {
   let access_token = getCookie("access_token");
   let refresh_token = getCookie("refresh_token");
 
-  console.log(
-    "getTokens - cookie access_token:",
-    access_token ? "Present" : "Missing"
-  );
-  console.log(
-    "getTokens - cookie refresh_token:",
-    refresh_token ? "Present" : "Missing"
-  );
-
   // If not found in cookies, try localStorage (for backward compatibility)
   if (!hasValue(access_token) && typeof window !== "undefined") {
     const localAccessToken = localStorage.getItem("access_token");
     if (localAccessToken) {
       access_token = localAccessToken;
     }
-    console.log(
-      "getTokens - localStorage access_token:",
-      localAccessToken ? "Present" : "Missing"
-    );
   }
   if (!hasValue(refresh_token) && typeof window !== "undefined") {
     const localRefreshToken = localStorage.getItem("refresh_token");
     if (localRefreshToken) {
       refresh_token = localRefreshToken;
     }
-    console.log(
-      "getTokens - localStorage refresh_token:",
-      localRefreshToken ? "Present" : "Missing"
-    );
   }
 
   const result = {
@@ -85,7 +68,6 @@ export const setTokens = async (payload: Tokens) => {
     if (typeof window !== "undefined") {
       localStorage.setItem("access_token", payload.access_token);
       localStorage.setItem("refresh_token", payload.refresh_token);
-      console.log("setTokens - also stored in localStorage");
     }
   }
 };

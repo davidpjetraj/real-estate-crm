@@ -5,8 +5,7 @@ import PageLayout from "@/components/Layout/PageLayout";
 import { Table } from "@/components/Table";
 import { Button } from "@mui/material";
 import { PlusIcon } from "@/components/icons/PlusIcon";
-// import { useRouter } from "next/navigation";
-import { useTeam } from "../../../store/useTeam";
+import { useTeam, teamColumns } from "../../../store/useTeam";
 import { CreateTeamMemberDialog } from "@/components/Dialog";
 
 export default function TeamPage() {
@@ -36,13 +35,12 @@ export default function TeamPage() {
     setIsCreateDialogOpen(false);
   };
 
-  const columns = useTeam((state) => state.columns);
   const addItem = useTeam((state) => state.addItem);
 
   return (
     <PageLayout title="Team" showProfile={true}>
       <Table
-        columns={columns}
+        columns={teamColumns}
         store={useTeam}
         rightActions={
           <Button

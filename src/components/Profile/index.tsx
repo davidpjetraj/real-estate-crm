@@ -7,6 +7,15 @@ import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import useAuth from "../../../store/useAuth";
 
+const getAvatarUrl = (avatar: string | null | undefined) => {
+  if (!avatar) return null;
+  if (avatar.startsWith("http://") || avatar.startsWith("https://")) {
+    return avatar;
+  }
+
+  return `https://real-estate-lab.s3.eu-north-1.amazonaws.com/${avatar}`;
+};
+
 export default function Profile() {
   const popover = usePopover();
   const router = useRouter();
@@ -31,8 +40,11 @@ export default function Profile() {
       >
         <MemberAvatar
           user={{
-            name: user?.first_name + " " + user?.last_name,
-            avatar: user?.avatar,
+            name:
+              user?.first_name && user?.last_name
+                ? `${user.first_name} ${user.last_name}`
+                : user?.email || "User",
+            avatar: getAvatarUrl(user?.avatar),
           }}
           size={35}
           style={{ margin: "0 auto" }}
@@ -44,9 +56,30 @@ export default function Profile() {
         anchorEl={anchorRef.current}
         sx={{ width: 240, p: 0 }}
       >
-        <Box sx={{ p: 2, pb: 1.5 }}>
+        <Box
+          sx={{
+            p: 2,
+            pb: 1.5,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <MemberAvatar
+            user={{
+              name:
+                user?.first_name && user?.last_name
+                  ? `${user.first_name} ${user.last_name}`
+                  : user?.email || "User",
+              avatar: getAvatarUrl(user?.avatar),
+            }}
+            size={60}
+          />
           <Typography variant="subtitle2" noWrap>
-            {user?.first_name} {user?.last_name}
+            {user?.first_name && user?.last_name
+              ? `${user.first_name} ${user.last_name}`
+              : user?.email || "User"}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
             {user?.email}

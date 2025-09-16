@@ -90,21 +90,11 @@ const useAuth = create<StoreState>()(
               });
 
               if (verifyRes.data?.verifyLogin) {
-                console.log("Verify login successful, storing tokens");
-                console.log(
-                  "Access token:",
-                  verifyRes.data.verifyLogin.access_token
-                );
-                console.log(
-                  "Refresh token:",
-                  verifyRes.data.verifyLogin.refresh_token
-                );
                 // Store the real access and refresh tokens
                 await setTokens({
                   access_token: verifyRes.data.verifyLogin.access_token,
                   refresh_token: verifyRes.data.verifyLogin.refresh_token,
                 });
-                console.log("Tokens stored successfully");
 
                 // Set authenticated state
                 set({
@@ -116,7 +106,6 @@ const useAuth = create<StoreState>()(
                 // Try to fetch full user account data
                 try {
                   await get().getAccount({});
-                  console.log("User account data fetched successfully");
                 } catch (accountError) {
                   console.log(
                     "Account fetch failed, but login succeeded:",
@@ -125,11 +114,9 @@ const useAuth = create<StoreState>()(
                   // Keep the basic user data we set above
                 }
 
-                console.log("Login successful, redirecting to dashboard");
                 values.startVerify("/dashboard");
               }
             } catch (verifyError: any) {
-              console.log("Verify login failed:", verifyError);
               set({
                 loading: false,
                 user: null,
