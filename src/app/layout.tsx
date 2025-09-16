@@ -2,8 +2,7 @@
 
 import "./globals.css";
 import { ReactNode } from "react";
-import { ApolloProvider } from "@apollo/client";
-import { client } from "@/lib/apollo-client";
+import ApolloWrapper from "@/lib/graphql/ApolloWrapper";
 import { CssBaseline } from "@mui/material";
 import { CustomThemeProvider } from "@/components/ThemeSwitcher";
 
@@ -13,7 +12,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <CustomThemeProvider>
           <CssBaseline />
-          <ApolloProvider client={client}>{children}</ApolloProvider>
+          <ApolloWrapper>{children}</ApolloWrapper>
         </CustomThemeProvider>
       </body>
     </html>

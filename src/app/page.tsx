@@ -109,10 +109,14 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (token) {
-      router.push("/dashboard");
-    }
+    const checkAuth = async () => {
+      const { getTokens } = await import("@/lib/graphql/utils");
+      const { access_token } = await getTokens();
+      if (access_token) {
+        router.push("/dashboard");
+      }
+    };
+    checkAuth();
   }, [router]);
 
   const features = [

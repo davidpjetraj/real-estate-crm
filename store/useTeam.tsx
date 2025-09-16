@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { client as apolloClient } from "../src/lib/apollo-client";
 import { TeamsDocument } from "../src/lib/graphql/generated/graphql";
 import { TableColumn, TRCell } from "../src/components/Table";
+import { apolloClient } from "@/lib/graphql/ApolloWrapper";
 
 export const teamColumns: TableColumn<any>[] = [
   {

@@ -8,10 +8,14 @@ export default function SettingsPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      router.push("/login");
-    }
+    const checkAuth = async () => {
+      const { getTokens } = await import("@/lib/graphql/utils");
+      const { access_token } = await getTokens();
+      if (!access_token) {
+        router.push("/login");
+      }
+    };
+    checkAuth();
   }, [router]);
 
   return (

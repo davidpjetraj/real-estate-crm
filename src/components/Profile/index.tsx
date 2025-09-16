@@ -4,50 +4,20 @@ import { Box, Divider, IconButton, MenuItem, Typography } from "@mui/material";
 import { CustomPopover, usePopover } from "../shared/popover";
 import MemberAvatar from "../shared/Avatar";
 import { useRouter } from "next/navigation";
-import { useRef, useEffect } from "react";
-import { useAccountQuery } from "../../lib/graphql/generated/graphql";
-import { useUserData } from "../../hooks/use-user-data";
+import { useRef } from "react";
+import useAuth from "../../../store/useAuth";
 
 export default function Profile() {
   const popover = usePopover();
   const router = useRouter();
   const anchorRef = useRef<HTMLButtonElement>(null);
+  const { user, logout } = useAuth();
 
-  // Use the user store for managing user data
-  const { userData } = useUserData();
-  const { data, error } = useAccountQuery();
-
-  const handleLogout = () => {
+  const handleLogout = async () => {
     popover.onClose();
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    await logout();
     router.push("/login");
   };
-
-  // Handle expired token only (not permission issues)
-  useEffect(() => {
-    if (
-      error &&
-      error.message.includes("Unauthorized") &&
-      !error.message.includes("autorizimin")
-    ) {
-      console.log("Token expired, redirecting to login...");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      router.push("/login");
-    }
-  }, [error, router]);
-
-  // Use real user data if available, otherwise show loading or fallback
-  const user = data?.account;
-
-  // Use user data from query if available, otherwise fallback to user store
-  const displayName = user
-    ? `${user.first_name} ${user.last_name}`
-    : userData?.first_name && userData?.last_name
-    ? `${userData.first_name} ${userData.last_name}`
-    : "Loading...";
-  const displayEmail = user?.email || userData?.email || "";
 
   return (
     <>
@@ -59,7 +29,14 @@ export default function Profile() {
           padding: 3,
         }}
       >
-        <MemberAvatar user={user} size={35} style={{ margin: "0 auto" }} />
+        <MemberAvatar
+          user={{
+            name: user?.first_name + " " + user?.last_name,
+            avatar: user?.avatar,
+          }}
+          size={35}
+          style={{ margin: "0 auto" }}
+        />
       </IconButton>
       <CustomPopover
         open={popover.open}
@@ -69,10 +46,10 @@ export default function Profile() {
       >
         <Box sx={{ p: 2, pb: 1.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {displayName}
+            {user?.first_name} {user?.last_name}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {displayEmail}
+            {user?.email}
           </Typography>
         </Box>
         <Divider sx={{ borderStyle: "dashed" }} />
