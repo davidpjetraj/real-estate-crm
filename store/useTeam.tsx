@@ -3,7 +3,8 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { TeamModel, TeamsDocument } from "../src/lib/graphql/generated/graphql";
 import { TableColumn, TRCell, IDataStore } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
-import { Chip, IconButton } from "@mui/material";
+import { Chip } from "@mui/material";
+import { Actions } from "../src/components/Team";
 
 export const teamColumns: TableColumn<TeamModel>[] = [
   {
@@ -114,10 +115,11 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     minSize: 100,
     disableHidable: true,
     footer: (props) => props.column.id,
-    cell: () => {
+    cell: ({ getValue }) => {
+      const teamMember = getValue() as TeamModel;
       return (
         <TRCell>
-          <IconButton></IconButton>
+          <Actions teamMember={teamMember} />
         </TRCell>
       );
     },
