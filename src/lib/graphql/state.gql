@@ -1,0 +1,39 @@
+mutation CreateState($input: CreateStateInput!) {
+  createState(input: $input) {
+    id
+    name
+    created_at
+  }
+}
+
+mutation UpdateState($input: UpdateStateInput!) {
+  updateState(input: $input) {
+    id
+    name
+    created_at
+  }
+}
+
+query States($input: GetAllStatesInput!) {
+  states(input: $input) {
+    id
+    name
+    created_at
+  }
+}
+
+query State($input: GetStateInput!) {
+  state(input: $input) {
+    id
+    name
+    created_at
+  }
+}
+
+mutation DeleteState($input: DeleteStateInput!) {
+  deleteState(input: $input)
+}
+
+mutation UpdateStateOrder($input: UpdateStateOrderInput!) {
+  updateStateOrder(input: $input)
+}

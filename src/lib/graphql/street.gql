@@ -1,0 +1,79 @@
+mutation CreateStreet($input: CreateStreetInput!) {
+  createStreet(input: $input) {
+    id
+    name
+    city {
+      id
+      name
+      created_at
+    }
+    state {
+      id
+      name
+      created_at
+    }
+    created_at
+  }
+}
+
+mutation UpdateStreet($input: UpdateStreetInput!) {
+  updateStreet(input: $input) {
+    id
+    name
+    city {
+      id
+      name
+      created_at
+    }
+    state {
+      id
+      name
+      created_at
+    }
+    created_at
+  }
+}
+
+query Streets($input: GetAllStreetsInput!) {
+  streets(input: $input) {
+    id
+    name
+    city {
+      id
+      name
+      created_at
+    }
+    state {
+      id
+      name
+      created_at
+    }
+    created_at
+  }
+}
+
+query Street($input: GetStreetInput!) {
+  street(input: $input) {
+    id
+    name
+    city {
+      id
+      name
+      created_at
+    }
+    state {
+      id
+      name
+      created_at
+    }
+    created_at
+  }
+}
+
+mutation DeleteStreet($input: DeleteStreetInput!) {
+  deleteStreet(input: $input)
+}
+
+mutation UpdateStreetOrder($input: UpdateStreetOrderInput!) {
+  updateStreetOrder(input: $input)
+}

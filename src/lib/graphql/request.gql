@@ -1,0 +1,699 @@
+mutation CreateRequest {
+  createRequest {
+    id
+    short_id
+    full_name
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    client {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      deleted
+      created_at
+    }
+    client_type
+    agents {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    type
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    payment_method
+    assignee {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    request_of_agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    request_of
+    surface_min
+    surface_max
+    surface_m2
+    status
+    floor_min
+    floor_max
+    rooms_min
+    rooms_max
+    phone
+    message
+    deleted
+    documents
+    budget
+    budget_full
+    budget_type
+    request_for_properties {
+      id
+      short_id
+      title
+      description
+      category
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      surface
+      floor
+      number_of_floors
+      building_year
+      number_of_rooms
+      number_of_bathrooms
+      number_of_bedrooms
+      number_of_balconies
+      sell_price
+      rent_price
+      for_sale
+      for_rent
+      deleted
+      created_at
+    }
+    is_paid
+    created_at
+    updated_at
+  }
+}
+
+mutation UpdateRequest($input: RequestInput!) {
+  updateRequest(input: $input) {
+    id
+    short_id
+    full_name
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    client {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      deleted
+      created_at
+    }
+    client_type
+    agents {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    type
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    payment_method
+    assignee {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    request_of_agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    request_of
+    surface_min
+    surface_max
+    surface_m2
+    status
+    floor_min
+    floor_max
+    rooms_min
+    rooms_max
+    phone
+    message
+    deleted
+    documents
+    budget
+    budget_full
+    budget_type
+    request_for_properties {
+      id
+      short_id
+      title
+      description
+      category
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      surface
+      floor
+      number_of_floors
+      building_year
+      number_of_rooms
+      number_of_bathrooms
+      number_of_bedrooms
+      number_of_balconies
+      sell_price
+      rent_price
+      for_sale
+      for_rent
+      deleted
+      created_at
+    }
+    is_paid
+    created_at
+    updated_at
+  }
+}
+
+query Requests($input: GetAllRequestsInput!) {
+  requests(input: $input) {
+    edges {
+      cursor
+      node {
+        id
+        short_id
+        full_name
+        author {
+          id
+          first_name
+          last_name
+          name
+          email
+          phone
+          birthday
+          status
+          avatar
+          created_at
+        }
+        client {
+          id
+          first_name
+          last_name
+          name
+          email
+          phone
+          birthday
+          status
+          deleted
+          created_at
+        }
+        client_type
+        agents {
+          id
+          first_name
+          last_name
+          name
+          email
+          phone
+          birthday
+          status
+          avatar
+          created_at
+        }
+        type
+        category
+        state {
+          id
+          name
+          created_at
+        }
+        city {
+          id
+          name
+          created_at
+        }
+        street {
+          id
+          name
+          created_at
+        }
+        payment_method
+        assignee {
+          id
+          first_name
+          last_name
+          name
+          email
+          phone
+          birthday
+          status
+          avatar
+          created_at
+        }
+        request_of_agent {
+          id
+          first_name
+          last_name
+          name
+          email
+          phone
+          birthday
+          status
+          avatar
+          created_at
+        }
+        request_of
+        surface_min
+        surface_max
+        surface_m2
+        status
+        floor_min
+        floor_max
+        rooms_min
+        rooms_max
+        phone
+        message
+        deleted
+        documents
+        budget
+        budget_full
+        budget_type
+        request_for_properties {
+          id
+          short_id
+          title
+          description
+          category
+          city {
+            id
+            name
+            created_at
+          }
+          street {
+            id
+            name
+            created_at
+          }
+          surface
+          floor
+          number_of_floors
+          building_year
+          number_of_rooms
+          number_of_bathrooms
+          number_of_bedrooms
+          number_of_balconies
+          sell_price
+          rent_price
+          for_sale
+          for_rent
+          deleted
+          created_at
+        }
+        is_paid
+        created_at
+        updated_at
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+
+mutation UpdateRequestAssignee($input: UpdateRequestAssigneeInput!) {
+  updateRequestAssignee(input: $input) {
+    id
+    short_id
+    full_name
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    client {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      deleted
+      created_at
+    }
+    client_type
+    agents {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    type
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    payment_method
+    assignee {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    request_of_agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    request_of
+    surface_min
+    surface_max
+    surface_m2
+    status
+    floor_min
+    floor_max
+    rooms_min
+    rooms_max
+    phone
+    message
+    deleted
+    documents
+    budget
+    budget_full
+    budget_type
+    request_for_properties {
+      id
+      short_id
+      title
+      description
+      category
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      surface
+      floor
+      number_of_floors
+      building_year
+      number_of_rooms
+      number_of_bathrooms
+      number_of_bedrooms
+      number_of_balconies
+      sell_price
+      rent_price
+      for_sale
+      for_rent
+      deleted
+      created_at
+    }
+    is_paid
+    created_at
+    updated_at
+  }
+}
+
+query RequestDetails($input: GetByIdInput!) {
+  requestDetails(input: $input) {
+    id
+    short_id
+    full_name
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    client {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      deleted
+      created_at
+    }
+    client_type
+    agents {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    type
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    payment_method
+    assignee {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    request_of_agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    request_of
+    surface_min
+    surface_max
+    surface_m2
+    status
+    floor_min
+    floor_max
+    rooms_min
+    rooms_max
+    phone
+    message
+    deleted
+    documents
+    budget
+    budget_full
+    budget_type
+    request_for_properties {
+      id
+      short_id
+      title
+      description
+      category
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      surface
+      floor
+      number_of_floors
+      building_year
+      number_of_rooms
+      number_of_bathrooms
+      number_of_bedrooms
+      number_of_balconies
+      sell_price
+      rent_price
+      for_sale
+      for_rent
+      deleted
+      created_at
+    }
+    is_paid
+    created_at
+    updated_at
+  }
+}
+
+mutation RemoveRequest($input: RemoveInput!) {
+  removeRequest(input: $input)
+}

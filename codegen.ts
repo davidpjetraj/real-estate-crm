@@ -2,6 +2,7 @@ import { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   overwrite: true,
+  // schema: "http://192.168.0.102:8080/graphql",
   schema: "https://real-estate-server-ornc.onrender.com/graphql",
   documents: [
     "src/**/*.{ts,tsx,gql,graphql}",
