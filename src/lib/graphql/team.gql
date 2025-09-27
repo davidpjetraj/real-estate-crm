@@ -1,50 +1,3 @@
-query Teams($input: GetAllTeamsInput!) {
-  teams(input: $input) {
-    edges {
-      cursor
-      node {
-        id
-        first_name
-        last_name
-        name
-        email
-        phone
-        birthday
-        status
-        avatar
-        deleted
-        created_at
-      }
-    }
-    pageInfo {
-      startCursor
-      endCursor
-      hasNextPage
-      hasPreviousPage
-    }
-    search
-  }
-}
-
-mutation ChangeTeamStatus($input: ChangeTeamStatusInput!) {
-  changeTeamStatus(input: $input)
-}
-query TeamDetails($input: GetTeamByIDInput!) {
-  teamDetails(input: $input) {
-    id
-    first_name
-    last_name
-    name
-    email
-    phone
-    birthday
-    status
-    avatar
-    deleted
-    created_at
-  }
-}
-
 mutation CreateTeam($input: CreateTeamInput!) {
   createTeam(input: $input) {
     id
@@ -56,6 +9,21 @@ mutation CreateTeam($input: CreateTeamInput!) {
     birthday
     status
     avatar
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
     deleted
     created_at
   }
@@ -72,7 +40,115 @@ mutation UpdateTeam($input: UpdateTeamInput!) {
     birthday
     status
     avatar
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
     deleted
     created_at
   }
+}
+
+query TeamDetails($input: GetTeamByIDInput!) {
+  teamDetails(input: $input) {
+    id
+    first_name
+    last_name
+    name
+    email
+    phone
+    birthday
+    status
+    avatar
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+query Teams($input: GetAllTeamsInput!) {
+  teams(input: $input) {
+    edges {
+      cursor
+      node {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        avatar
+        created_at
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    search
+  }
+}
+
+query TeamDetails($input: GetTeamByIDInput!) {
+  teamDetails(input: $input) {
+    id
+    first_name
+    last_name
+    name
+    email
+    phone
+    birthday
+    status
+    avatar
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+mutation ChangeTeamStatus($input: ChangeTeamStatusInput!) {
+  changeTeamStatus(input: $input)
 }
