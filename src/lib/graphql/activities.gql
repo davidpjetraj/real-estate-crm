@@ -1,0 +1,246 @@
+query Activities($input: ActivitiesInput!) {
+  activities(input: $input) {
+    id
+    type
+    message
+    message_text
+    activity_key
+    format
+    payload
+    old_payload
+    edited
+    deleted
+    is_bot
+    created_for
+    client_id
+    user_id
+    property_id
+    request_id
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    created_at
+    updated_at
+  }
+}
+
+mutation AddComment($input: CreateActivityInput!) {
+  addComment(input: $input) {
+    id
+    type
+    message
+    message_text
+    activity_key
+    format
+    payload
+    old_payload
+    edited
+    deleted
+    is_bot
+    created_for
+    client_id
+    user_id
+    property_id
+    request_id
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    created_at
+    updated_at
+  }
+}
+
+mutation UpdateComment($input: UpdateActivityInput!) {
+  updateComment(input: $input) {
+    id
+    type
+    message
+    message_text
+    activity_key
+    format
+    payload
+    old_payload
+    edited
+    deleted
+    is_bot
+    created_for
+    client_id
+    user_id
+    property_id
+    request_id
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    created_at
+    updated_at
+  }
+}
+
+
+mutation RemoveActivity($input: RemoveActivityInput!) {
+  removeActivity(input: $input) {
+    id
+    type
+    message
+    message_text
+    activity_key
+    format
+    payload
+    old_payload
+    edited
+    deleted
+    is_bot
+    created_for
+    client_id
+    user_id
+    property_id
+    request_id
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    created_at
+    updated_at
+  }
+}
+
+
+subscription ActivityCreated($input: JoinActivitySubscriptionInput!) {
+  activityCreated(input: $input) {
+    id
+    type
+    message
+    message_text
+    activity_key
+    format
+    payload
+    old_payload
+    edited
+    deleted
+    is_bot
+    created_for
+    client_id
+    user_id
+    property_id
+    request_id
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    created_at
+    updated_at
+  }
+}
+
+subscription ActivityUpdated($input: JoinActivitySubscriptionInput!) {
+  activityUpdated(input: $input) {
+    id
+    type
+    message
+    message_text
+    activity_key
+    format
+    payload
+    old_payload
+    edited
+    deleted
+    is_bot
+    created_for
+    client_id
+    user_id
+    property_id
+    request_id
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    created_at
+    updated_at
+  }
+}
+
+subscription ActivityRemoved($input: JoinActivitySubscriptionInput!) {
+  activityRemoved(input: $input) {
+    id
+    type
+    message
+    message_text
+    activity_key
+    format
+    payload
+    old_payload
+    edited
+    deleted
+    is_bot
+    created_for
+    client_id
+    user_id
+    property_id
+    request_id
+    author {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    created_at
+    updated_at
+  }
+}

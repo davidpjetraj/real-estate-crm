@@ -69,6 +69,7 @@ export const teamColumns: TableColumn<TeamModel>[] = [
       type: "multiselect",
       options: [
         { label: "Active", value: "active" },
+        { label: "Invited", value: "invited" },
         { label: "Deactivated", value: "deactivated" },
       ],
     },
