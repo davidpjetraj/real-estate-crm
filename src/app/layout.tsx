@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import ApolloWrapper from "@/lib/graphql/ApolloWrapper";
 import { CssBaseline } from "@mui/material";
 import { CustomThemeProvider } from "@/components/ThemeSwitcher";
+import { ConfigProvider } from "@/components/ConfigProvider";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -12,7 +13,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <CustomThemeProvider>
           <CssBaseline />
-          <ApolloWrapper>{children}</ApolloWrapper>
+          <ApolloWrapper>
+            <ConfigProvider>{children}</ConfigProvider>
+          </ApolloWrapper>
         </CustomThemeProvider>
       </body>
     </html>
