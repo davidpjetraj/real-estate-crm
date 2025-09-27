@@ -1,0 +1,47 @@
+query Account {
+  account {
+    id
+    first_name
+    last_name
+    name
+    email
+    phone
+    birthday
+    status
+    avatar
+    deleted
+    created_at
+  }
+}
+
+mutation UpdatePersonalInfo($input: UpdatePersonalInfoInput!) {
+  updatePersonalInfo(input: $input) {
+    id
+    first_name
+    last_name
+    name
+    email
+    phone
+    birthday
+    status
+    avatar
+    deleted
+    created_at
+  }
+}
+
+mutation ChangeEmail($input: ChangeEmailInput!) {
+  changeEmail(input: $input) {
+    id
+    first_name
+    last_name
+    name
+    email
+    phone
+    birthday
+    status
+    avatar
+    deleted
+    created_at
+  }
+}

@@ -1,0 +1,219 @@
+query Properties($input: GetAllPropertiesInput!) {
+  properties(input: $input) {
+    edges {
+      cursor
+      node {
+        id
+        short_id
+        title
+        description
+        category
+        state {
+          id
+          name
+          created_at
+        }
+        city {
+          id
+          name
+          created_at
+        }
+        street {
+          id
+          name
+          created_at
+        }
+        surface
+        floor
+        number_of_floors
+        building_year
+        number_of_rooms
+        number_of_bathrooms
+        number_of_bedrooms
+        number_of_balconies
+        sell_price
+        rent_price
+        for_sale
+        for_rent
+        agent {
+          id
+          first_name
+          last_name
+          name
+          email
+          phone
+          birthday
+          status
+          avatar
+          created_at
+        }
+        deleted
+        created_at
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    search
+  }
+}
+
+query PropertyDetails($input: GetPropertyInput!) {
+  propertyDetails(input: $input) {
+    id
+    short_id
+    title
+    description
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    surface
+    floor
+    number_of_floors
+    building_year
+    number_of_rooms
+    number_of_bathrooms
+    number_of_bedrooms
+    number_of_balconies
+    sell_price
+    rent_price
+    for_sale
+    for_rent
+    agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+mutation CreateProperty($input: CreatePropertyInput!) {
+  createProperty(input: $input) {
+    id
+    short_id
+    title
+    description
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    surface
+    floor
+    number_of_floors
+    building_year
+    number_of_rooms
+    number_of_bathrooms
+    number_of_bedrooms
+    number_of_balconies
+    sell_price
+    rent_price
+    for_sale
+    for_rent
+    agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+mutation UpdateProperty($input: UpdatePropertyInput!) {
+  updateProperty(input: $input) {
+    id
+    short_id
+    title
+    description
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    surface
+    floor
+    number_of_floors
+    building_year
+    number_of_rooms
+    number_of_bathrooms
+    number_of_bedrooms
+    number_of_balconies
+    sell_price
+    rent_price
+    for_sale
+    for_rent
+    agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+mutation RemoveRestoreProperty($input: RemoveRestorePropertyInput!) {
+  removeRestoreProperty(input: $input)
+}

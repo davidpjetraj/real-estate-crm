@@ -1,0 +1,55 @@
+mutation CreateCity($input: CreateCityInput!) {
+  createCity(input: $input) {
+    id
+    name
+    state {
+      id
+      name
+      created_at
+    }
+    created_at
+  }
+}
+
+mutation UpdateCity($input: UpdateCityInput!) {
+  updateCity(input: $input) {
+    id
+    name
+    state {
+      id
+      name
+      created_at
+    }
+    created_at
+  }
+}
+
+query City($input: GetCityInput!) {
+  city(input: $input) {
+    id
+    name
+    state {
+      id
+      name
+      created_at
+    }
+    created_at
+  }
+}
+
+mutation DeleteCity($input: DeleteCityInput!) {
+  deleteCity(input: $input)
+}
+
+query Cities($input: GetAllCitiesInput!) {
+  cities(input: $input) {
+    id
+    name
+    state {
+      id
+      name
+      created_at
+    }
+    created_at
+  }
+}

@@ -1,0 +1,214 @@
+mutation CreateClient($input: CreateClientInput!) {
+  createClient(input: $input) {
+    id
+    first_name
+    last_name
+    name
+    email
+    phone
+    birthday
+    status
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    properties {
+      id
+      short_id
+      title
+      description
+      category
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      surface
+      floor
+      number_of_floors
+      building_year
+      number_of_rooms
+      number_of_bathrooms
+      number_of_bedrooms
+      number_of_balconies
+      sell_price
+      rent_price
+      for_sale
+      for_rent
+      deleted
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+query Clients($input: GetAllClientsInput!) {
+  clients(input: $input) {
+    edges {
+      cursor
+      node {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        deleted
+        created_at
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    search
+  }
+}
+
+mutation UpdateClient($input: UpdateClientInput!) {
+  updateClient(input: $input) {
+    id
+    first_name
+    last_name
+    name
+    email
+    phone
+    birthday
+    status
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    properties {
+      id
+      short_id
+      title
+      description
+      category
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      surface
+      floor
+      number_of_floors
+      building_year
+      number_of_rooms
+      number_of_bathrooms
+      number_of_bedrooms
+      number_of_balconies
+      sell_price
+      rent_price
+      for_sale
+      for_rent
+      deleted
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+
+query ClientDetails($input: GetClientInput!) {
+  clientDetails(input: $input) {
+    id
+    first_name
+    last_name
+    name
+    email
+    phone
+    birthday
+    status
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    properties {
+      id
+      short_id
+      title
+      description
+      category
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      surface
+      floor
+      number_of_floors
+      building_year
+      number_of_rooms
+      number_of_bathrooms
+      number_of_bedrooms
+      number_of_balconies
+      sell_price
+      rent_price
+      for_sale
+      for_rent
+      deleted
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+mutation RemoveRestoreClient($input: RemoveRestoreClientInput!) {
+  removeRestoreClient(input: $input)
+}
