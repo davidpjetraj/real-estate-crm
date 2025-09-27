@@ -1,24 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { useFormik } from "formik";
+import { useMutation, useQuery } from "@apollo/client";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import {
-  Button,
-  TextField,
-  Box,
-  CircularProgress,
-  Alert,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
+import { Button, TextField, Box, CircularProgress, Alert } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { Dialog } from "./Dialog";
-import { CreateTeamDocument } from "@/lib/graphql/generated/graphql";
+import { Select } from "@/components/Form/Select";
+import {
+  CreateTeamDocument,
+  StatesDocument,
+  CitiesDocument,
+  StreetsDocument,
+} from "@/lib/graphql/generated/graphql";
 
 interface CreateTeamMemberDialogProps {
   open: boolean;
@@ -39,16 +36,13 @@ const validationSchema = Yup.object({
   phone: Yup.string()
     .matches(/^[+]?[\d\s\-\(\)]+$/, "Invalid phone number format")
     .optional(),
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      "Password must contain at least one lowercase letter, one uppercase letter, and one number"
-    )
-    .required("Password is required"),
   birthday: Yup.date()
     .max(new Date(), "Birthday cannot be in the future")
     .optional(),
+  state_id: Yup.string().optional(),
+  city_id: Yup.string().optional(),
+  street_id: Yup.string().optional(),
+  status: Yup.string().optional(),
 });
 
 export default function CreateTeamMemberDialog({
@@ -57,57 +51,76 @@ export default function CreateTeamMemberDialog({
   onSuccess,
 }: CreateTeamMemberDialogProps) {
   const [createTeam, { loading, error }] = useMutation(CreateTeamDocument);
-  const [showPassword, setShowPassword] = useState(false);
 
-  const formik = useFormik({
-    initialValues: {
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone: "",
-      password: "",
-      birthday: null as dayjs.Dayjs | null,
-    },
-    validationSchema,
-    onSubmit: async (values) => {
-      try {
-        const { data } = await createTeam({
-          variables: {
-            input: {
-              first_name: values.first_name,
-              last_name: values.last_name,
-              email: values.email,
-              phone: values.phone || undefined,
-              password: values.password,
-              birthday: values.birthday
-                ? values.birthday.toISOString()
-                : undefined,
-            },
-          },
-        });
-
-        if (data?.createTeam) {
-          // Add the new team member to the store
-          if (onSuccess) {
-            onSuccess(data.createTeam);
-          }
-
-          // Reset form
-          formik.resetForm();
-
-          // Close dialog
-          onClose();
-        }
-      } catch (error: unknown) {
-        console.error("Create team member error:", error);
-        // Error is handled by Apollo Client and displayed via the error state
-      }
-    },
+  // Fetch states
+  const { data: statesData } = useQuery(StatesDocument, {
+    variables: { input: {} },
   });
 
+  // Fetch cities (will be filtered by selected state)
+  const { data: citiesData } = useQuery(CitiesDocument, {
+    variables: { input: {} },
+  });
+
+  // Fetch streets (will be filtered by selected city)
+  const { data: streetsData } = useQuery(StreetsDocument, {
+    variables: { input: {} },
+  });
+
+  const initialValues = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    birthday: null as dayjs.Dayjs | null,
+    state_id: "",
+    city_id: "",
+    street_id: "",
+    status: "",
+  };
+
+  const handleSubmit = async (
+    values: typeof initialValues,
+    { resetForm }: any
+  ) => {
+    try {
+      const { data } = await createTeam({
+        variables: {
+          input: {
+            first_name: values.first_name,
+            last_name: values.last_name,
+            email: values.email,
+            phone: values.phone || undefined,
+            birthday: values.birthday
+              ? values.birthday.toISOString()
+              : undefined,
+            state_id: values.state_id || undefined,
+            city_id: values.city_id || undefined,
+            street_id: values.street_id || undefined,
+            status: values.status || undefined,
+          },
+        },
+      });
+
+      if (data?.createTeam) {
+        // Add the new team member to the store
+        if (onSuccess) {
+          onSuccess(data.createTeam);
+        }
+
+        // Reset form
+        resetForm();
+
+        // Close dialog
+        onClose();
+      }
+    } catch (error: unknown) {
+      console.error("Create team member error:", error);
+      // Error is handled by Apollo Client and displayed via the error state
+    }
+  };
+
   const handleClose = () => {
-    // Reset form when closing
-    formik.resetForm();
     onClose();
   };
 
@@ -116,136 +129,171 @@ export default function CreateTeamMemberDialog({
       <Dialog open={open} setOpen={handleClose}>
         <Dialog.Title title="Add Team Member" onClose={handleClose} />
         <Dialog.Content>
-          <Box
-            component="form"
-            onSubmit={formik.handleSubmit}
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
           >
-            {error && (
-              <Alert severity="error" sx={{ mb: 2 }}>
-                {error.message}
-              </Alert>
-            )}
+            {({ values, setFieldValue, isValid, isSubmitting }) => (
+              <>
+                <Form id="team-member-form">
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                  >
+                    {error && (
+                      <Alert severity="error" sx={{ mb: 2 }}>
+                        {error.message}
+                      </Alert>
+                    )}
 
-            <TextField
-              label="First Name"
-              fullWidth
-              name="first_name"
-              value={formik.values.first_name}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.first_name && Boolean(formik.errors.first_name)
-              }
-              helperText={formik.touched.first_name && formik.errors.first_name}
-              disabled={loading}
-              required
-            />
-
-            <TextField
-              label="Last Name"
-              fullWidth
-              name="last_name"
-              value={formik.values.last_name}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.last_name && Boolean(formik.errors.last_name)
-              }
-              helperText={formik.touched.last_name && formik.errors.last_name}
-              disabled={loading}
-              required
-            />
-
-            <TextField
-              label="Email"
-              fullWidth
-              name="email"
-              type="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              disabled={loading}
-              required
-            />
-
-            <TextField
-              label="Phone"
-              fullWidth
-              name="phone"
-              value={formik.values.phone}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.phone && Boolean(formik.errors.phone)}
-              helperText={formik.touched.phone && formik.errors.phone}
-              disabled={loading}
-            />
-
-            <TextField
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              fullWidth
-              name="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-              disabled={loading}
-              required
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => setShowPassword(!showPassword)}
-                      onMouseDown={(e) => e.preventDefault()}
+                    <Field
+                      as={TextField}
+                      label="First Name"
+                      fullWidth
+                      name="first_name"
                       disabled={loading}
-                      edge="end"
-                    >
-                      {showPassword ? "👁️" : "👁️‍🗨️"}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+                      required
+                    />
 
-            <DatePicker
-              label="Birthday (Optional)"
-              value={formik.values.birthday}
-              onChange={(date) => formik.setFieldValue("birthday", date)}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  error:
-                    formik.touched.birthday && Boolean(formik.errors.birthday),
-                  helperText: formik.touched.birthday && formik.errors.birthday,
-                  disabled: loading,
-                },
-              }}
-            />
-          </Box>
+                    <Field
+                      as={TextField}
+                      label="Last Name"
+                      fullWidth
+                      name="last_name"
+                      disabled={loading}
+                      required
+                    />
+
+                    <Field
+                      as={TextField}
+                      label="Email"
+                      fullWidth
+                      name="email"
+                      type="email"
+                      disabled={loading}
+                      required
+                    />
+
+                    <Field
+                      as={TextField}
+                      label="Phone"
+                      fullWidth
+                      name="phone"
+                      disabled={loading}
+                    />
+
+                    <Select
+                      label="State"
+                      name="state_id"
+                      options={
+                        statesData?.states?.map((state: any) => ({
+                          value: state.id,
+                          label: state.name,
+                        })) || []
+                      }
+                      disabled={loading}
+                      onChange={(event: any) => {
+                        setFieldValue("state_id", event.target.value);
+                        // Reset dependent fields
+                        setFieldValue("city_id", "");
+                        setFieldValue("street_id", "");
+                      }}
+                    />
+
+                    <Select
+                      label="City"
+                      name="city_id"
+                      options={
+                        citiesData?.cities
+                          ?.filter(
+                            (city: any) => city.state?.id === values.state_id
+                          )
+                          .map((city: any) => ({
+                            value: city.id,
+                            label: city.name,
+                          })) || []
+                      }
+                      disabled={loading || !values.state_id}
+                      onChange={(event: any) => {
+                        setFieldValue("city_id", event.target.value);
+                        // Reset dependent field
+                        setFieldValue("street_id", "");
+                      }}
+                    />
+
+                    <Select
+                      label="Street"
+                      name="street_id"
+                      options={
+                        streetsData?.streets
+                          ?.filter(
+                            (street: any) => street.city?.id === values.city_id
+                          )
+                          .map((street: any) => ({
+                            value: street.id,
+                            label: street.name,
+                          })) || []
+                      }
+                      disabled={loading || !values.city_id}
+                    />
+
+                    <Select
+                      label="Status"
+                      name="status"
+                      options={[
+                        { value: "active", label: "Active" },
+                        { value: "deactivated", label: "Deactivated" },
+                        { value: "invited", label: "Invited" },
+                      ]}
+                      disabled={loading}
+                    />
+
+                    <DatePicker
+                      label="Birthday (Optional)"
+                      value={values.birthday}
+                      onChange={(date) => setFieldValue("birthday", date)}
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          disabled: loading,
+                        },
+                      }}
+                    />
+                  </Box>
+                </Form>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    gap: 1,
+                    mt: 2,
+                  }}
+                >
+                  <Button
+                    variant="outlined"
+                    onClick={handleClose}
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={isSubmitting || !isValid}
+                    form="team-member-form"
+                  >
+                    {isSubmitting ? (
+                      <CircularProgress size={24} color="inherit" />
+                    ) : (
+                      "Add Team Member"
+                    )}
+                  </Button>
+                </Box>
+              </>
+            )}
+          </Formik>
         </Dialog.Content>
-        <Dialog.Actions>
-          <div className="right">
-            <Button variant="outlined" onClick={handleClose} disabled={loading}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => formik.handleSubmit()}
-              disabled={loading || !formik.isValid}
-            >
-              {loading ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                "Add Team Member"
-              )}
-            </Button>
-          </div>
-        </Dialog.Actions>
       </Dialog>
     </LocalizationProvider>
   );

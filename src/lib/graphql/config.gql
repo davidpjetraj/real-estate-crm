@@ -1,0 +1,37 @@
+query AppConfigs {
+  appConfigs {
+    users {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    states {
+      id
+      name
+      created_at
+    }
+    cities {
+      id
+      name
+      created_at
+    }
+    streets {
+      id
+      name
+      created_at
+    }
+    version
+  }
+}
+subscription AppConfigVersionUpdated {
+  appConfigVersionUpdated {
+    version
+  }
+}
