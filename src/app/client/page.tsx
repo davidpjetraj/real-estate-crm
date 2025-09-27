@@ -1,12 +1,11 @@
-"use client";
-
 import React from "react";
-import PageLayout from "@/components/Layout/PageLayout";
+import ClientPage from "./page-content";
+import { Metadata } from "next";
 
-export default function ClientPage() {
-  return (
-    <PageLayout title="Client" showProfile={true}>
-      <p>Client management coming soon…</p>
-    </PageLayout>
-  );
+export const metadata: Metadata = {
+  title: "Clients",
+};
+
+export default function page() {
+  return <ClientPage />;
 }

@@ -1,12 +1,15 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { TeamModel, TeamsDocument } from "../src/lib/graphql/generated/graphql";
+import {
+  ClientModel,
+  ClientsDocument,
+} from "../src/lib/graphql/generated/graphql";
 import { TableColumn, TRCell, IDataStore } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
 import { Chip } from "@mui/material";
-import { Actions } from "../src/components/Team";
+import { ClientActions } from "../src/components/Client";
 
-export const teamColumns: TableColumn<TeamModel>[] = [
+export const clientColumns: TableColumn<ClientModel>[] = [
   {
     accessorFn: (row) => row,
     label: "Name",
@@ -24,7 +27,7 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     },
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
+      const info = getValue() as ClientModel;
       return <TRCell>{info?.name || "-"}</TRCell>;
     },
   },
@@ -41,7 +44,7 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     },
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
+      const info = getValue() as ClientModel;
       return <TRCell>{info?.email || "-"}</TRCell>;
     },
   },
@@ -53,7 +56,7 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     minSize: 120,
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
+      const info = getValue() as ClientModel;
       return <TRCell>{info?.phone || "-"}</TRCell>;
     },
   },
@@ -69,12 +72,12 @@ export const teamColumns: TableColumn<TeamModel>[] = [
       type: "multiselect",
       options: [
         { label: "Active", value: "active" },
-        { label: "Deactivated", value: "deactivated" },
+        { label: "Inactive", value: "inactive" },
       ],
     },
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
+      const info = getValue() as ClientModel;
       const status = info?.status || "active";
       const capitalizedStatus =
         status.charAt(0).toUpperCase() + status.slice(1);
@@ -100,7 +103,7 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     },
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
+      const info = getValue() as ClientModel;
       const date = info?.created_at
         ? new Date(info.created_at).toLocaleDateString("en-US")
         : "-";
@@ -120,7 +123,7 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     },
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
+      const info = getValue() as ClientModel;
       return <TRCell>{info?.street?.name || "-"}</TRCell>;
     },
   },
@@ -132,7 +135,7 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     minSize: 120,
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
+      const info = getValue() as ClientModel;
       return <TRCell>{info?.city?.name || "-"}</TRCell>;
     },
   },
@@ -144,7 +147,7 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     minSize: 120,
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
+      const info = getValue() as ClientModel;
       return <TRCell>{info?.state?.name || "-"}</TRCell>;
     },
   },
@@ -157,17 +160,17 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     disableHidable: true,
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
-      const teamMember = getValue() as TeamModel;
+      const client = getValue() as ClientModel;
       return (
         <TRCell>
-          <Actions teamMember={teamMember} />
+          <ClientActions client={client} />
         </TRCell>
       );
     },
   },
 ];
 
-export const simpleTeamColumns: any = teamColumns.map((column) => {
+export const simpleClientColumns: any = clientColumns.map((column) => {
   return {
     id: column.accessorKey,
     label: column.label,
@@ -176,19 +179,19 @@ export const simpleTeamColumns: any = teamColumns.map((column) => {
   };
 });
 
-export interface TeamState extends IDataStore {
+export interface ClientState extends IDataStore {
   data: any;
   loading: boolean;
   loadingMore: boolean;
   openCustomize: boolean;
   search: string;
-  teamStatus: any;
-  addItem: (item: TeamModel) => void;
+  clientStatus: any;
+  addItem: (item: ClientModel) => void;
   removeItem: (id: string) => void;
-  updateItem: (item: TeamModel) => void;
+  updateItem: (item: ClientModel) => void;
   setSearch: (payload: string) => void;
   setOpenCustomize: (open: boolean) => void;
-  changeTeamStatus: (status: any) => void;
+  changeClientStatus: (status: any) => void;
 }
 
 // Helper functions
@@ -215,10 +218,10 @@ const prepareFilters = (filters: any[]) => {
     }));
 };
 
-export const useTeam = create<TeamState>()(
+export const useClient = create<ClientState>()(
   persist(
     (set, get) => ({
-      columns: teamColumns,
+      columns: clientColumns,
       data: null,
       loading: false,
       loadingMore: false,
@@ -231,10 +234,10 @@ export const useTeam = create<TeamState>()(
       search: "",
       hasPreviousPage: false,
       openCustomize: false,
-      teamStatus: null,
+      clientStatus: null,
 
-      changeTeamStatus: (status: any) => {
-        set({ teamStatus: status });
+      changeClientStatus: (status: any) => {
+        set({ clientStatus: status });
         get().getData();
       },
 
@@ -260,22 +263,22 @@ export const useTeam = create<TeamState>()(
         const sort = get().sort;
         const filters = get().filters;
         const search = get().search;
-        const teamStatus = get().teamStatus;
+        const clientStatus = get().clientStatus;
 
         const buildFilters = prepareFilters(filters);
 
-        // Add teamStatus as a filter if it exists
-        if (teamStatus) {
+        // Add clientStatus as a filter if it exists
+        if (clientStatus) {
           buildFilters.push({
             id: "status",
             type: "multiselect",
-            multiselect: [teamStatus],
+            multiselect: [clientStatus],
           } as any);
         }
 
         try {
           const res = await apolloClient.query<any>({
-            query: TeamsDocument,
+            query: ClientsDocument,
             fetchPolicy: "no-cache",
             variables: {
               input: {
@@ -291,8 +294,8 @@ export const useTeam = create<TeamState>()(
             },
           });
 
-          const items = extractNodes(res.data.teams);
-          const pageInfo = extractPageInfo(res.data.teams);
+          const items = extractNodes(res.data.clients);
+          const pageInfo = extractPageInfo(res.data.clients);
 
           set({
             data: items,
@@ -320,17 +323,17 @@ export const useTeam = create<TeamState>()(
           hasNextPage,
           filters,
           search,
-          teamStatus,
+          clientStatus,
         } = get();
 
         const buildFilters = prepareFilters(filters);
 
-        // Add teamStatus as a filter if it exists
-        if (teamStatus) {
+        // Add clientStatus as a filter if it exists
+        if (clientStatus) {
           buildFilters.push({
             id: "status",
             type: "multiselect",
-            multiselect: [teamStatus],
+            multiselect: [clientStatus],
           } as any);
         }
 
@@ -340,7 +343,7 @@ export const useTeam = create<TeamState>()(
 
         try {
           const res = await apolloClient.query<any>({
-            query: TeamsDocument,
+            query: ClientsDocument,
             fetchPolicy: "no-cache",
             variables: {
               input: {
@@ -356,8 +359,8 @@ export const useTeam = create<TeamState>()(
             },
           });
 
-          const items = extractNodes(res.data.teams);
-          const pageInfo = extractPageInfo(res.data.teams);
+          const items = extractNodes(res.data.clients);
+          const pageInfo = extractPageInfo(res.data.clients);
 
           set({
             data: [...get().data, ...items],
@@ -479,9 +482,9 @@ export const useTeam = create<TeamState>()(
       },
     }),
     {
-      name: "team-storage",
+      name: "client-storage",
       storage: createJSONStorage(() => sessionStorage),
-      partialize: (state: TeamState) => {
+      partialize: (state: ClientState) => {
         return {
           data: state.data,
           filters: state.filters,
