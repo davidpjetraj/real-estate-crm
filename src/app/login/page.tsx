@@ -16,7 +16,7 @@ export default function PageContent() {
   const router = useRouter();
 
   return (
-    <>
+    <Container maxWidth="md">
       <h1>Welcome back!</h1>
 
       <Formik
@@ -56,53 +56,51 @@ export default function PageContent() {
       >
         {({ isSubmitting }) => (
           <Form>
-            <Container maxWidth="md">
-              <Grid container spacing={3}>
-                {error && (
-                  <Grid size={12}>
-                    <Alert severity="error">{error}</Alert>
-                  </Grid>
-                )}
+            <Grid container spacing={3}>
+              {error && (
+                <Grid size={12}>
+                  <Alert severity="error">{error}</Alert>
+                </Grid>
+              )}
 
-                <Grid size={12}>
-                  <Input name="email" type="text" label="Email" />
-                </Grid>
-                <Grid size={12}>
-                  <Input name="password" type="password" label="Password" />
-                </Grid>
-                <Grid size={12} textAlign="right">
-                  <Button
-                    type="submit"
-                    variant="text"
-                    color="primary"
-                    size="medium"
-                    component={Link}
-                    href="/forgot-password"
-                    sx={{
-                      margin: "-12px 0 ",
-                    }}
-                  >
-                    Forgot password?
-                  </Button>
-                </Grid>
-
-                <Grid size={12}>
-                  <LoadingButton
-                    type="submit"
-                    loading={isSubmitting || isPending}
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    fullWidth
-                  >
-                    Login
-                  </LoadingButton>
-                </Grid>
+              <Grid size={12}>
+                <Input name="email" type="text" label="Email" />
               </Grid>
-            </Container>
+              <Grid size={12}>
+                <Input name="password" type="password" label="Password" />
+              </Grid>
+              <Grid size={12} textAlign="right">
+                <Button
+                  type="submit"
+                  variant="text"
+                  color="primary"
+                  size="medium"
+                  component={Link}
+                  href="/forgot-password"
+                  sx={{
+                    margin: "-12px 0 ",
+                  }}
+                >
+                  Forgot password?
+                </Button>
+              </Grid>
+
+              <Grid size={12}>
+                <LoadingButton
+                  type="submit"
+                  loading={isSubmitting || isPending}
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  fullWidth
+                >
+                  Login
+                </LoadingButton>
+              </Grid>
+            </Grid>
           </Form>
         )}
       </Formik>
-    </>
+    </Container>
   );
 }

@@ -22,7 +22,7 @@ export default function PageContent() {
   const [error, setError] = React.useState<string>("");
 
   return (
-    <>
+    <Container maxWidth="md">
       <h1 className="has-paragraph">Verify your email</h1>
       <p>Enter the 4-digit code we sent you via email haben</p>
 
@@ -53,51 +53,49 @@ export default function PageContent() {
       >
         {({ isSubmitting, setFieldValue }) => (
           <Form>
-            <Container maxWidth="md">
-              <Grid container spacing={3}>
-                {error && (
-                  <Grid size={12}>
-                    <Alert severity="error">{error}</Alert>
-                  </Grid>
-                )}
+            <Grid container spacing={3}>
+              {error && (
+                <Grid size={12}>
+                  <Alert severity="error">{error}</Alert>
+                </Grid>
+              )}
 
-                <Grid size={12}>
-                  <CodeInput onChange={(code) => setFieldValue("code", code)} />
-                </Grid>
-
-                <Grid size={12}>
-                  <LoadingButton
-                    type="submit"
-                    loading={isSubmitting || isPending}
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    fullWidth
-                  >
-                    Verify
-                  </LoadingButton>
-                </Grid>
-                <Grid size={12}>
-                  <Button
-                    type="submit"
-                    variant="text"
-                    color="primary"
-                    size="large"
-                    component={Link}
-                    href="/login"
-                    fullWidth
-                    sx={{
-                      marginTop: "-8px",
-                    }}
-                  >
-                    Back
-                  </Button>
-                </Grid>
+              <Grid size={12}>
+                <CodeInput onChange={(code) => setFieldValue("code", code)} />
               </Grid>
-            </Container>
+
+              <Grid size={12}>
+                <LoadingButton
+                  type="submit"
+                  loading={isSubmitting || isPending}
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  fullWidth
+                >
+                  Verify
+                </LoadingButton>
+              </Grid>
+              <Grid size={12}>
+                <Button
+                  type="submit"
+                  variant="text"
+                  color="primary"
+                  size="large"
+                  component={Link}
+                  href="/login"
+                  fullWidth
+                  sx={{
+                    marginTop: "-8px",
+                  }}
+                >
+                  Back
+                </Button>
+              </Grid>
+            </Grid>
           </Form>
         )}
       </Formik>
-    </>
+    </Container>
   );
 }
