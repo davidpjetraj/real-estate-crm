@@ -42,7 +42,6 @@ const validationSchema = Yup.object({
   state_id: Yup.string().optional(),
   city_id: Yup.string().optional(),
   street_id: Yup.string().optional(),
-  status: Yup.string().optional(),
 });
 
 export default function CreateTeamMemberDialog({
@@ -76,7 +75,6 @@ export default function CreateTeamMemberDialog({
     state_id: "",
     city_id: "",
     street_id: "",
-    status: "",
   };
 
   const handleSubmit = async (
@@ -97,7 +95,6 @@ export default function CreateTeamMemberDialog({
             state_id: values.state_id || undefined,
             city_id: values.city_id || undefined,
             street_id: values.street_id || undefined,
-            status: values.status || undefined,
           },
         },
       });
@@ -235,17 +232,6 @@ export default function CreateTeamMemberDialog({
                           })) || []
                       }
                       disabled={loading || !values.city_id}
-                    />
-
-                    <Select
-                      label="Status"
-                      name="status"
-                      options={[
-                        { value: "active", label: "Active" },
-                        { value: "deactivated", label: "Deactivated" },
-                        { value: "invited", label: "Invited" },
-                      ]}
-                      disabled={loading}
                     />
 
                     <DatePicker

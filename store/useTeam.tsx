@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { TeamModel, TeamsDocument } from "../src/lib/graphql/generated/graphql";
+import {
+  TeamModel,
+  TeamsDocument,
+  TeamDetailsDocument,
+} from "../src/lib/graphql/generated/graphql";
 import { TableColumn, TRCell, IDataStore } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
 import { Chip } from "@mui/material";
@@ -25,7 +29,26 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
       const info = getValue() as TeamModel;
-      return <TRCell>{info?.name || "-"}</TRCell>;
+      return (
+        <TRCell
+          onClick={() => {
+            // We'll handle this in the component that renders the table
+            const event = new CustomEvent("openTeamDetails", {
+              detail: { id: info?.id },
+            });
+            window.dispatchEvent(event);
+          }}
+          sx={{
+            cursor: "pointer",
+            color: "primary.main",
+            "&:hover": {
+              textDecoration: "underline",
+            },
+          }}
+        >
+          {info?.name || "-"}
+        </TRCell>
+      );
     },
   },
   {
@@ -110,47 +133,6 @@ export const teamColumns: TableColumn<TeamModel>[] = [
   },
   {
     accessorFn: (row) => row,
-    label: "Street",
-    accessorKey: "street",
-    size: 150,
-    minSize: 150,
-    filterOptions: {
-      enabled: true,
-      quickFilter: true,
-      type: "search",
-    },
-    footer: (props) => props.column.id,
-    cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
-      return <TRCell>{info?.street?.name || "-"}</TRCell>;
-    },
-  },
-  {
-    accessorFn: (row) => row,
-    label: "City",
-    accessorKey: "city",
-    size: 120,
-    minSize: 120,
-    footer: (props) => props.column.id,
-    cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
-      return <TRCell>{info?.city?.name || "-"}</TRCell>;
-    },
-  },
-  {
-    accessorFn: (row) => row,
-    label: "State",
-    accessorKey: "state",
-    size: 120,
-    minSize: 120,
-    footer: (props) => props.column.id,
-    cell: ({ getValue }) => {
-      const info = getValue() as TeamModel;
-      return <TRCell>{info?.state?.name || "-"}</TRCell>;
-    },
-  },
-  {
-    accessorFn: (row) => row,
     label: "Actions",
     accessorKey: "actions",
     size: 120,
@@ -184,12 +166,17 @@ export interface TeamState extends IDataStore {
   openCustomize: boolean;
   search: string;
   teamStatus: any;
+  detailsModalOpen: boolean;
+  selectedTeamMemberId: string | null;
   addItem: (item: TeamModel) => void;
   removeItem: (id: string) => void;
   updateItem: (item: TeamModel) => void;
   setSearch: (payload: string) => void;
   setOpenCustomize: (open: boolean) => void;
   changeTeamStatus: (status: any) => void;
+  getTeamDetails: (id: string) => Promise<TeamModel>;
+  openDetailsModal: (id: string) => void;
+  closeDetailsModal: () => void;
 }
 
 // Helper functions
@@ -233,10 +220,38 @@ export const useTeam = create<TeamState>()(
       hasPreviousPage: false,
       openCustomize: false,
       teamStatus: null,
+      detailsModalOpen: false,
+      selectedTeamMemberId: null,
 
       changeTeamStatus: (status: any) => {
         set({ teamStatus: status });
         get().getData();
+      },
+
+      getTeamDetails: async (id: string) => {
+        try {
+          const res = await apolloClient.query<any>({
+            query: TeamDetailsDocument,
+            fetchPolicy: "no-cache",
+            variables: {
+              input: {
+                id: id,
+              },
+            },
+          });
+
+          return res.data.teamDetails;
+        } catch (error) {
+          throw new Error(`Failed to fetch team member details: ${error}`);
+        }
+      },
+
+      openDetailsModal: (id: string) => {
+        set({ detailsModalOpen: true, selectedTeamMemberId: id });
+      },
+
+      closeDetailsModal: () => {
+        set({ detailsModalOpen: false, selectedTeamMemberId: null });
       },
 
       setOpenCustomize: (open: any) => {

@@ -10,9 +10,11 @@ import {
 import { MoreIcon } from "@/components/icons/MoreIcon";
 import { PencilEditIcon } from "@/components/icons/PencilEditIcon";
 import { ErrorColorDeleteIcon } from "@/components/icons/ErrorColorDeleteIcon";
+import { EyeOpenIcon } from "@/components/icons/EyeOpen";
 import { CustomPopover, usePopover } from "@/components/shared/popover";
 import { TeamModel } from "@/lib/graphql/generated/graphql";
 import { EditTeamMemberDialog } from "@/components/Dialog";
+import TeamDetailsModal from "./TeamDetailsModal";
 import { useTeam } from "../../../store/useTeam";
 
 interface ActionsProps {
@@ -23,6 +25,7 @@ export function Actions({ teamMember }: ActionsProps) {
   const popover = usePopover();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const updateItem = useTeam((state) => state.updateItem);
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -33,6 +36,11 @@ export function Actions({ teamMember }: ActionsProps) {
   const handleClose = () => {
     setAnchorEl(null);
     popover.onClose();
+  };
+
+  const handleViewDetails = () => {
+    setIsDetailsModalOpen(true);
+    handleClose();
   };
 
   const handleEdit = () => {
@@ -48,6 +56,10 @@ export function Actions({ teamMember }: ActionsProps) {
 
   const handleCloseEditDialog = () => {
     setIsEditDialogOpen(false);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setIsDetailsModalOpen(false);
   };
 
   const handleEditSuccess = (updatedTeamMember: TeamModel) => {
@@ -83,6 +95,13 @@ export function Actions({ teamMember }: ActionsProps) {
           horizontal: "right",
         }}
       >
+        <MenuItem onClick={handleViewDetails} sx={{ minWidth: 160 }}>
+          <ListItemIcon>
+            <EyeOpenIcon width={20} height={20} />
+          </ListItemIcon>
+          <ListItemText>View Details</ListItemText>
+        </MenuItem>
+
         <MenuItem onClick={handleEdit} sx={{ minWidth: 160 }}>
           <ListItemIcon>
             <PencilEditIcon width={20} height={20} />
@@ -112,6 +131,12 @@ export function Actions({ teamMember }: ActionsProps) {
         onClose={handleCloseEditDialog}
         onSuccess={handleEditSuccess}
         teamMember={teamMember}
+      />
+
+      <TeamDetailsModal
+        open={isDetailsModalOpen}
+        onClose={handleCloseDetailsModal}
+        teamMemberId={teamMember.id}
       />
     </>
   );
