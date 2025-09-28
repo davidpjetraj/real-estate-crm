@@ -17,6 +17,7 @@ import Activity from "../Activities/Activity";
 import AddComment from "../Activities/AddComment";
 import TeamDetails from "./TeamDetails";
 import { useTeam } from "../../../store/useTeam";
+import SkeletonLoader from "../Form/Loader/SkeletonLoader";
 
 const Wrapper = styled("div")`
   border-right: 1px solid ${({ theme }) => theme.palette.divider};
@@ -96,11 +97,7 @@ const Details = () => {
   }, [id]);
 
   if (teamLoading || !isDataReady) {
-    return (
-      <div style={{ padding: "20px", textAlign: "center" }}>
-        Loading team member details...
-      </div>
-    );
+    return <SkeletonLoader />;
   }
 
   if (!teamData) {
