@@ -98,7 +98,8 @@ export function EditStreetDialog({
         filterCitiesByState(street.state.id);
       }
     }
-  }, [street, filterCitiesByState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [street]);
 
   // Filter cities when state changes
   useEffect(() => {
@@ -116,7 +117,8 @@ export function EditStreetDialog({
         formik.setFieldValue("city_id", "");
       }
     }
-  }, [formik.values.state_id, filterCitiesByState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values.state_id]);
 
   const handleClose = () => {
     formik.resetForm();
