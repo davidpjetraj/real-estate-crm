@@ -1,6 +1,6 @@
 "use client";
 import React, { useTransition } from "react";
-import { Alert, Button, Grid } from "@mui/material";
+import { Alert, Button, Container, Grid } from "@mui/material";
 import { Formik, Form } from "formik";
 import useAuth from "../../../store/useAuth";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ export default function PageContent() {
 
   return (
     <>
-      <h1>Willkommen zurück!</h1>
+      <h1>Welcome back!</h1>
 
       <Formik
         onSubmit={async (values, { setSubmitting }) => {
@@ -48,56 +48,58 @@ export default function PageContent() {
         validationSchema={yup.object({
           email: yup
             .string()
-            .required("Pflichtfeld")
-            .email("E-Mail ist ungültig")
+            .required("Required field")
+            .email("Email is invalid")
             .nullable(),
-          password: yup.string().required("Pflichtfeld").nullable(),
+          password: yup.string().required("Required field").nullable(),
         })}
       >
         {({ isSubmitting }) => (
           <Form>
-            <Grid container spacing={3}>
-              {error && (
+            <Container maxWidth="md">
+              <Grid container spacing={3}>
+                {error && (
+                  <Grid size={12}>
+                    <Alert severity="error">{error}</Alert>
+                  </Grid>
+                )}
+
                 <Grid size={12}>
-                  <Alert severity="error">{error}</Alert>
+                  <Input name="email" type="text" label="Email" />
                 </Grid>
-              )}
+                <Grid size={12}>
+                  <Input name="password" type="password" label="Password" />
+                </Grid>
+                <Grid size={12} textAlign="right">
+                  <Button
+                    type="submit"
+                    variant="text"
+                    color="primary"
+                    size="medium"
+                    component={Link}
+                    href="/forgot-password"
+                    sx={{
+                      margin: "-12px 0 ",
+                    }}
+                  >
+                    Forgot password?
+                  </Button>
+                </Grid>
 
-              <Grid size={12}>
-                <Input name="email" type="text" label="E-Mail" />
+                <Grid size={12}>
+                  <LoadingButton
+                    type="submit"
+                    loading={isSubmitting || isPending}
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    fullWidth
+                  >
+                    Login
+                  </LoadingButton>
+                </Grid>
               </Grid>
-              <Grid size={12}>
-                <Input name="password" type="password" label="Passwort" />
-              </Grid>
-              <Grid size={12} textAlign="right">
-                <Button
-                  type="submit"
-                  variant="text"
-                  color="primary"
-                  size="medium"
-                  component={Link}
-                  href="/forgot-password"
-                  sx={{
-                    margin: "-12px 0 ",
-                  }}
-                >
-                  Passwort vergessen?
-                </Button>
-              </Grid>
-
-              <Grid size={12}>
-                <LoadingButton
-                  type="submit"
-                  loading={isSubmitting || isPending}
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  fullWidth
-                >
-                  Weiter
-                </LoadingButton>
-              </Grid>
-            </Grid>
+            </Container>
           </Form>
         )}
       </Formik>
