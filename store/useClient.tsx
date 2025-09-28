@@ -7,7 +7,7 @@ import {
 import { TableColumn, TRCell, IDataStore } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
 import { Chip } from "@mui/material";
-import { ClientActions } from "../src/components/Client";
+import { Actions } from "@/components/Client";
 
 export const clientColumns: TableColumn<ClientModel>[] = [
   {
@@ -163,7 +163,7 @@ export const clientColumns: TableColumn<ClientModel>[] = [
       const client = getValue() as ClientModel;
       return (
         <TRCell>
-          <ClientActions client={client} />
+          <Actions client={client} />
         </TRCell>
       );
     },
