@@ -5,10 +5,16 @@ import {
   TeamsDocument,
   TeamDetailsDocument,
 } from "../src/lib/graphql/generated/graphql";
-import { TableColumn, TRCell, IDataStore } from "../src/components/Table";
+import {
+  TableColumn,
+  TRCell,
+  IDataStore,
+  UserCell,
+} from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
 import { Chip } from "@mui/material";
 import { Actions } from "../src/components/Team";
+import useParams from "@/hooks/useParams";
 
 export const teamColumns: TableColumn<TeamModel>[] = [
   {
@@ -27,26 +33,26 @@ export const teamColumns: TableColumn<TeamModel>[] = [
       quickSort: false,
     },
     footer: (props) => props.column.id,
+
     cell: ({ getValue }) => {
       const info = getValue() as TeamModel;
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { setParams } = useParams();
       return (
         <TRCell
-          onClick={() => {
-            // We'll handle this in the component that renders the table
-            const event = new CustomEvent("openTeamDetails", {
-              detail: { id: info?.id },
-            });
-            window.dispatchEvent(event);
-          }}
-          sx={{
+          style={{
+            display: "flex",
             cursor: "pointer",
-            color: "primary.main",
-            "&:hover": {
-              textDecoration: "underline",
-            },
+          }}
+          onClick={() => {
+            setParams({
+              type: "team",
+              tab: "details",
+              id: info.id,
+            });
           }}
         >
-          {info?.name || "-"}
+          <UserCell data={info} />
         </TRCell>
       );
     },

@@ -3,19 +3,14 @@
 import React, { useEffect, useState } from "react";
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogActions,
-  Button,
   Box,
   CircularProgress,
   Alert,
-  IconButton,
 } from "@mui/material";
-import { CloseIcon } from "@/components/icons/Close";
 import { TeamModel } from "@/lib/graphql/generated/graphql";
 import { useTeam } from "../../../store/useTeam";
-import TeamDetails from "./TeamDetails";
+import TeamDetailsWithActivities from "./TeamDetailsWithActivities";
 
 interface TeamDetailsModalProps {
   open: boolean;
@@ -69,72 +64,51 @@ export default function TeamDetailsModal({
     <Dialog
       open={open}
       onClose={handleClose}
-      maxWidth="lg"
+      maxWidth="xl"
       fullWidth
       PaperProps={{
         sx: {
-          maxHeight: "90vh",
-          height: "90vh",
+          maxHeight: "95vh",
+          height: "95vh",
+          minWidth: { xs: "100%", md: "1200px" },
+          width: { xs: "100%", md: "auto" },
+          margin: { xs: 0, md: "auto" },
         },
       }}
     >
-      <DialogTitle
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          pr: 1,
-        }}
-      >
-        Team Member Details
-        <IconButton
-          onClick={handleClose}
-          size="small"
-          sx={{
-            color: "text.secondary",
-            "&:hover": {
-              color: "text.primary",
-            },
-          }}
-        >
-          <CloseIcon width={20} height={20} />
-        </IconButton>
-      </DialogTitle>
+      <DialogContent sx={{ p: 0, overflow: "hidden", height: "100%" }}>
+        {loading && (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="400px"
+          >
+            <CircularProgress />
+          </Box>
+        )}
 
-      <DialogContent dividers sx={{ p: 0, overflow: "auto" }}>
-        <Box sx={{ p: 3 }}>
-          {loading && (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              minHeight="400px"
-            >
-              <CircularProgress />
-            </Box>
-          )}
-
-          {error && (
+        {error && (
+          <Box sx={{ p: 3 }}>
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
             </Alert>
-          )}
+          </Box>
+        )}
 
-          {!loading && !error && !teamMember && (
+        {!loading && !error && !teamMember && (
+          <Box sx={{ p: 3 }}>
             <Alert severity="info">Team member not found</Alert>
-          )}
+          </Box>
+        )}
 
-          {!loading && !error && teamMember && (
-            <TeamDetails teamMember={teamMember} />
-          )}
-        </Box>
+        {!loading && !error && teamMember && (
+          <TeamDetailsWithActivities
+            teamMember={teamMember}
+            onClose={handleClose}
+          />
+        )}
       </DialogContent>
-
-      <DialogActions sx={{ p: 2 }}>
-        <Button onClick={handleClose} variant="outlined">
-          Close
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 }

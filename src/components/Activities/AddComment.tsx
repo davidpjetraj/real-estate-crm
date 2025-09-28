@@ -135,6 +135,12 @@ export default function AddComment({
     currentTextValue: string,
     currentMentions: any
   ) => {
+    // Check if user is available
+    if (!user?.id) {
+      console.error("User not available for creating comment");
+      return;
+    }
+
     setValue({});
     setTextValue("");
     setEditorKey(Date.now());
@@ -196,19 +202,21 @@ export default function AddComment({
           client_id: created_for === ActivityCreatedFor.Client ? id : null,
           user_id: created_for === ActivityCreatedFor.User ? id : null,
           request_id: created_for === ActivityCreatedFor.Request ? id : null,
-          author: {
-            __typename: "SimpleTeamModel",
-            id: user?.id as string,
-            name: user?.name,
-            email: user?.email,
-            avatar: user?.avatar,
-            phone: user?.phone,
-            status: user?.status,
-            created_at: user?.created_at,
-            birthday: user?.birthday,
-            first_name: user?.first_name,
-            last_name: user?.last_name,
-          },
+          author: user?.id
+            ? {
+                __typename: "SimpleTeamModel",
+                id: user.id,
+                name: user.name || "",
+                email: user.email || "",
+                avatar: user.avatar || null,
+                phone: user.phone || null,
+                status: user.status,
+                created_at: user.created_at || new Date().toISOString(),
+                birthday: user.birthday || null,
+                first_name: user.first_name || "",
+                last_name: user.last_name || "",
+              }
+            : null,
         },
       },
       update(cache, { data }) {
