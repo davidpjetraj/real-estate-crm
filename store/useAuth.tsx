@@ -1,5 +1,7 @@
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
 import {
+  AccountDocument,
+  AccountQuery,
   LoginDocument,
   LoginMutation,
   VerifyLoginDocument,
@@ -13,14 +15,6 @@ import { setTokens } from "@/lib/graphql/utils";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-export interface ConfigData {
-  users: any[];
-  states: any[];
-  cities: any[];
-  streets: any[];
-  version: number;
-}
-
 type LoginInput = {
   email: string;
   password: string;
@@ -32,6 +26,14 @@ type VerifyInput = {
   code: string;
   startVerify: (token: string) => Promise<void>;
 };
+
+export interface ConfigData {
+  users: any[];
+  states: any[];
+  cities: any[];
+  streets: any[];
+  version: number;
+}
 
 interface StoreState {
   user: any;
@@ -80,12 +82,13 @@ const useAuth = create<StoreState>()(
       config_loading: false,
       config_error: undefined,
       config_subscription: null,
-
       getAccount: async ({ onCompleted }: { onCompleted?: () => void }) => {
         try {
-          // For now, just set loading to false since we don't have AccountDocument
-          // This can be implemented when the Account query is added to GraphQL schema
-          set({ loading: false });
+          const res = await apolloClient.query<AccountQuery>({
+            query: AccountDocument,
+          });
+
+          set({ user: res?.data?.account, loading: false });
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           onCompleted && onCompleted();
         } catch (error) {
@@ -93,7 +96,6 @@ const useAuth = create<StoreState>()(
           console.log(error);
         }
       },
-
       login: async (values) => {
         try {
           const res = await apolloClient.mutate<LoginMutation>({
@@ -106,51 +108,7 @@ const useAuth = create<StoreState>()(
             },
           });
           if (res.data?.login) {
-            // Automatically call verifyLogin with the token and a dummy code
-            try {
-              const verifyRes = await apolloClient.mutate<VerifyLoginMutation>({
-                mutation: VerifyLoginDocument,
-                variables: {
-                  input: {
-                    token: res.data.login,
-                  },
-                },
-              });
-
-              if (verifyRes.data?.verifyLogin) {
-                // Store the real access and refresh tokens
-                await setTokens({
-                  access_token: verifyRes.data.verifyLogin.access_token,
-                  refresh_token: verifyRes.data.verifyLogin.refresh_token,
-                });
-
-                // Set authenticated state
-                set({
-                  loading: false,
-                  isAuthenticated: true,
-                  user: { email: values.email }, // Set basic user data
-                });
-
-                // Try to fetch full user account data
-                try {
-                  await get().getAccount({});
-                } catch (accountError) {
-                  console.log(
-                    "Account fetch failed, but login succeeded:",
-                    accountError
-                  );
-                  // Keep the basic user data we set above
-                }
-
-                values.startVerify("/dashboard");
-              }
-            } catch (verifyError: any) {
-              set({
-                loading: false,
-                user: null,
-                error: verifyError?.message || "Verification failed",
-              });
-            }
+            values.startVerify(res.data?.login);
           }
         } catch (error: any) {
           set({
@@ -160,7 +118,6 @@ const useAuth = create<StoreState>()(
           });
         }
       },
-
       verify: async (values) => {
         try {
           const res = await apolloClient.mutate<VerifyLoginMutation>({
@@ -176,11 +133,26 @@ const useAuth = create<StoreState>()(
             access_token: res.data?.verifyLogin.access_token as string,
             refresh_token: res.data?.verifyLogin.refresh_token as string,
           });
+
+          set({
+            loading: false,
+            isAuthenticated: true,
+            user: { email: values.token }, // Set basic user data
+          });
+
           await get().getAccount({});
-          values.startVerify("/");
+          values.startVerify("/dashboard");
         } catch (error: any) {
           console.log(error);
+          set({
+            loading: false,
+            user: null,
+            error: error?.message || "Verification failed",
+          });
         }
+      },
+      setState: (payload) => {
+        set({ ...get(), ...payload });
       },
 
       logout: async () => {
@@ -190,9 +162,6 @@ const useAuth = create<StoreState>()(
           // Stop config subscription
           get().stopConfigSubscription();
 
-          await apolloClient.mutate<LoginMutation>({
-            mutation: LoginDocument,
-          });
           await setTokens({
             access_token: "",
             refresh_token: "",
@@ -214,16 +183,11 @@ const useAuth = create<StoreState>()(
           set({ loading: false });
         }
       },
-
       setUser: (payload) => {
         set({ user: { ...get().user, ...payload } });
       },
 
-      setState: (payload) => {
-        set({ ...get(), ...payload });
-      },
-
-      // Config methods - all in useAuth like paloka_crm
+      // Config methods
       loadConfig: async () => {
         try {
           set({ config_loading: true, config_error: undefined });
@@ -247,8 +211,6 @@ const useAuth = create<StoreState>()(
               config_version: configData.version,
               config_loading: false,
             });
-
-            console.log("Config loaded successfully:", configData);
           }
         } catch (error: any) {
           console.error("Failed to load config:", error);
@@ -268,8 +230,6 @@ const useAuth = create<StoreState>()(
             return;
           }
 
-          console.log("Starting config version subscription...");
-
           const sub = apolloClient
             .subscribe<AppConfigVersionUpdatedSubscription>({
               query: AppConfigVersionUpdatedDocument,
@@ -280,13 +240,7 @@ const useAuth = create<StoreState>()(
                   result.data?.appConfigVersionUpdated?.version;
                 const currentVersion = get().config_version;
 
-                console.log("Config version update received:", {
-                  newVersion,
-                  currentVersion,
-                });
-
                 if (newVersion && newVersion !== currentVersion) {
-                  console.log("Config version changed, reloading config...");
                   get().loadConfig();
                 }
               },
@@ -305,7 +259,6 @@ const useAuth = create<StoreState>()(
       stopConfigSubscription: () => {
         const { config_subscription } = get();
         if (config_subscription) {
-          console.log("Stopping config subscription...");
           config_subscription.unsubscribe();
           set({ config_subscription: null });
         }
@@ -313,24 +266,17 @@ const useAuth = create<StoreState>()(
 
       initData: async () => {
         try {
-          console.log("Initializing app data...");
-
           // Load config data
           await get().loadConfig();
 
           // Start config subscription
           get().startConfigSubscription();
-
-          console.log("App data initialization completed");
         } catch (error) {
           console.error("Failed to initialize app data:", error);
         }
       },
-
       setBackgroundInitData: async () => {
         try {
-          console.log("Background initializing app data...");
-
           // Load config data in background
           await get().loadConfig();
 
@@ -338,8 +284,6 @@ const useAuth = create<StoreState>()(
           if (!get().config_subscription) {
             get().startConfigSubscription();
           }
-
-          console.log("Background app data initialization completed");
         } catch (error) {
           console.error("Failed to background initialize app data:", error);
         }

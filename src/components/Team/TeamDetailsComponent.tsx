@@ -58,19 +58,16 @@ const Details = () => {
   useEffect(() => {
     const fetchTeamDetails = async () => {
       if (!id) {
-        console.log("No ID provided, clearing team data");
         setTeamData(undefined);
         setIsDataReady(false);
         return;
       }
 
-      console.log("Fetching team details for ID:", id);
       setTeamLoading(true);
       setIsDataReady(false);
 
       try {
         const result = await getTeamDetails(id);
-        console.log("Team details fetched successfully:", result);
         setTeamData(result);
         setIsDataReady(true);
       } catch (error) {

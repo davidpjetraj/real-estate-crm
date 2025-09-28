@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@alimert/zustand-sync@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@alimert/zustand-sync/-/zustand-sync-0.0.12.tgz#fc0738d6f821d0b3ebd2d11572bbe9aaf5c791aa"
+  integrity sha512-cvQZb4uzqWoG/Jo5RVlM0tedj9Y/VqIkMnGh/abgHvde2Dw/gBdbfdic/SUQemFg7/CBugSTuaghKEIhzXj0KA==
+
 "@alloc/quick-lru@^5.2.0":
   version "5.2.0"
   resolved "https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz"
@@ -6041,6 +6046,11 @@ raf@^3.1.0:
   dependencies:
     performance-now "^2.1.0"
 
+react-auth-code-input@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/react-auth-code-input/-/react-auth-code-input-3.2.1.tgz#7142fd0699e9a102b4427d22b46f12e77cbf8ba9"
+  integrity sha512-oWWKbxDLU5g46gvE1DIvNFHsDx37JSAfB6WX8luG6TWZB3iDfKMjQnhUgb+0imL/6ykGVMqdZ426tQW1uj25kg==
+
 react-colorful@^5.6.1:
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/react-colorful/-/react-colorful-5.6.1.tgz#7dc2aed2d7c72fac89694e834d179e32f3da563b"
@@ -7322,5 +7332,5 @@ zustand@^4.3.2:
 
 zustand@^5.0.8:
   version "5.0.8"
-  resolved "https://registry.npmjs.org/zustand/-/zustand-5.0.8.tgz"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-5.0.8.tgz#b998a0c088c7027a20f2709141a91cb07ac57f8a"
   integrity sha512-gyPKpIaxY9XcO2vSMrLbiER7QMAMGOQZVRdJ6Zi782jkbzZygq5GI9nG8g+sMgitRtndwaBSl7uiqC49o1SSiw==

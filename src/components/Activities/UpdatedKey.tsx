@@ -1,5 +1,6 @@
 import { ActivityModel, ActivityType } from "@/lib/graphql/generated/graphql";
 import { djs } from "../shared/utils";
+import { teamStatuses } from "../utils/constants";
 
 export default function UpdatedKey({ data }: { data: ActivityModel }) {
   const format = data.format || "";
@@ -14,64 +15,54 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
         return payload;
 
       default:
+        // If payload is an object, convert it to a string representation
+        if (typeof payload === "object" && payload !== null) {
+          return JSON.stringify(payload);
+        }
         return payload;
     }
   };
 
   if (data.type === ActivityType.Create) {
     if (data.activity_key === "create_task") {
-      return (
-        <span style={{ wordBreak: "break-word" }}>
-          hat diese Aufgabe erstellt
-        </span>
-      );
+      return <span style={{ wordBreak: "break-word" }}>created this task</span>;
     }
     if (data.activity_key === "create_member") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat diesen Mitarbeiter erstellt
+          created this team member
         </span>
       );
     }
     if (data.activity_key === "create_client") {
       return (
-        <span style={{ wordBreak: "break-word" }}>
-          hat diesen Kunden erstellt
-        </span>
+        <span style={{ wordBreak: "break-word" }}>created this client</span>
       );
     }
     if (data.activity_key === "create_object") {
       return (
-        <span style={{ wordBreak: "break-word" }}>
-          hat dieses Objekt erstellt
-        </span>
+        <span style={{ wordBreak: "break-word" }}>created this object</span>
       );
     }
     if (data.activity_key === "create_team") {
-      return (
-        <span style={{ wordBreak: "break-word" }}>
-          hat dieses Team erstellt
-        </span>
-      );
+      return <span style={{ wordBreak: "break-word" }}>created this team</span>;
     }
 
     // Fallback for unknown create activities
     return (
-      <span style={{ wordBreak: "break-word" }}>
-        hat ein neues Element erstellt
-      </span>
+      <span style={{ wordBreak: "break-word" }}>created a new element</span>
     );
   }
 
   if (data.type === ActivityType.Delete) {
-    return <span style={{ wordBreak: "break-word" }}>Aufgabe gelöscht</span>;
+    return <span style={{ wordBreak: "break-word" }}>Task deleted</span>;
   }
 
   if (data.type === ActivityType.Update) {
     if (data.activity_key === "update_member_basic_info") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Grundinformationen aktualisiert
+          updated the basic information
         </span>
       );
     }
@@ -79,42 +70,40 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_member_emergency_contacts") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Notfallkontakte aktualisiert
+          updated the emergency contacts
         </span>
       );
     }
     if (data.activity_key === "task_overdue") {
       return (
-        <span style={{ wordBreak: "break-word" }}>
-          hat die Aufgabe überfällig gemacht
-        </span>
+        <span style={{ wordBreak: "break-word" }}>made the task overdue</span>
       );
     }
 
     if (data.activity_key === "update_member_documents") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat Dokumente hochgeladen/aktualisiert
+          uploaded/updated documents
         </span>
       );
     }
 
-    // if (data.activity_key === 'change_team_status') {
-    //   const findStatus = userStatuses?.find(
-    //     status => status.value === payload?.status,
-    //   );
-    //   return (
-    //     <span style={{ wordBreak: 'break-word' }}>
-    //       hat den Mitarbeiterstatus geändert zu{' '}
-    //       <strong>&quot;{findStatus?.label || payload?.status}&quot;</strong>
-    //     </span>
-    //   );
-    // }
+    if (data.activity_key === "change_team_status") {
+      const findStatus = teamStatuses?.find(
+        (status) => status.value === payload?.status
+      );
+      return (
+        <span style={{ wordBreak: "break-word" }}>
+          changed the team member status to{" "}
+          <strong>&quot;{findStatus?.label || payload?.status}&quot;</strong>
+        </span>
+      );
+    }
 
     if (data.activity_key === "resend_invite_team") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Teameinladung erneut gesendet
+          resent the team invitation
         </span>
       );
     }
@@ -122,7 +111,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_member_location") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat den Arbeitsort aktualisiert
+          updated the work location
         </span>
       );
     }
@@ -130,7 +119,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_member_employment_details") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Beschäftigungsdetails aktualisiert
+          updated the employment details
         </span>
       );
     }
@@ -138,22 +127,20 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_member_salary_details") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Gehaltsdetails aktualisiert
+          updated the salary details
         </span>
       );
     }
     if (data.activity_key === "update_member_avatar") {
       return (
-        <span style={{ wordBreak: "break-word" }}>
-          hat den Avatar aktualisiert
-        </span>
+        <span style={{ wordBreak: "break-word" }}>updated the avatar</span>
       );
     }
 
     if (data.activity_key === "update_client_personal_info") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Grundinformationen aktualisiert
+          updated the basic information
         </span>
       );
     }
@@ -161,7 +148,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_client_contact_persons") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Kontaktpersonen aktualisiert
+          updated the contact persons
         </span>
       );
     }
@@ -173,7 +160,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
 
     //   return (
     //     <span style={{ wordBreak: "break-word" }}>
-    //       hat den Kundenstatus geändert zu{" "}
+    //       changed the client status to{" "}
     //       <strong>&quot;{findStatus?.label || payload?.status}&quot;</strong>
     //     </span>
     //   );
@@ -181,9 +168,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
 
     if (data.activity_key === "export_clients") {
       return (
-        <span style={{ wordBreak: "break-word" }}>
-          hat Kundendaten exportiert
-        </span>
+        <span style={{ wordBreak: "break-word" }}>exported client data</span>
       );
     }
 
@@ -196,7 +181,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     //   );
     //   return (
     //     <span style={{ wordBreak: "break-word" }}>
-    //       hat den Aufgabenstatus geändert zu{" "}
+    //       changed the task status to{" "}
     //       <strong>&quot;{findStatus?.label || payload?.status}&quot;</strong>
     //     </span>
     //   );
@@ -205,7 +190,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_basic_info") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Grundinformationen der Aufgabe aktualisiert
+          updated the task basic information
         </span>
       );
     }
@@ -213,7 +198,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_invoice_details") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Rechnungsdetails der Aufgabe aktualisiert
+          updated the task invoice details
         </span>
       );
     }
@@ -221,7 +206,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_deleted_state") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat den Löschstatus der Aufgabe geändert
+          changed the task deletion status
         </span>
       );
     }
@@ -229,7 +214,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_assignee") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Zuweisung der Aufgabe geändert
+          changed the task assignment
         </span>
       );
     }
@@ -237,7 +222,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_recurring_option") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Wiederholungsoptionen der Aufgabe aktualisiert
+          updated the task recurring options
         </span>
       );
     }
@@ -245,7 +230,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_client_assignment") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Kundenzuweisung der Aufgabe geändert
+          changed the task client assignment
         </span>
       );
     }
@@ -253,7 +238,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_documents") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat Dokumente der Aufgabe aktualisiert
+          updated the task documents
         </span>
       );
     }
@@ -261,7 +246,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data?.activity_key === "update_object_basic_info") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Objektinformationen aktualisiert
+          updated the object information
         </span>
       );
     }
@@ -272,8 +257,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     ) {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Kunden- und Funktionsbereich und Service Konfiguration
-          aktualisiert
+          updated the client and functional area and service configuration
         </span>
       );
     }
@@ -281,7 +265,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data?.activity_key === "update_object_access_information") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Zugangsinformationen aktualisiert
+          updated the access information
         </span>
       );
     }
@@ -289,7 +273,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data?.activity_key === "update_object_contact_persons") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat die Kontaktpersonen aktualisiert
+          updated the contact persons
         </span>
       );
     }
@@ -297,16 +281,20 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data?.activity_key === "update_object_documents") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat Dokumente hochgeladen/aktualisiert
+          uploaded/updated documents
         </span>
       );
     }
 
     if (data?.activity_key === "assign_care_taker") {
+      const careTakerName = payload?.care_taker?.name;
+      const displayName =
+        typeof careTakerName === "object" && careTakerName !== null
+          ? JSON.stringify(careTakerName)
+          : careTakerName;
       return (
         <span style={{ wordBreak: "break-word" }}>
-          hat den Betreuer geändert zu{" "}
-          <strong>&quot;{payload?.care_taker?.name}&quot;</strong>
+          changed the caretaker to <strong>&quot;{displayName}&quot;</strong>
         </span>
       );
     }
@@ -317,14 +305,14 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     //     );
     //     return (
     //       <span style={{ wordBreak: "break-word" }}>
-    //         hat den Objektstatus geändert zu{" "}
+    //         changed the object status to{" "}
     //         <strong>&quot;{findStatus?.label || payload?.type}&quot;</strong>
     //       </span>
     //     );
     //   }
 
     //   return (
-    //     <span style={{ wordBreak: "break-word" }}>Aufgabe aktualisiert</span>
+    //     <span style={{ wordBreak: "break-word" }}>Task updated</span>
     //   );
     // }
 
@@ -335,7 +323,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     return (
       <span style={{ wordBreak: "break-word" }}>
         {" "}
-        aktualisiert
+        updated
         {data.activity_key}
         zu <strong>&quot;{formattedPayload()}&quot;</strong>
       </span>

@@ -12,9 +12,9 @@ import {
   UserCell,
 } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
-import { Chip } from "@mui/material";
 import { Actions } from "../src/components/Team";
 import useParams from "@/hooks/useParams";
+import Status from "@/components/Team/Status";
 
 export const teamColumns: TableColumn<TeamModel>[] = [
   {
@@ -105,15 +105,9 @@ export const teamColumns: TableColumn<TeamModel>[] = [
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
       const info = getValue() as TeamModel;
-      const status = info?.status || "active";
-      const capitalizedStatus =
-        status.charAt(0).toUpperCase() + status.slice(1);
       return (
         <TRCell>
-          <Chip
-            label={capitalizedStatus}
-            color={status === "active" ? "success" : "error"}
-          />
+          <Status data={info} />
         </TRCell>
       );
     },

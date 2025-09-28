@@ -50,11 +50,11 @@ export default function CommentActions({
           });
         },
       });
-      toast.success("Komentar erfolgreich gelöscht");
+      toast.success("Comment successfully deleted");
     } catch (error) {
       console.log(error);
       toast.error(
-        "Ein Fehler ist beim Löschen des Kommentars aufgetreten, bitte versuchen Sie es erneut"
+        "An error occurred while deleting the comment, please try again"
       );
     }
   };
@@ -85,7 +85,7 @@ export default function CommentActions({
               popover.onClose();
             }}
           >
-            <ListItemText primary="Bearbeiten" />
+            <ListItemText primary="Edit" />
           </ListItemButton>
           <ListItemButton
             onClick={(e) => {
@@ -93,7 +93,7 @@ export default function CommentActions({
               handleRemoveComment(data?.id);
             }}
           >
-            <ListItemText primary="Löschen" color="error" />
+            <ListItemText primary="Delete" color="error" />
           </ListItemButton>
         </List>
       </CustomPopover>

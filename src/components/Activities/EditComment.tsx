@@ -207,7 +207,7 @@ export default function EditComment({
             );
             setMentions(mentions);
           }}
-          description="Kommentar hinzufügen"
+          description="Add Comment"
           editorProps={{
             handleKeyDown(view: any, event: any) {
               if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
@@ -247,7 +247,7 @@ export default function EditComment({
             color="inherit"
             onClick={() => setEditing(false)}
           >
-            Abbrechen
+            Cancel
           </LoadingButton>
           <LoadingButton
             variant="contained"
@@ -260,7 +260,7 @@ export default function EditComment({
             }}
             disabled={!canAddComment}
           >
-            Speichern
+            Save
           </LoadingButton>
         </div>
       </div>

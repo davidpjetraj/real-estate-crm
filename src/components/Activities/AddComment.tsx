@@ -284,7 +284,7 @@ export default function AddComment({
             );
             setMentions(mentions);
           }}
-          description="Kommentar hinzufügen"
+          description="Add Comment"
           editorProps={{
             handleKeyDown(view: any, event: any) {
               if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
@@ -334,7 +334,7 @@ export default function AddComment({
           }}
           disabled={!canAddComment}
         >
-          Kommentieren
+          Add Comment
         </LoadingButton>
       </div>
     </Wrapper>

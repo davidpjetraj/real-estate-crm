@@ -174,7 +174,7 @@ export default function ActivityItem({
         <div className="head">
           <div className={`left `}>
             {is_bot ? (
-              <span className="name">KI-Assistent</span>
+              <span className="name">AI Assistant</span>
             ) : (
               <span className="name">{activity?.author?.name}</span>
             )}
@@ -190,7 +190,7 @@ export default function ActivityItem({
               </span>
             </Tooltip>
             {activity?.edited && (
-              <span style={{ marginLeft: 5 }}>(aktualisiert)</span>
+              <span style={{ marginLeft: 5 }}>(updated)</span>
             )}
           </div>
           {isMyComment(activity) && (
