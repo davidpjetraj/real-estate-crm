@@ -221,3 +221,298 @@ mutation UpdateProperty($input: UpdatePropertyInput!) {
 mutation RemoveRestoreProperty($input: RemoveRestorePropertyInput!) {
   removeRestoreProperty(input: $input)
 }
+
+subscription PropertyCreated {
+  propertyCreated {
+    id
+    short_id
+    title
+    description
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    surface
+    floor
+    number_of_floors
+    building_year
+    number_of_rooms
+    number_of_bathrooms
+    number_of_bedrooms
+    number_of_balconies
+    sell_price
+    rent_price
+    for_sale
+    for_rent
+    images {
+      id
+      url
+      type
+      original_name
+      mimetype
+      order_number
+    }
+    agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+subscription PropertyUpdated($input: GetPropertyInput!) {
+  propertyUpdated(input: $input) {
+    id
+    short_id
+    title
+    description
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    surface
+    floor
+    number_of_floors
+    building_year
+    number_of_rooms
+    number_of_bathrooms
+    number_of_bedrooms
+    number_of_balconies
+    sell_price
+    rent_price
+    for_sale
+    for_rent
+    images {
+      id
+      url
+      type
+      original_name
+      mimetype
+      order_number
+    }
+    agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+subscription PropertyUpdatedList {
+  propertyUpdatedList {
+    id
+    short_id
+    title
+    description
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    surface
+    floor
+    number_of_floors
+    building_year
+    number_of_rooms
+    number_of_bathrooms
+    number_of_bedrooms
+    number_of_balconies
+    sell_price
+    rent_price
+    for_sale
+    for_rent
+    images {
+      id
+      url
+      type
+      original_name
+      mimetype
+      order_number
+    }
+    agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+subscription PropertyRemovedRestore($input: RemoveRestorePropertyInput!) {
+  propertyRemovedRestore(input: $input) {
+    id
+    short_id
+    title
+    description
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    surface
+    floor
+    number_of_floors
+    building_year
+    number_of_rooms
+    number_of_bathrooms
+    number_of_bedrooms
+    number_of_balconies
+    sell_price
+    rent_price
+    for_sale
+    for_rent
+    images {
+      id
+      url
+      type
+      original_name
+      mimetype
+      order_number
+    }
+    agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
+
+subscription PropertyRemovedRestoreList {
+  propertyRemovedRestoreList {
+    id
+    short_id
+    title
+    description
+    category
+    state {
+      id
+      name
+      created_at
+    }
+    city {
+      id
+      name
+      created_at
+    }
+    street {
+      id
+      name
+      created_at
+    }
+    surface
+    floor
+    number_of_floors
+    building_year
+    number_of_rooms
+    number_of_bathrooms
+    number_of_bedrooms
+    number_of_balconies
+    sell_price
+    rent_price
+    for_sale
+    for_rent
+    images {
+      id
+      url
+      type
+      original_name
+      mimetype
+      order_number
+    }
+    agent {
+      id
+      first_name
+      last_name
+      name
+      email
+      phone
+      birthday
+      status
+      avatar
+      created_at
+    }
+    deleted
+    created_at
+  }
+}
