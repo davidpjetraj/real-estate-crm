@@ -1,12 +1,11 @@
-"use client";
-
 import React from "react";
-import PageLayout from "@/components/Layout/PageLayout";
+import { Metadata } from "next";
+import PropertyPage from "./page-content";
 
-export default function PropertyPage() {
-  return (
-    <PageLayout title="Property" showProfile={true}>
-      <p>Property management coming soon…</p>
-    </PageLayout>
-  );
+export const metadata: Metadata = {
+  title: "Property",
+};
+
+export default function page() {
+  return <PropertyPage />;
 }

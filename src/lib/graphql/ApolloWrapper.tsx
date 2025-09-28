@@ -22,6 +22,7 @@ import {
   RefreshTokenMutation,
 } from "./generated/graphql";
 import useAuth from "../../../store/useAuth";
+import { SplashScreen } from "@/components/Loader/splash-screen";
 
 let isRefreshTokenRequestPending = false;
 const httpLink = createHttpLink({
@@ -246,7 +247,11 @@ function AuthInitializer({ children }: { children: React.ReactNode }) {
 
   // Show loading state while initializing
   if (!isInitialized) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <SplashScreen />
+      </div>
+    );
   }
 
   return <>{children}</>;
