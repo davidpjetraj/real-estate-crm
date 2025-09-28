@@ -6,7 +6,6 @@ query Properties($input: GetAllPropertiesInput!) {
         id
         short_id
         title
-        description
         category
         state {
           id
@@ -24,29 +23,10 @@ query Properties($input: GetAllPropertiesInput!) {
           created_at
         }
         surface
-        floor
-        number_of_floors
-        building_year
-        number_of_rooms
-        number_of_bathrooms
-        number_of_bedrooms
-        number_of_balconies
         sell_price
         rent_price
         for_sale
         for_rent
-        agent {
-          id
-          first_name
-          last_name
-          name
-          email
-          phone
-          birthday
-          status
-          avatar
-          created_at
-        }
         deleted
         created_at
       }
@@ -95,6 +75,14 @@ query PropertyDetails($input: GetPropertyInput!) {
     rent_price
     for_sale
     for_rent
+    images {
+      id
+      url
+      type
+      original_name
+      mimetype
+      order_number
+    }
     agent {
       id
       first_name
@@ -146,6 +134,14 @@ mutation CreateProperty($input: CreatePropertyInput!) {
     rent_price
     for_sale
     for_rent
+    images {
+      id
+      url
+      type
+      original_name
+      mimetype
+      order_number
+    }
     agent {
       id
       first_name
@@ -197,6 +193,14 @@ mutation UpdateProperty($input: UpdatePropertyInput!) {
     rent_price
     for_sale
     for_rent
+    images {
+      id
+      url
+      type
+      original_name
+      mimetype
+      order_number
+    }
     agent {
       id
       first_name

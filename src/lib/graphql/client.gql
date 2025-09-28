@@ -27,8 +27,12 @@ mutation CreateClient($input: CreateClientInput!) {
       id
       short_id
       title
-      description
       category
+      state {
+        id
+        name
+        created_at
+      }
       city {
         id
         name
@@ -40,13 +44,6 @@ mutation CreateClient($input: CreateClientInput!) {
         created_at
       }
       surface
-      floor
-      number_of_floors
-      building_year
-      number_of_rooms
-      number_of_bathrooms
-      number_of_bedrooms
-      number_of_balconies
       sell_price
       rent_price
       for_sale
@@ -115,8 +112,12 @@ mutation UpdateClient($input: UpdateClientInput!) {
       id
       short_id
       title
-      description
       category
+      state {
+        id
+        name
+        created_at
+      }
       city {
         id
         name
@@ -128,13 +129,6 @@ mutation UpdateClient($input: UpdateClientInput!) {
         created_at
       }
       surface
-      floor
-      number_of_floors
-      building_year
-      number_of_rooms
-      number_of_bathrooms
-      number_of_bedrooms
-      number_of_balconies
       sell_price
       rent_price
       for_sale
@@ -146,7 +140,6 @@ mutation UpdateClient($input: UpdateClientInput!) {
     created_at
   }
 }
-
 
 query ClientDetails($input: GetClientInput!) {
   clientDetails(input: $input) {
@@ -177,8 +170,12 @@ query ClientDetails($input: GetClientInput!) {
       id
       short_id
       title
-      description
       category
+      state {
+        id
+        name
+        created_at
+      }
       city {
         id
         name
@@ -190,13 +187,6 @@ query ClientDetails($input: GetClientInput!) {
         created_at
       }
       surface
-      floor
-      number_of_floors
-      building_year
-      number_of_rooms
-      number_of_bathrooms
-      number_of_bedrooms
-      number_of_balconies
       sell_price
       rent_price
       for_sale

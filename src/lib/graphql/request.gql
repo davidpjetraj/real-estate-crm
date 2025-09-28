@@ -102,26 +102,8 @@ mutation CreateRequest {
       id
       short_id
       title
-      description
       category
-      city {
-        id
-        name
-        created_at
-      }
-      street {
-        id
-        name
-        created_at
-      }
       surface
-      floor
-      number_of_floors
-      building_year
-      number_of_rooms
-      number_of_bathrooms
-      number_of_bedrooms
-      number_of_balconies
       sell_price
       rent_price
       for_sale
@@ -239,26 +221,8 @@ mutation UpdateRequest($input: RequestInput!) {
       id
       short_id
       title
-      description
       category
-      city {
-        id
-        name
-        created_at
-      }
-      street {
-        id
-        name
-        created_at
-      }
       surface
-      floor
-      number_of_floors
-      building_year
-      number_of_rooms
-      number_of_bathrooms
-      number_of_bedrooms
-      number_of_balconies
       sell_price
       rent_price
       for_sale
@@ -379,8 +343,12 @@ query Requests($input: GetAllRequestsInput!) {
           id
           short_id
           title
-          description
           category
+          state {
+            id
+            name
+            created_at
+          }
           city {
             id
             name
@@ -392,13 +360,6 @@ query Requests($input: GetAllRequestsInput!) {
             created_at
           }
           surface
-          floor
-          number_of_floors
-          building_year
-          number_of_rooms
-          number_of_bathrooms
-          number_of_bedrooms
-          number_of_balconies
           sell_price
           rent_price
           for_sale
@@ -524,26 +485,8 @@ mutation UpdateRequestAssignee($input: UpdateRequestAssigneeInput!) {
       id
       short_id
       title
-      description
       category
-      city {
-        id
-        name
-        created_at
-      }
-      street {
-        id
-        name
-        created_at
-      }
       surface
-      floor
-      number_of_floors
-      building_year
-      number_of_rooms
-      number_of_bathrooms
-      number_of_bedrooms
-      number_of_balconies
       sell_price
       rent_price
       for_sale
@@ -661,26 +604,8 @@ query RequestDetails($input: GetByIdInput!) {
       id
       short_id
       title
-      description
       category
-      city {
-        id
-        name
-        created_at
-      }
-      street {
-        id
-        name
-        created_at
-      }
       surface
-      floor
-      number_of_floors
-      building_year
-      number_of_rooms
-      number_of_bathrooms
-      number_of_bedrooms
-      number_of_balconies
       sell_price
       rent_price
       for_sale
