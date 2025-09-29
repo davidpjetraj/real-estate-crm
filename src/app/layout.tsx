@@ -7,6 +7,8 @@ import { CssBaseline } from "@mui/material";
 import { CustomThemeProvider } from "@/components/ThemeSwitcher";
 import { ConfigProvider } from "@/components/ConfigProvider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { ConfirmProvider } from "@/components/Confirm";
+import { Toaster } from "sonner";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -16,7 +18,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <CustomThemeProvider>
             <CssBaseline />
             <ApolloWrapper>
-              <ConfigProvider>{children}</ConfigProvider>
+              <ConfigProvider>
+                <Toaster />
+                <ConfirmProvider>{children}</ConfirmProvider>
+              </ConfigProvider>
             </ApolloWrapper>
           </CustomThemeProvider>
         </NuqsAdapter>

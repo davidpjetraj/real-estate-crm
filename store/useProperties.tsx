@@ -254,6 +254,8 @@ export interface PropertyState extends IDataStore {
   propertyStatus: any;
   detailsModalOpen: boolean;
   selectedPropertyId: string | null;
+  archived: boolean;
+  changeArchivedStatus: (archived: boolean) => void;
   addItem: (item: PropertyModel) => void;
   removeItem: (id: string) => void;
   updateItem: (item: PropertyModel) => void;
@@ -308,6 +310,11 @@ export const useProperty = create<PropertyState>()(
       propertyStatus: null,
       detailsModalOpen: false,
       selectedPropertyId: null,
+      archived: false,
+      changeArchivedStatus: (archived: boolean) => {
+        set({ archived });
+        get().getData();
+      },
 
       changePropertyStatus: (status: any) => {
         set({ propertyStatus: status });
@@ -363,6 +370,7 @@ export const useProperty = create<PropertyState>()(
         const filters = get().filters;
         const search = get().search;
         const propertyStatus = get().propertyStatus;
+        const archived = get().archived;
 
         const buildFilters = prepareFilters(filters);
 
@@ -389,6 +397,7 @@ export const useProperty = create<PropertyState>()(
                 })),
                 filters: buildFilters,
                 search: search,
+                deleted: archived,
               },
             },
           });
@@ -423,6 +432,7 @@ export const useProperty = create<PropertyState>()(
           filters,
           search,
           propertyStatus,
+          archived,
         } = get();
 
         const buildFilters = prepareFilters(filters);
@@ -454,6 +464,7 @@ export const useProperty = create<PropertyState>()(
                 })),
                 filters: buildFilters,
                 search: search,
+                deleted: archived,
               },
             },
           });
@@ -588,6 +599,7 @@ export const useProperty = create<PropertyState>()(
           data: state.data,
           filters: state.filters,
           sort: state.sort,
+          archived: state.archived,
         };
       },
     }
