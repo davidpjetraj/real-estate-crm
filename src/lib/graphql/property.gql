@@ -22,18 +22,6 @@ query Properties($input: GetAllPropertiesInput!) {
           name
           created_at
         }
-        agent {
-          id
-          first_name
-          last_name
-          name
-          email
-          phone
-          birthday
-          status
-          avatar
-          created_at
-        }
         surface
         sell_price
         rent_price
