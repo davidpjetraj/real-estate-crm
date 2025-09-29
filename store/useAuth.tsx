@@ -10,6 +10,8 @@ import {
   AppConfigsQuery,
   AppConfigVersionUpdatedDocument,
   AppConfigVersionUpdatedSubscription,
+  UnreadNotificationsDocument,
+  UnreadNotificationsModel,
 } from "@/lib/graphql/generated/graphql";
 import { setTokens } from "@/lib/graphql/utils";
 import { create } from "zustand";
@@ -45,6 +47,7 @@ interface StoreState {
   config_loading: boolean;
   config_error?: string;
   config_subscription?: any;
+  unread_notifications: number;
 
   // Auth actions
   getAccount: (payload: { onCompleted?: () => void }) => Promise<void>;
@@ -60,6 +63,7 @@ interface StoreState {
   stopConfigSubscription: () => void;
   initData: () => Promise<void>;
   setBackgroundInitData: () => Promise<void>;
+  updateNotifications: (count: number) => void;
 }
 
 const initialConfigData: ConfigData = {
@@ -82,6 +86,7 @@ const useAuth = create<StoreState>()(
       config_loading: false,
       config_error: undefined,
       config_subscription: null,
+      unread_notifications: 0,
       getAccount: async ({ onCompleted }: { onCompleted?: () => void }) => {
         try {
           const res = await apolloClient.query<AccountQuery>({
@@ -287,6 +292,24 @@ const useAuth = create<StoreState>()(
         } catch (error) {
           console.error("Failed to background initialize app data:", error);
         }
+      },
+      getUnreadNotifications: async () => {
+        try {
+          const res = await apolloClient.query<UnreadNotificationsModel>({
+            query: UnreadNotificationsDocument,
+            fetchPolicy: "no-cache",
+          });
+          set({
+            unread_notifications: res.data.unread_notification,
+          });
+        } catch (error) {
+          console.log("error", error);
+        }
+      },
+      updateNotifications: (count: number) => {
+        set({
+          unread_notifications: count,
+        });
       },
     }),
     {

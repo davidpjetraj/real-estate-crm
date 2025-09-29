@@ -1,0 +1,62 @@
+query Inbox {
+  inbox {
+    edges {
+      cursor
+      node {
+        id
+        type
+        archived
+        seen
+        is_bot
+        author {
+          id
+          first_name
+          last_name
+          name
+          email
+          phone
+          birthday
+          status
+          avatar
+          created_at
+        }
+        user {
+          id
+          first_name
+          last_name
+          name
+          email
+          phone
+          birthday
+          status
+          avatar
+          created_at
+        }
+        member_id
+        property_id
+        request_id
+        created_at
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+
+mutation ArchiveAllNotifications {
+  archiveAllNotifications
+}
+
+mutation ArchiveNotification($input: ArchiveNotificationInput!) {
+  archiveNotification(input: $input)
+}
+
+subscription UnreadNotifications {
+  unreadNotifications {
+    unread_notification
+  }
+}

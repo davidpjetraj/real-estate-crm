@@ -5,6 +5,7 @@ import React from "react";
 import AppLayout from "./AppLayout";
 import ThemeSwitcher from "../ThemeSwitcher";
 import Profile from "../Profile";
+import Inbox from "../Inbox";
 
 const Content = styled(Box)`
   flex: 1;
@@ -40,6 +41,7 @@ interface PageLayoutProps {
   showDate?: boolean;
   showProfile?: boolean;
   topBarActions?: React.ReactNode;
+  inbox?: boolean;
 }
 
 export default function PageLayout({
@@ -48,6 +50,7 @@ export default function PageLayout({
   showDate = false,
   showProfile = true,
   topBarActions,
+  inbox = false,
 }: PageLayoutProps) {
   return (
     <AppLayout>
@@ -63,6 +66,7 @@ export default function PageLayout({
             }}
           >
             <ThemeSwitcher />
+            {inbox && <Inbox />}
             {topBarActions || (showProfile && <Profile />)}
           </div>
         </TopBar>
@@ -75,6 +79,7 @@ export default function PageLayout({
             })}
           </CenterDate>
         )}
+
         {children}
       </Content>
     </AppLayout>
