@@ -18,7 +18,18 @@ import {
   StatesDocument,
   CitiesDocument,
   StreetsDocument,
+  TeamsDocument,
+  ClientsDocument,
 } from "@/lib/graphql/generated/graphql";
+
+interface FileItem {
+  id: string;
+  url: string;
+  original_name?: string;
+  size?: number;
+  type?: string;
+  mime_type?: string;
+}
 import Step2Details from "./steps/Step2Details";
 
 const Wrapper = styled("div")`
@@ -57,6 +68,8 @@ const step1Schema = Yup.object({
   state_id: Yup.string().required("State is required"),
   city_id: Yup.string().required("City is required"),
   street_id: Yup.string().optional(),
+  client_id: Yup.string().optional(),
+  agent_id: Yup.string().required("Agent is required"),
 });
 
 const step2Schema = Yup.object({
@@ -88,6 +101,7 @@ const step2Schema = Yup.object({
     .optional(),
   sell_price: Yup.number().positive("Sell price must be positive").optional(),
   rent_price: Yup.number().positive("Rent price must be positive").optional(),
+  images: Yup.array().optional(),
 });
 
 const validationSchemas = [step1Schema, step2Schema];
@@ -100,6 +114,8 @@ interface FormValues {
   state_id: string;
   city_id: string;
   street_id: string;
+  client_id: string;
+  agent_id: string;
 
   // Step 2: Property Details
   surface: number | "";
@@ -114,6 +130,7 @@ interface FormValues {
   for_sale: boolean;
   for_rent: boolean;
   published: boolean;
+  images: FileItem[];
 }
 
 const initialValues: FormValues = {
@@ -124,6 +141,8 @@ const initialValues: FormValues = {
   state_id: "",
   city_id: "",
   street_id: "",
+  client_id: "",
+  agent_id: "",
 
   // Step 2
   surface: "",
@@ -138,6 +157,7 @@ const initialValues: FormValues = {
   for_sale: false,
   for_rent: false,
   published: false,
+  images: [],
 };
 
 const steps = [
@@ -170,6 +190,15 @@ export default function CreatePropertyPage() {
   });
 
   const { data: streetsData } = useQuery(StreetsDocument, {
+    variables: { input: {} },
+  });
+
+  // Fetch team members and clients
+  const { data: teamsData } = useQuery(TeamsDocument, {
+    variables: { input: {} },
+  });
+
+  const { data: clientsData } = useQuery(ClientsDocument, {
     variables: { input: {} },
   });
 
@@ -211,6 +240,7 @@ export default function CreatePropertyPage() {
         state_id: values.state_id || undefined,
         city_id: values.city_id || undefined,
         street_id: values.street_id || undefined,
+        client_id: values.client_id || undefined,
         surface: values.surface ? Number(values.surface) : undefined,
         number_of_floors: values.number_of_floors
           ? Number(values.number_of_floors)
@@ -235,7 +265,11 @@ export default function CreatePropertyPage() {
         for_sale: values.for_sale,
         for_rent: values.for_rent,
         published: values.published,
-        agent_id: user.id, // Get from authenticated user
+        agent_id: values.agent_id, // Get from form selection
+        images:
+          values.images.length > 0
+            ? values.images.map((img) => img.url)
+            : undefined,
       };
 
       const { data } = await createProperty({
@@ -281,6 +315,8 @@ export default function CreatePropertyPage() {
                     statesData={statesData}
                     citiesData={citiesData}
                     streetsData={streetsData}
+                    teamsData={teamsData}
+                    clientsData={clientsData}
                   />
                 </FormContent>
 

@@ -10,6 +10,7 @@ import {
   Grid,
   Divider,
 } from "@mui/material";
+import MultiImageUpload from "@/components/Upload/MultiImageUpload";
 
 interface Step2Props {
   formik: FormikProps<any>;
@@ -197,8 +198,6 @@ export default function Step2Details({ formik }: Step2Props) {
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-
-        {/* Availability Options */}
         <Typography variant="h6">Availability</Typography>
 
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -247,6 +246,16 @@ export default function Step2Details({ formik }: Step2Props) {
             label="Publish Property"
           />
         </Box>
+
+        {/* Images */}
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Property Images
+        </Typography>
+        <MultiImageUpload formik={formik} name="images" endpoint="medias" />
+
+        <Divider sx={{ my: 2 }} />
+
+        {/* Availability Options */}
       </Box>
     </Box>
   );

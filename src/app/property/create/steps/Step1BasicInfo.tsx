@@ -18,6 +18,8 @@ interface Step1Props {
   statesData?: any;
   citiesData?: any;
   streetsData?: any;
+  teamsData?: any;
+  clientsData?: any;
 }
 
 const propertyCategories = [
@@ -32,6 +34,8 @@ export default function Step1BasicInfo({
   statesData,
   citiesData,
   streetsData,
+  teamsData,
+  clientsData,
 }: Step1Props) {
   return (
     <Box sx={{ maxWidth: 600, mx: "auto" }}>
@@ -142,6 +146,40 @@ export default function Step1BasicInfo({
               })) || []
           }
           disabled={!formik.values.city_id}
+        />
+
+        <Typography variant="h6" sx={{ mt: 3, mb: 1 }}>
+          Assignment
+        </Typography>
+
+        <Select
+          label="Agent"
+          name="agent_id"
+          options={
+            teamsData?.teams?.edges
+              ?.map((edge: any) => edge.node)
+              .filter((member: any) => !member.deleted)
+              .map((member: any) => ({
+                value: member.id,
+                label:
+                  member.name || `${member.first_name} ${member.last_name}`,
+              })) || []
+          }
+        />
+
+        <Select
+          label="Client (Optional)"
+          name="client_id"
+          options={
+            clientsData?.clients?.edges
+              ?.map((edge: any) => edge.node)
+              .filter((client: any) => !client.deleted)
+              .map((client: any) => ({
+                value: client.id,
+                label:
+                  client.name || `${client.first_name} ${client.last_name}`,
+              })) || []
+          }
         />
       </Box>
     </Box>
