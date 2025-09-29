@@ -7,7 +7,7 @@ import {
 } from "../src/lib/graphql/generated/graphql";
 import { TableColumn, TRCell, IDataStore, Chip } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
-// import { Actions } from "../src/components/Property";
+import { Actions } from "../src/components/Property/Actions";
 
 export const propertyColumns: TableColumn<PropertyModel>[] = [
   {
@@ -73,7 +73,11 @@ export const propertyColumns: TableColumn<PropertyModel>[] = [
     },
     cell: ({ getValue }) => {
       const info = getValue() as PropertyModel;
-      return <TRCell>{info.category}</TRCell>;
+      return (
+        <TRCell>
+          {info.category.charAt(0).toUpperCase() + info.category.slice(1)}
+        </TRCell>
+      );
     },
   },
   {
@@ -219,11 +223,11 @@ export const propertyColumns: TableColumn<PropertyModel>[] = [
     minSize: 100,
     disableHidable: true,
     footer: (props) => props.column.id,
-    cell: () => {
+    cell: ({ getValue }) => {
+      const property = getValue() as PropertyModel;
       return (
         <TRCell>
-          {/* <Actions property={property} /> */}
-          {""}
+          <Actions property={property} />
         </TRCell>
       );
     },
