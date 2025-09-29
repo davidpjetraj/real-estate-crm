@@ -24,7 +24,7 @@ export default function PageContent() {
   return (
     <Container maxWidth="md">
       <h1 className="has-paragraph">Verify your email</h1>
-      <p>Enter the 4-digit code we sent you via email haben</p>
+      <p>Enter the 4-digit code we sent you via email</p>
 
       <Formik
         onSubmit={async (values, { setSubmitting }) => {

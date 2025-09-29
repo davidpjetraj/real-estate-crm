@@ -5,12 +5,7 @@ import {
   PropertyDetailsDocument,
   PropertiesDocument,
 } from "../src/lib/graphql/generated/graphql";
-import {
-  TableColumn,
-  TRCell,
-  IDataStore,
-  UserCell,
-} from "../src/components/Table";
+import { TableColumn, TRCell, IDataStore } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
 // import { Actions } from "../src/components/Property";
 
@@ -42,11 +37,12 @@ export const propertyColumns: TableColumn<PropertyModel>[] = [
             cursor: "pointer",
           }}
         >
-          <UserCell data={info} />
+          {info.title}
         </TRCell>
       );
     },
   },
+
   {
     accessorFn: (row) => row,
     label: "Actions",

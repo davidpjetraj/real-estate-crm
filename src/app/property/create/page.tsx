@@ -6,9 +6,10 @@ import * as Yup from "yup";
 import { useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { styled } from "@mui/material";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Sidebar from "../components/Sidebar";
+import useAuth from "../../../../store/useAuth";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Sidebar from "./components/Sidebar";
 import Step1BasicInfo from "./steps/Step1BasicInfo";
 
 import {
@@ -60,7 +61,6 @@ const step1Schema = Yup.object({
 
 const step2Schema = Yup.object({
   surface: Yup.number().positive("Surface must be positive").optional(),
-  floor: Yup.number().integer("Floor must be an integer").optional(),
   number_of_floors: Yup.number()
     .integer("Number of floors must be an integer")
     .positive("Number of floors must be positive")
@@ -103,7 +103,6 @@ interface FormValues {
 
   // Step 2: Property Details
   surface: number | "";
-  floor: number | "";
   number_of_floors: number | "";
   building_year: number | "";
   number_of_rooms: number | "";
@@ -128,7 +127,6 @@ const initialValues: FormValues = {
 
   // Step 2
   surface: "",
-  floor: "",
   number_of_floors: "",
   building_year: "",
   number_of_rooms: "",
@@ -158,6 +156,7 @@ const steps = [
 export default function CreatePropertyPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const router = useRouter();
+  const { user } = useAuth((state) => state);
 
   const [createProperty] = useMutation(CreatePropertyDocument);
 
@@ -198,6 +197,13 @@ export default function CreatePropertyPage() {
 
     // Final submission
     try {
+      // Check if user is authenticated and has an ID
+      if (!user?.id) {
+        console.error("User not authenticated or missing ID");
+        router.push("/login");
+        return;
+      }
+
       const input = {
         title: values.title,
         description: values.description,
@@ -206,7 +212,6 @@ export default function CreatePropertyPage() {
         city_id: values.city_id || undefined,
         street_id: values.street_id || undefined,
         surface: values.surface ? Number(values.surface) : undefined,
-        floor: values.floor ? Number(values.floor) : undefined,
         number_of_floors: values.number_of_floors
           ? Number(values.number_of_floors)
           : undefined,
@@ -230,7 +235,7 @@ export default function CreatePropertyPage() {
         for_sale: values.for_sale,
         for_rent: values.for_rent,
         published: values.published,
-        agent_id: "current-user-id", // TODO: Get from auth context
+        agent_id: user.id, // Get from authenticated user
       };
 
       const { data } = await createProperty({
@@ -242,6 +247,7 @@ export default function CreatePropertyPage() {
       }
     } catch (error) {
       console.error("Error creating property:", error);
+      // TODO: Show user-friendly error message
     }
   };
 

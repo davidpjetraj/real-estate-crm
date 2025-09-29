@@ -47,20 +47,6 @@ export default function Step2Details({ formik }: Step2Props) {
 
           <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
-              label="Floor"
-              name="floor"
-              type="number"
-              value={formik.values.floor}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.floor && Boolean(formik.errors.floor)}
-              fullWidth
-              inputProps={{ step: 1 }}
-            />
-          </Grid>
-
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField
               label="Number of Floors"
               name="number_of_floors"
               type="number"

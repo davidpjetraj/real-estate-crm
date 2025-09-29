@@ -41,6 +41,7 @@ export default function Footer({
   onCancel,
   rightActions,
   createLabel,
+  isSubmitting = false,
 }: {
   formik: FormikProps<any>;
   editPage?: boolean;
@@ -52,6 +53,7 @@ export default function Footer({
   onCancel: () => void;
   rightActions?: React.ReactNode;
   createLabel?: string;
+  isSubmitting?: boolean;
 }) {
   const getSubmitButtonLabel = () => {
     if (isLastStep) {
@@ -98,7 +100,7 @@ export default function Footer({
                 },
               }}
               onClick={onContinue}
-              disabled={formik.isSubmitting}
+              disabled={formik.isSubmitting || isSubmitting}
               endIcon={<ArrowRightIcon width={20} height={20} />}
             >
               {getSubmitButtonLabel()}
