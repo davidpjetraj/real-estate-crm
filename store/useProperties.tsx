@@ -178,7 +178,7 @@ export const propertyColumns: TableColumn<PropertyModel>[] = [
     filterOptions: {
       enabled: true,
       quickFilter: true,
-      type: "search",
+      type: "multiselect",
     },
     cell: ({ getValue }) => {
       const info = getValue() as PropertyModel;

@@ -262,7 +262,7 @@ export default function Inbox() {
                       setActiveTab("inbox");
                     }}
                   >
-                    <span>Benachrichtigungen</span>
+                    <span>Notifications</span>
                   </div>
                   <div
                     className={classNames({
@@ -273,7 +273,7 @@ export default function Inbox() {
                       setActiveTab("archived");
                     }}
                   >
-                    <span>Archiviert</span>
+                    <span>Archived</span>
                   </div>
                 </div>
               </div>

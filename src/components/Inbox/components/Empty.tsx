@@ -32,7 +32,7 @@ export default function Empty() {
       <div className="icon">
         <InboxDMIcon />
       </div>
-      <p>Keine Benachrichtigungen</p>
+      <p>No messages</p>
     </Wrapper>
   );
 }

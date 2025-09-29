@@ -327,13 +327,6 @@ export default function Sidebar() {
                 <span>Request</span>
               </Item>
               <Item
-                href="/builder"
-                icon={<DomainAddOutlinedIcon />}
-                includes="builder"
-              >
-                <span>Builder</span>
-              </Item>
-              <Item
                 href="/client"
                 icon={<PeopleAltOutlinedIcon />}
                 includes="client"

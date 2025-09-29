@@ -151,8 +151,8 @@ export default function InboxItem({
 
   const tooltipText = useMemo(() => {
     return isValid
-      ? "Klicken Sie hier, um Details anzuzeigen"
-      : "Die Benachrichtigung wurde gelöscht";
+      ? "Click here to view details"
+      : "The notification was deleted";
   }, [isValid]);
 
   const handleClick = useCallback(() => {
