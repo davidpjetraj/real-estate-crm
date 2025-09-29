@@ -47,15 +47,46 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "create_team") {
       return <span style={{ wordBreak: "break-word" }}>created this team</span>;
     }
+    if (data.activity_key === "create_property") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>created this property</span>
+      );
+    }
+    if (data.activity_key === "create_request") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>created this request</span>
+      );
+    }
 
     // Fallback for unknown create activities
-    return (
-      <span style={{ wordBreak: "break-word" }}>created a new property</span>
-    );
+    return <span style={{ wordBreak: "break-word" }}>created a new item</span>;
   }
 
   if (data.type === ActivityType.Delete) {
-    return <span style={{ wordBreak: "break-word" }}>Property deleted</span>;
+    if (data.activity_key === "delete_property") {
+      return <span style={{ wordBreak: "break-word" }}>Property deleted</span>;
+    }
+    if (data.activity_key === "delete_client") {
+      return <span style={{ wordBreak: "break-word" }}>Client deleted</span>;
+    }
+    if (data.activity_key === "delete_request") {
+      return <span style={{ wordBreak: "break-word" }}>Request deleted</span>;
+    }
+
+    // Fallback for unknown delete activities
+    return <span style={{ wordBreak: "break-word" }}>Item deleted</span>;
+  }
+
+  if (data.type === ActivityType.Restore) {
+    if (data.activity_key === "restore_property") {
+      return <span style={{ wordBreak: "break-word" }}>Property restored</span>;
+    }
+    if (data.activity_key === "restore_client") {
+      return <span style={{ wordBreak: "break-word" }}>Client restored</span>;
+    }
+
+    // Fallback for unknown restore activities
+    return <span style={{ wordBreak: "break-word" }}>Item restored</span>;
   }
 
   if (data.type === ActivityType.Update) {
@@ -145,6 +176,74 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
       return (
         <span style={{ wordBreak: "break-word" }}>
           updated the client basic information
+        </span>
+      );
+    }
+
+    if (data.activity_key === "update_personal_info") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>
+          updated personal information
+        </span>
+      );
+    }
+
+    if (data.activity_key === "change_email") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>changed email address</span>
+      );
+    }
+
+    if (data.activity_key === "update_client") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>
+          updated client information
+        </span>
+      );
+    }
+
+    if (data.activity_key === "update_property") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>
+          updated property information
+        </span>
+      );
+    }
+
+    if (data.activity_key === "change_property_status") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>changed property status</span>
+      );
+    }
+
+    if (data.activity_key === "export_properties") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>
+          exported properties data
+        </span>
+      );
+    }
+
+    if (data.activity_key === "update_request") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>
+          updated request information
+        </span>
+      );
+    }
+
+    if (data.activity_key === "update_request_assignee") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>
+          changed request assignment
+        </span>
+      );
+    }
+
+    if (data.activity_key === "update_team") {
+      return (
+        <span style={{ wordBreak: "break-word" }}>
+          updated team information
         </span>
       );
     }

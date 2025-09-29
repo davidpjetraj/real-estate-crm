@@ -21,10 +21,34 @@ export default function Description({ data }: { data: NotificationModel }) {
     case NotificationType.RequestAssignedToUser:
     case NotificationType.RequestStatusUpdated:
     case NotificationType.StatusUpdates:
+    case NotificationType.PropertyRemoved:
+    case NotificationType.PropertyRestored:
+    case NotificationType.RequestRemoved:
+    case NotificationType.ClientRemoved:
+    case NotificationType.ClientRestored:
+    case NotificationType.NewClient:
       return <CommentsOnRequests />;
+
+    case NotificationType.PropertyRemoved:
+      return <PropertyRemoved />;
+
+    case NotificationType.PropertyRestored:
+      return <PropertyRestored />;
+
+    case NotificationType.RequestRemoved:
+      return <RequestRemoved />;
 
     case NotificationType.PropertyStatusUpdated:
       return <DueDateChanged />;
+
+    case NotificationType.ClientRemoved:
+      return <ClientRemoved />;
+
+    case NotificationType.ClientRestored:
+      return <ClientRestored />;
+
+    case NotificationType.NewClient:
+      return <NewClient />;
 
     case NotificationType.MentionedInComment:
       return <MentionedInComment />;
@@ -105,4 +129,28 @@ const NewMessage = ({ data }: { data: NotificationModel }) => {
 
 const RequestOverdue = () => {
   return <>Request overdue</>;
+};
+
+const PropertyRemoved = () => {
+  return <>Property removed</>;
+};
+
+const PropertyRestored = () => {
+  return <>Property restored</>;
+};
+
+const RequestRemoved = () => {
+  return <>Request removed</>;
+};
+
+const ClientRemoved = () => {
+  return <>Client removed</>;
+};
+
+const ClientRestored = () => {
+  return <>Client restored</>;
+};
+
+const NewClient = () => {
+  return <>New client</>;
 };

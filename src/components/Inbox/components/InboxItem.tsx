@@ -119,6 +119,12 @@ const getNotificationParams = (data: NotificationModel) => {
     case NotificationType.RequestAssignedToUser:
     case NotificationType.RequestStatusUpdated:
     case NotificationType.StatusUpdates:
+    case NotificationType.PropertyRemoved:
+    case NotificationType.PropertyRestored:
+    case NotificationType.RequestRemoved:
+    case NotificationType.ClientRemoved:
+    case NotificationType.ClientRestored:
+    case NotificationType.NewClient:
       return {
         type: "properties",
         tab: "details",
