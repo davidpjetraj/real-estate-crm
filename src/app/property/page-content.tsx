@@ -8,7 +8,7 @@ import { PlusIcon } from "@/components/icons/PlusIcon";
 import { useProperty, propertyColumns } from "../../../store/useProperties";
 import { useRouter } from "next/navigation";
 // import { CreateTeamMemberDialog } from "@/components/Dialog";
-// import PropertyDetailsComponent from "@/components/Property/PropertyDetailsComponent";
+import PropertyDetailsComponent from "@/components/Property/PropertyDetailsComponent";
 
 export default function PropertyPage() {
   const router = useRouter();
@@ -52,6 +52,9 @@ export default function PropertyPage() {
         onClose={handleCloseCreateDialog}
         onSuccess={addItem}
       /> */}
+
+      {/* Property Details Component */}
+      <PropertyDetailsComponent />
     </PageLayout>
   );
 }

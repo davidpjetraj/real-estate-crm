@@ -3,7 +3,7 @@ import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import useLockBody from "./useLockBody";
 
-export type ParamsType = "team" | "client";
+export type ParamsType = "team" | "client" | "property";
 
 export type SetParams = {
   type: ParamsType;

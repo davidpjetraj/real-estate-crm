@@ -50,19 +50,19 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
 
     // Fallback for unknown create activities
     return (
-      <span style={{ wordBreak: "break-word" }}>created a new element</span>
+      <span style={{ wordBreak: "break-word" }}>created a new property</span>
     );
   }
 
   if (data.type === ActivityType.Delete) {
-    return <span style={{ wordBreak: "break-word" }}>Task deleted</span>;
+    return <span style={{ wordBreak: "break-word" }}>Property deleted</span>;
   }
 
   if (data.type === ActivityType.Update) {
     if (data.activity_key === "update_member_basic_info") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the basic information
+          updated the property information
         </span>
       );
     }
@@ -70,20 +70,22 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_member_emergency_contacts") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the emergency contacts
+          updated the property emergency contacts
         </span>
       );
     }
     if (data.activity_key === "task_overdue") {
       return (
-        <span style={{ wordBreak: "break-word" }}>made the task overdue</span>
+        <span style={{ wordBreak: "break-word" }}>
+          made the property overdue
+        </span>
       );
     }
 
     if (data.activity_key === "update_member_documents") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          uploaded/updated documents
+          uploaded/updated property documents
         </span>
       );
     }
@@ -103,7 +105,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "resend_invite_team") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          resent the team invitation
+          resent the team member invitation
         </span>
       );
     }
@@ -111,7 +113,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_member_location") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the work location
+          updated the team member work location
         </span>
       );
     }
@@ -119,7 +121,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_member_employment_details") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the employment details
+          updated the team member employment details
         </span>
       );
     }
@@ -127,20 +129,22 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_member_salary_details") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the salary details
+          updated the team member salary details
         </span>
       );
     }
     if (data.activity_key === "update_member_avatar") {
       return (
-        <span style={{ wordBreak: "break-word" }}>updated the avatar</span>
+        <span style={{ wordBreak: "break-word" }}>
+          updated the team member avatar
+        </span>
       );
     }
 
     if (data.activity_key === "update_client_personal_info") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the basic information
+          updated the client basic information
         </span>
       );
     }
@@ -148,7 +152,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_client_contact_persons") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the contact persons
+          updated the client contact persons
         </span>
       );
     }
@@ -198,7 +202,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_invoice_details") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the task invoice details
+          updated the property invoice details
         </span>
       );
     }
@@ -206,7 +210,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_deleted_state") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          changed the task deletion status
+          changed the property deletion status
         </span>
       );
     }
@@ -214,7 +218,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_assignee") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          changed the task assignment
+          changed the property assignment
         </span>
       );
     }
@@ -222,7 +226,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_recurring_option") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the task recurring options
+          updated the property recurring options
         </span>
       );
     }
@@ -230,7 +234,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_client_assignment") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          changed the task client assignment
+          changed the property client assignment
         </span>
       );
     }
@@ -238,7 +242,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data.activity_key === "update_task_documents") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the task documents
+          updated the property documents
         </span>
       );
     }
@@ -246,7 +250,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data?.activity_key === "update_object_basic_info") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the object information
+          updated the property information
         </span>
       );
     }
@@ -257,7 +261,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     ) {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the client and functional area and service configuration
+          updated the property and functional area and service configuration
         </span>
       );
     }
@@ -265,7 +269,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data?.activity_key === "update_object_access_information") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the access information
+          updated the property access information
         </span>
       );
     }
@@ -273,7 +277,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data?.activity_key === "update_object_contact_persons") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          updated the contact persons
+          updated the property contact persons
         </span>
       );
     }
@@ -281,7 +285,7 @@ export default function UpdatedKey({ data }: { data: ActivityModel }) {
     if (data?.activity_key === "update_object_documents") {
       return (
         <span style={{ wordBreak: "break-word" }}>
-          uploaded/updated documents
+          uploaded/updated property documents
         </span>
       );
     }

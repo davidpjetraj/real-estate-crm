@@ -8,6 +8,7 @@ import {
 import { TableColumn, TRCell, IDataStore, Chip } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
 import { Actions } from "../src/components/Property/Actions";
+import useParams from "@/hooks/useParams";
 
 export const propertyColumns: TableColumn<PropertyModel>[] = [
   {
@@ -49,8 +50,19 @@ export const propertyColumns: TableColumn<PropertyModel>[] = [
     footer: (props) => props.column.id,
     cell: ({ getValue }) => {
       const info = getValue() as PropertyModel;
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { setParams } = useParams();
       return (
-        <TRCell style={{ display: "flex", cursor: "pointer" }}>
+        <TRCell
+          style={{ display: "flex", cursor: "pointer" }}
+          onClick={() => {
+            setParams({
+              type: "property",
+              tab: "details",
+              id: info.id,
+            });
+          }}
+        >
           {info.title}
         </TRCell>
       );

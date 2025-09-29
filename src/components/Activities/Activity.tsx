@@ -177,10 +177,6 @@ export default function Activity({
     }
   }, [loading]);
 
-  if (loading) {
-    return null;
-  }
-
   return (
     <div style={{ position: "relative" }}>
       <Scrollbars
@@ -192,16 +188,47 @@ export default function Activity({
         }}
       >
         <ActivitiesWrapper>
-          {data?.activities?.map((activity, index) => {
-            return (
+          {loading ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "200px",
+                color: "#666",
+                fontSize: "14px",
+              }}
+            >
+              Loading activities...
+            </div>
+          ) : data?.activities && data.activities.length > 0 ? (
+            data.activities.map((activity, index) => (
               <ActivityItem
                 activity={activity as ActivityModel}
                 key={activity?.id}
                 created_for_id={id}
                 index={index}
               />
-            );
-          })}
+            ))
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "200px",
+                color: "#666",
+                fontSize: "14px",
+                textAlign: "center",
+              }}
+            >
+              <div>No activities yet</div>
+              <div style={{ fontSize: "12px", marginTop: "8px", opacity: 0.8 }}>
+                Add a comment below to start the conversation
+              </div>
+            </div>
+          )}
         </ActivitiesWrapper>
       </Scrollbars>
     </div>
