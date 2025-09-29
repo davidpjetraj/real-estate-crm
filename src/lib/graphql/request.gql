@@ -103,6 +103,33 @@ mutation CreateRequest {
       short_id
       title
       category
+      state {
+        id
+        name
+        created_at
+      }
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      agent {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        avatar
+        created_at
+      }
       surface
       sell_price
       rent_price
@@ -222,6 +249,33 @@ mutation UpdateRequest($input: RequestInput!) {
       short_id
       title
       category
+      state {
+        id
+        name
+        created_at
+      }
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      agent {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        avatar
+        created_at
+      }
       surface
       sell_price
       rent_price
@@ -486,6 +540,33 @@ mutation UpdateRequestAssignee($input: UpdateRequestAssigneeInput!) {
       short_id
       title
       category
+      state {
+        id
+        name
+        created_at
+      }
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      agent {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        avatar
+        created_at
+      }
       surface
       sell_price
       rent_price
@@ -605,6 +686,33 @@ query RequestDetails($input: GetByIdInput!) {
       short_id
       title
       category
+      state {
+        id
+        name
+        created_at
+      }
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      agent {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        avatar
+        created_at
+      }
       surface
       sell_price
       rent_price
@@ -728,6 +836,33 @@ subscription RequestCreated {
       short_id
       title
       category
+      state {
+        id
+        name
+        created_at
+      }
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      agent {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        avatar
+        created_at
+      }
       surface
       sell_price
       rent_price
@@ -847,6 +982,33 @@ subscription RequestUpdated($input: GetByIdInput!) {
       short_id
       title
       category
+      state {
+        id
+        name
+        created_at
+      }
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      agent {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        avatar
+        created_at
+      }
       surface
       sell_price
       rent_price
@@ -966,6 +1128,33 @@ subscription RequestUpdatedList {
       short_id
       title
       category
+      state {
+        id
+        name
+        created_at
+      }
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      agent {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        avatar
+        created_at
+      }
       surface
       sell_price
       rent_price
@@ -1085,6 +1274,33 @@ subscription RequestRemoved($input: GetByIdInput!) {
       short_id
       title
       category
+      state {
+        id
+        name
+        created_at
+      }
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      agent {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        avatar
+        created_at
+      }
       surface
       sell_price
       rent_price
@@ -1204,6 +1420,33 @@ subscription RequestRemovedList {
       short_id
       title
       category
+      state {
+        id
+        name
+        created_at
+      }
+      city {
+        id
+        name
+        created_at
+      }
+      street {
+        id
+        name
+        created_at
+      }
+      agent {
+        id
+        first_name
+        last_name
+        name
+        email
+        phone
+        birthday
+        status
+        avatar
+        created_at
+      }
       surface
       sell_price
       rent_price
