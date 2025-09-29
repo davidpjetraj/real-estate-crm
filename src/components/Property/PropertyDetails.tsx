@@ -17,6 +17,7 @@ import SquareFootIcon from "@mui/icons-material/SquareFoot";
 import EuroIcon from "@mui/icons-material/Euro";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import BusinessIcon from "@mui/icons-material/Business";
+import Status from "./Status";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(2),
@@ -177,6 +178,15 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
               <Typography variant="body2" color="text.secondary">
                 {new Date(property.created_at).toLocaleDateString()}
               </Typography>
+            </Box>
+          </DetailItem>
+
+          <DetailItem>
+            <Box>
+              <Typography variant="body2" fontWeight="medium" sx={{ mb: 1 }}>
+                Status
+              </Typography>
+              <Status data={property} />
             </Box>
           </DetailItem>
         </CardContent>

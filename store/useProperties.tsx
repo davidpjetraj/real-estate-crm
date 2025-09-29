@@ -5,10 +5,11 @@ import {
   PropertyDetailsDocument,
   PropertiesDocument,
 } from "../src/lib/graphql/generated/graphql";
-import { TableColumn, TRCell, IDataStore, Chip } from "../src/components/Table";
+import { TableColumn, TRCell, IDataStore } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
 import { Actions } from "../src/components/Property/Actions";
 import useParams from "@/hooks/useParams";
+import Status from "@/components/Property/Status";
 
 export const propertyColumns: TableColumn<PropertyModel>[] = [
   {
@@ -181,21 +182,10 @@ export const propertyColumns: TableColumn<PropertyModel>[] = [
     },
     cell: ({ getValue }) => {
       const info = getValue() as PropertyModel;
-      const getStatusInfo = () => {
-        if (info.deleted) return { text: "Deleted", color: "#f44336" };
-        if (!info.for_sale && !info.for_rent)
-          return { text: "Inactive", color: "#9e9e9e" };
-        if (info.for_sale && info.for_rent)
-          return { text: "Sale & Rent", color: "#2196f3" };
-        if (info.for_sale) return { text: "For Sale", color: "#4caf50" };
-        if (info.for_rent) return { text: "For Rent", color: "#ff9800" };
-        return { text: "Unknown", color: "#9e9e9e" };
-      };
 
-      const status = getStatusInfo();
       return (
         <TRCell>
-          <Chip label={status.text} color={status.color} />
+          <Status data={info} />
         </TRCell>
       );
     },

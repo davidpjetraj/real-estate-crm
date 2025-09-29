@@ -7,6 +7,7 @@ query Properties($input: GetAllPropertiesInput!) {
         short_id
         title
         category
+        status
         state {
           id
           name
@@ -60,6 +61,7 @@ query PropertyDetails($input: GetPropertyInput!) {
     title
     description
     category
+    status
     state {
       id
       name
@@ -675,4 +677,8 @@ subscription PropertyStatusUpdatedList {
     deleted
     created_at
   }
+}
+
+query ExportProperties($input: GetAllPropertiesInput!) {
+  exportProperties(input: $input)
 }
