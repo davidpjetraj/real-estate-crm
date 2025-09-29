@@ -5,17 +5,38 @@ import {
   PropertyDetailsDocument,
   PropertiesDocument,
 } from "../src/lib/graphql/generated/graphql";
-import { TableColumn, TRCell, IDataStore } from "../src/components/Table";
+import { TableColumn, TRCell, IDataStore, Chip } from "../src/components/Table";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
 // import { Actions } from "../src/components/Property";
 
 export const propertyColumns: TableColumn<PropertyModel>[] = [
   {
     accessorFn: (row) => row,
-    label: "Name",
-    accessorKey: "name",
-    size: 180,
-    minSize: 140,
+    label: "Short ID",
+    accessorKey: "short_id",
+    size: 100,
+    minSize: 80,
+    filterOptions: {
+      enabled: true,
+      quickFilter: true,
+      type: "search",
+    },
+    sortOptions: {
+      enabled: true,
+      quickSort: false,
+    },
+    cell: ({ getValue }) => {
+      const info = getValue() as PropertyModel;
+      return <TRCell>#{info.short_id}</TRCell>;
+    },
+  },
+
+  {
+    accessorFn: (row) => row,
+    label: "Property",
+    accessorKey: "title",
+    size: 150,
+    minSize: 150,
     filterOptions: {
       enabled: true,
       quickFilter: true,
@@ -26,18 +47,165 @@ export const propertyColumns: TableColumn<PropertyModel>[] = [
       quickSort: false,
     },
     footer: (props) => props.column.id,
-
     cell: ({ getValue }) => {
       const info = getValue() as PropertyModel;
-
       return (
-        <TRCell
-          style={{
-            display: "flex",
-            cursor: "pointer",
-          }}
-        >
+        <TRCell style={{ display: "flex", cursor: "pointer" }}>
           {info.title}
+        </TRCell>
+      );
+    },
+  },
+  {
+    accessorFn: (row) => row,
+    label: "Category",
+    accessorKey: "category",
+    size: 120,
+    minSize: 100,
+    filterOptions: {
+      enabled: true,
+      quickFilter: true,
+      type: "search",
+    },
+    sortOptions: {
+      enabled: true,
+      quickSort: false,
+    },
+    cell: ({ getValue }) => {
+      const info = getValue() as PropertyModel;
+      return <TRCell>{info.category}</TRCell>;
+    },
+  },
+  {
+    accessorFn: (row) => row,
+    label: "Location",
+    accessorKey: "location",
+    size: 200,
+    minSize: 150,
+    filterOptions: {
+      enabled: true,
+      type: "search",
+      quickFilter: true,
+    },
+    sortOptions: {
+      enabled: true,
+      quickSort: false,
+    },
+    cell: ({ getValue }) => {
+      const info = getValue() as PropertyModel;
+      return (
+        <TRCell>
+          <div style={{ fontSize: "0.875rem" }}>
+            {info.city?.name && info.state?.name
+              ? `${info.city.name}, ${info.state.name}`
+              : info.city?.name || info.state?.name || "—"}
+          </div>
+        </TRCell>
+      );
+    },
+  },
+  {
+    accessorFn: (row) => row,
+    label: "Surface",
+    accessorKey: "surface",
+    size: 100,
+    minSize: 80,
+    sortOptions: {
+      enabled: true,
+      quickSort: false,
+    },
+    cell: ({ getValue }) => {
+      const info = getValue() as PropertyModel;
+      return <TRCell>{info.surface ? `${info.surface} m²` : "—"}</TRCell>;
+    },
+  },
+  {
+    accessorFn: (row) => row,
+    label: "Price",
+    accessorKey: "price",
+    size: 140,
+    minSize: 120,
+    filterOptions: {
+      enabled: true,
+      quickFilter: true,
+      type: "search",
+    },
+    sortOptions: {
+      enabled: true,
+      quickSort: false,
+    },
+    cell: ({ getValue }) => {
+      const info = getValue() as PropertyModel;
+      const prices = [];
+
+      if (info.for_sale && info.sell_price) {
+        prices.push(`€${info.sell_price.toLocaleString()} (Sale)`);
+      }
+      if (info.for_rent && info.rent_price) {
+        prices.push(`€${info.rent_price.toLocaleString()}/mo (Rent)`);
+      }
+
+      return <TRCell>{prices.length > 0 ? prices.join(" | ") : "—"}</TRCell>;
+    },
+  },
+  {
+    accessorFn: (row) => row,
+    label: "Status",
+    accessorKey: "status",
+    size: 120,
+    minSize: 100,
+    sortOptions: {
+      enabled: true,
+      quickSort: false,
+    },
+    filterOptions: {
+      enabled: true,
+      quickFilter: true,
+      type: "search",
+    },
+    cell: ({ getValue }) => {
+      const info = getValue() as PropertyModel;
+      const getStatusInfo = () => {
+        if (info.deleted) return { text: "Deleted", color: "#f44336" };
+        if (!info.for_sale && !info.for_rent)
+          return { text: "Inactive", color: "#9e9e9e" };
+        if (info.for_sale && info.for_rent)
+          return { text: "Sale & Rent", color: "#2196f3" };
+        if (info.for_sale) return { text: "For Sale", color: "#4caf50" };
+        if (info.for_rent) return { text: "For Rent", color: "#ff9800" };
+        return { text: "Unknown", color: "#9e9e9e" };
+      };
+
+      const status = getStatusInfo();
+      return (
+        <TRCell>
+          <Chip label={status.text} color={status.color} />
+        </TRCell>
+      );
+    },
+  },
+  {
+    accessorFn: (row) => row,
+    label: "Created",
+    accessorKey: "created_at",
+    size: 120,
+    minSize: 100,
+    sortOptions: {
+      enabled: true,
+      quickSort: false,
+    },
+    filterOptions: {
+      enabled: true,
+      quickFilter: true,
+      type: "search",
+    },
+    cell: ({ getValue }) => {
+      const info = getValue() as PropertyModel;
+      return (
+        <TRCell>
+          <div style={{ fontSize: "0.875rem" }}>
+            {new Date(info.created_at).toLocaleDateString()}
+          </div>
         </TRCell>
       );
     },
