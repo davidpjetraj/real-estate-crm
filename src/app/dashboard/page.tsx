@@ -10,12 +10,7 @@ export const metadata: Metadata = {
 
 export default function Dashboard() {
   return (
-    <PageLayout
-      title="Dashboard"
-      showDate={false}
-      showProfile={true}
-      inbox={true}
-    >
+    <PageLayout title="Dashboard" showDate={false} showProfile={true}>
       <DashboardInfo />
       {/* <KanbanDashboard /> */}
     </PageLayout>
