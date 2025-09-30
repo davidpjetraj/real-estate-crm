@@ -14,7 +14,7 @@ import { getPropertyStatus } from "@/components/Header/tabUitls";
 import { useShallow } from "zustand/react/shallow";
 import { prepareFilters } from "@/components/Table/utils";
 import { apolloClient } from "@/lib/graphql/ApolloWrapper";
-import { ExportPropertiesDocument } from "@/lib/graphql/generated/graphql";
+import { ExportPropertiesDocument, usePropertyCreatedSubscription, usePropertyRemovedRestoreSubscription, usePropertyStatusUpdatedListSubscription, usePropertyUpdatedSubscription } from "@/lib/graphql/generated/graphql";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/LoadingButton";
 import { CloudUploadIcon } from "@/components/icons/CloudUploadIcon";
@@ -22,25 +22,16 @@ import { CloudUploadIcon } from "@/components/icons/CloudUploadIcon";
 export default function PropertyPage() {
   const router = useRouter();
   const [exportLoading, setExportLoading] = useState(false);
-
-  //   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const { addItem, updateItem, removeItem } = useProperty((state) => state);
   const getData = useProperty((state) => state.getData);
   const { changeArchivedStatus, archived, filters, search } = useProperty(
     useShallow((state) => state)
   );
-  //   const addItem = useProperty((state) => state.addItem);
 
   useEffect(() => {
     getData();
   }, [getData]);
 
-  //   const handleAddProperty = () => {
-  //     setIsCreateDialogOpen(true);
-  //   };
-
-  //   const handleCloseCreateDialog = () => {
-  //     setIsCreateDialogOpen(false);
-  //   };
 
   const tabs = useMemo(
     () => getPropertyStatus(changeArchivedStatus, archived),
@@ -94,6 +85,72 @@ export default function PropertyPage() {
       setExportLoading(false);
     }
   };
+
+usePropertyCreatedSubscription({
+  onData: (data) => {
+    if (data.data?.data?.propertyCreated) {
+      addItem(data.data.data.propertyCreated);
+    }
+  },
+});
+
+usePropertyRemovedRestoreSubscription({
+  skip: false,
+  onData: (data) => {
+    if (data.data?.data?.propertyRemovedRestore) {
+      addItem(data.data.data.propertyRemovedRestore);
+    }
+  },
+});
+usePropertyRemovedRestoreSubscription({
+  skip: false,
+  onData: (data) => {
+    if (data.data?.data?.propertyRemovedRestore) {
+      removeItem(data.data.data.propertyRemovedRestore.id);
+    }
+  },
+});
+
+usePropertyCreatedSubscription({
+  onData: (data) => {
+    if (data.data?.data?.propertyCreated) {
+      addItem(data.data.data.propertyCreated);
+    }
+  },
+});
+
+usePropertyStatusUpdatedListSubscription({
+  skip: false,
+  onData: (data) => {
+    if (data.data?.data?.propertyStatusUpdatedList) {
+      updateItem(data.data.data.propertyStatusUpdatedList);
+    }
+  },
+});
+
+
+usePropertyUpdatedSubscription({
+  skip: false,
+  onData: (data) => {
+    if (data.data?.data?.propertyUpdated) {
+      updateItem(data.data.data.propertyUpdated);
+    }
+  },
+});
+
+usePropertyRemovedRestoreSubscription({
+  skip: false,
+  onData: (data) => {
+    if (data.data?.data?.propertyRemovedRestore) {
+      removeItem(data.data.data.propertyRemovedRestore.id);
+    }
+  },
+});
+
+
+
+
+
   return (
     <PageLayout title="Property" showProfile={true}>
       <Table
