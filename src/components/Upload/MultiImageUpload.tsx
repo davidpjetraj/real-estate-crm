@@ -162,7 +162,7 @@ export default function MultiImageUpload({
           const renamedFile = new File([file], normalizedFileName, {
             type: file.type,
           });
-          formData.append("medias", renamedFile);
+          formData.append("images", renamedFile);
         });
 
         const baseUrl = process.env.NEXT_PUBLIC_API?.replace(/\/$/, "");

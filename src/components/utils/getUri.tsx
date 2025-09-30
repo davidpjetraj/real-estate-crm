@@ -7,15 +7,15 @@ export const getUri = (path: string) => {
     return path;
   }
 
-  // Use NEXT_PUBLIC_GC_PUBLIC if available, otherwise fallback to NEXT_PUBLIC_API
-  const baseUrl =
-    process.env.NEXT_PUBLIC_GC_PUBLIC || process.env.NEXT_PUBLIC_API;
-  if (!baseUrl) {
-    console.warn(
-      "Neither NEXT_PUBLIC_GC_PUBLIC nor NEXT_PUBLIC_API is defined"
-    );
-    return path; // Return the path as-is if no base URL is available
+  // If path is already a full URL, return it as-is
+  if (path?.startsWith("http://") || path?.startsWith("https://")) {
+    return path;
   }
+
+  // Use S3 bucket URL as the primary source
+  const baseUrl =
+    process.env.NEXT_PUBLIC_S3_BUCKET_URL ||
+    "https://real-estate-lab.s3.eu-north-1.amazonaws.com";
 
   const finalUrl = `${baseUrl.replace(/\/$/, "")}/${path}`;
   console.log("getUri - Input path:", path);

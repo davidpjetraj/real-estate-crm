@@ -18,6 +18,7 @@ import EuroIcon from "@mui/icons-material/Euro";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import BusinessIcon from "@mui/icons-material/Business";
 import Status from "./Status";
+import { getUri } from "@/components/utils/getUri";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(2),
@@ -37,12 +38,23 @@ const DetailItem = styled(Box)(({ theme }) => ({
   },
 }));
 
+const ImageGallery = styled(Box)(({ theme }) => ({
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+  gap: theme.spacing(2),
+  marginBottom: theme.spacing(2),
+}));
+
 const PropertyImage = styled("img")(({ theme }) => ({
   width: "100%",
   height: "200px",
   objectFit: "cover",
   borderRadius: theme.spacing(1),
-  marginBottom: theme.spacing(2),
+  cursor: "pointer",
+  transition: "transform 0.2s ease-in-out",
+  "&:hover": {
+    transform: "scale(1.02)",
+  },
 }));
 
 interface PropertyDetailsProps {
@@ -103,17 +115,40 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
         </CardContent>
       </StyledCard>
 
-      {/* Property Image */}
-      {property.images && property.images.length > 0 && (
+      {/* Property Images Gallery */}
+      {property.images && property.images.length > 0 ? (
         <StyledCard>
           <CardContent>
-            <PropertyImage
-              src={property.images[0].url}
-              alt={property.title}
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-              }}
-            />
+            <Typography variant="h6" fontWeight="bold" gutterBottom>
+              Images ({property.images.length})
+            </Typography>
+            <Divider sx={{ mb: 2 }} />
+            <ImageGallery>
+              {property.images.map((image, index) => {
+                const imageUrl = getUri(image.url);
+                console.log(`Image ${index}:`, image);
+                console.log(`Image ${index} URL:`, imageUrl);
+                return (
+                  <PropertyImage
+                    key={image.id || index}
+                    src={imageUrl}
+                    alt={`${property.title} - Image ${index + 1}`}
+                    onError={(e) => {
+                      console.error(`Failed to load image ${index}:`, imageUrl);
+                      (e.target as HTMLImageElement).src = "/image.png";
+                    }}
+                  />
+                );
+              })}
+            </ImageGallery>
+          </CardContent>
+        </StyledCard>
+      ) : (
+        <StyledCard>
+          <CardContent>
+            <Typography variant="body2" color="text.secondary">
+              No images available for this property.
+            </Typography>
           </CardContent>
         </StyledCard>
       )}
