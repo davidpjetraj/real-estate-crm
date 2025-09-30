@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Box,
   Button,
@@ -14,6 +15,8 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import useAuth from "../../../store/useAuth";
+import MemberAvatar from "../shared/Avatar";
+import { useUpdatePersonalInfoMutation } from "@/lib/graphql/generated/graphql";
 
 const validationSchema = Yup.object({
   first_name: Yup.string()
@@ -22,16 +25,32 @@ const validationSchema = Yup.object({
   last_name: Yup.string()
     .min(2, "Last name must be at least 2 characters")
     .required("Last name is required"),
-  email: Yup.string()
-    .email("Invalid email format")
-    .required("Email is required"),
   phone: Yup.string().optional(),
 });
 
 export default function UserProfileSettings() {
+  const router = useRouter();
   const { user, setUser } = useAuth();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [updatePersonalInfo, { loading: isSubmitting }] =
+    useUpdatePersonalInfoMutation({
+      onCompleted: (data) => {
+        // Update local user state with the returned data
+        setUser(data.updatePersonalInfo);
+        setSuccessMessage("Profile updated successfully! Redirecting...");
+
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1000);
+      },
+      onError: (error) => {
+        console.error("Error updating profile:", error);
+        setErrorMessage(error.message || "Failed to update profile");
+        setTimeout(() => setErrorMessage(""), 5000);
+      },
+    });
 
   const formik = useFormik({
     initialValues: {
@@ -44,21 +63,22 @@ export default function UserProfileSettings() {
     validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      setIsSubmitting(true);
       setSuccessMessage("");
+      setErrorMessage("");
 
       try {
-        setUser({
-          ...values,
-          name: `${values.first_name} ${values.last_name}`,
+        await updatePersonalInfo({
+          variables: {
+            input: {
+              first_name: values.first_name,
+              last_name: values.last_name,
+              phone: values.phone || null,
+              // Note: birthday is not included as it's not in the form
+            },
+          },
         });
-
-        setSuccessMessage("Profile updated successfully!");
-        setTimeout(() => setSuccessMessage(""), 3000);
       } catch (error) {
-        console.error("Error updating profile:", error);
-      } finally {
-        setIsSubmitting(false);
+        console.error("Error submitting form:", error);
       }
     },
   });
@@ -79,8 +99,15 @@ export default function UserProfileSettings() {
           </Alert>
         )}
 
+        {errorMessage && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {errorMessage}
+          </Alert>
+        )}
+
         <Box component="form" onSubmit={formik.handleSubmit}>
           <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+            <MemberAvatar user={user} size={50} />
             <TextField
               fullWidth
               label="First Name"
@@ -114,6 +141,8 @@ export default function UserProfileSettings() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.email && Boolean(formik.errors.email)}
+            disabled
+            helperText="Email cannot be changed from here"
             sx={{ mb: 2 }}
           />
 

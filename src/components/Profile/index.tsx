@@ -7,15 +7,6 @@ import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import useAuth from "../../../store/useAuth";
 
-const getAvatarUrl = (avatar: string | null | undefined) => {
-  if (!avatar) return null;
-  if (avatar.startsWith("http://") || avatar.startsWith("https://")) {
-    return avatar;
-  }
-
-  return `https://real-estate-lab.s3.eu-north-1.amazonaws.com/${avatar}`;
-};
-
 export default function Profile() {
   const popover = usePopover();
   const router = useRouter();
@@ -38,17 +29,7 @@ export default function Profile() {
           padding: 3,
         }}
       >
-        <MemberAvatar
-          user={{
-            name:
-              user?.first_name && user?.last_name
-                ? `${user.first_name} ${user.last_name}`
-                : user?.email || "User",
-            avatar: getAvatarUrl(user?.avatar),
-          }}
-          size={35}
-          style={{ margin: "0 auto" }}
-        />
+        <MemberAvatar size={35} style={{ margin: "0 auto" }} user={user} />
       </IconButton>
       <CustomPopover
         open={popover.open}
@@ -66,16 +47,7 @@ export default function Profile() {
             gap: 1,
           }}
         >
-          <MemberAvatar
-            user={{
-              name:
-                user?.first_name && user?.last_name
-                  ? `${user.first_name} ${user.last_name}`
-                  : user?.email || "User",
-              avatar: getAvatarUrl(user?.avatar),
-            }}
-            size={60}
-          />
+          <MemberAvatar user={user} size={60} />
           <Typography variant="subtitle2" noWrap>
             {user?.first_name && user?.last_name
               ? `${user.first_name} ${user.last_name}`
