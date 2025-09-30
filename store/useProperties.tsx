@@ -88,7 +88,9 @@ export const propertyColumns: TableColumn<PropertyModel>[] = [
       const info = getValue() as PropertyModel;
       return (
         <TRCell>
-          {info.category.charAt(0).toUpperCase() + info.category.slice(1)}
+          {info.category
+            ? info.category.charAt(0).toUpperCase() + info.category.slice(1)
+            : "N/A"}
         </TRCell>
       );
     },

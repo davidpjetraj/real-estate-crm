@@ -168,8 +168,10 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
                 Category
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {property.category.charAt(0).toUpperCase() +
-                  property.category.slice(1)}
+                {property.category
+                  ? property.category.charAt(0).toUpperCase() +
+                    property.category.slice(1)
+                  : "N/A"}
               </Typography>
             </Box>
           </DetailItem>
