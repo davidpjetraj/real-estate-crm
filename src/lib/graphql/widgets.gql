@@ -1,0 +1,23 @@
+query PropertiesByCityWidget {
+  propertiesByCityWidget {
+    items {
+      city {
+        id
+        name
+        created_at
+      }
+      count
+    }
+    total
+  }
+}
+
+query PropertiesStatusWidget {
+  propertiesStatusWidget {
+    items {
+      status
+      count
+    }
+    total
+  }
+}

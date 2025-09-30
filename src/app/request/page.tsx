@@ -1,12 +1,11 @@
-"use client";
-
 import React from "react";
-import PageLayout from "@/components/Layout/PageLayout";
+import { Metadata } from "next";
+import RequestPage from "./page-content";
 
-export default function RequestPage() {
-  return (
-    <PageLayout title="Request" showProfile={true}>
-      <p>Request management coming soon…</p>
-    </PageLayout>
-  );
+export const metadata: Metadata = {
+  title: "Requests",
+};
+
+export default function page() {
+  return <RequestPage />;
 }
