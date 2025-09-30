@@ -534,7 +534,12 @@ export const useProperty = create<PropertyState>()(
 
       // Filters
       addFilterItem: (item: any) => {
-        set({ filters: [...get().filters, item] });
+        const filterItem = {
+          ...item,
+          type: item.filterOptions?.type || item.type,
+          value: item.value || null,
+        };
+        set({ filters: [...get().filters, filterItem] });
         get().getData();
       },
 

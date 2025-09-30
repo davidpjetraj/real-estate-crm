@@ -18,7 +18,7 @@ export default function Search({ data, store }: any) {
   return (
     <Wrapper>
       <TextField
-        placeholder={"Kërko..."}
+        placeholder={"Search..."}
         variant="outlined"
         size="small"
         defaultValue={data.value}
