@@ -1,0 +1,29 @@
+mutation CreateDepartment($input: CreateDepartmentInput!) {
+  createDepartment(input: $input) {
+    id
+    emri_departmentit
+    numri_i_zyreve
+    deleted
+    created_at
+  }
+}
+
+mutation UpdateDepartment($input: UpdateDepartmentInput!) {
+  updateDepartment(input: $input) {
+    id
+    emri_departmentit
+    numri_i_zyreve
+    deleted
+    created_at
+  }
+}
+
+query Departments($input: GetAllDepartments!) {
+  departments(input: $input) {
+    id
+    emri_departmentit
+    numri_i_zyreve
+    deleted
+    created_at
+  }
+}
