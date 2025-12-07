@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { styled } from "@mui/material";
-import useAuth from "../../../../store/useAuth";
+import useAuth from "../../../../../store/useAuth";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Sidebar from "./components/Sidebar";

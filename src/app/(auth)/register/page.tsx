@@ -16,7 +16,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { userStore } from "../../lib/user-store";
+import { userStore } from "@/lib/user-store";
 
 const Wrapper = styled("div")`
   display: flex;

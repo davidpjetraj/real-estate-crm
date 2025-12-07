@@ -28,7 +28,7 @@ interface FileItem {
 }
 import Step1BasicInfo from "../../create/steps/Step1BasicInfo";
 import Step2Details from "../../create/steps/Step2Details";
-import useAuth from "../../../../../store/useAuth";
+import useAuth from "../../../../../../store/useAuth";
 import Header from "../../create/components/Header";
 import Sidebar from "../../create/components/Sidebar";
 import Footer from "../../create/components/Footer";

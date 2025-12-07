@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import UserProfileSettings from "../../components/UserProfile/UserProfileSettings";
+import UserProfileSettings from "@/components/UserProfile/UserProfileSettings";
 
 export default function SettingsPage() {
   const router = useRouter();
