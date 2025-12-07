@@ -24,38 +24,37 @@ import { MoreIcon } from "@/components/icons/MoreIcon";
 import { PencilEditIcon } from "@/components/icons/PencilEditIcon";
 import { ErrorColorDeleteIcon } from "@/components/icons/ErrorColorDeleteIcon";
 import { FilterIcon } from "@/components/icons/FilterIcon";
-import { useCityOperations, cityColumns } from "../../../store/useCity";
-import { useStateOperations } from "../../../store/useState";
-import { CreateCityDialog, EditCityDialog } from "@/components/Dialog";
-import { CityModel } from "@/lib/graphql/generated/graphql";
+import { useAsistentiOperations, asistentiColumns } from "../../../../store/useAsistenti";
+import { useDepartmentOperations } from "../../../../store/useDepartment";
+import { CreateAsistentiDialog, EditAsistentiDialog } from "@/components/Dialog";
+import { AsistentiModel } from "@/lib/graphql/generated/graphql";
 
-export default function CityPage() {
+export default function AsistentiPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedCity, setSelectedCity] = useState<CityModel | null>(null);
+  const [selectedAsistenti, setSelectedAsistenti] = useState<AsistentiModel | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [menuCity, setMenuCity] = useState<CityModel | null>(null);
-  const [showStateFilter, setShowStateFilter] = useState(false);
+  const [menuAsistenti, setMenuAsistenti] = useState<AsistentiModel | null>(null);
+  const [showDepartmentFilter, setShowDepartmentFilter] = useState(false);
 
   const {
     error,
-    refetchCities,
-    deleteCity,
-    deleteLoading,
-    selectedState,
-    filterByState,
-  } = useCityOperations();
+    refetchAsistentet,
+    updateLoading,
+    selectedDepartment,
+    filterByDepartment,
+  } = useAsistentiOperations();
 
-  const { data: states, refetchStates } = useStateOperations();
+  const { data: departments, refetchDepartments } = useDepartmentOperations();
 
   useEffect(() => {
-    refetchCities();
-    refetchStates();
-  }, [refetchCities, refetchStates]);
+    refetchAsistentet();
+    refetchDepartments();
+  }, [refetchAsistentet, refetchDepartments]);
 
   // Action handlers
-  const handleAddCity = () => {
+  const handleAddAsistenti = () => {
     setIsCreateDialogOpen(true);
   };
 
@@ -65,94 +64,97 @@ export default function CityPage() {
 
   const handleCloseEditDialog = () => {
     setIsEditDialogOpen(false);
-    setSelectedCity(null);
+    setSelectedAsistenti(null);
   };
 
   const handleCloseDeleteDialog = () => {
     setIsDeleteDialogOpen(false);
-    setSelectedCity(null);
+    setSelectedAsistenti(null);
   };
 
   // Menu handlers
   const handleMenuClick = (
     event: React.MouseEvent<HTMLElement>,
-    city: CityModel
+    asistenti: AsistentiModel
   ) => {
     setAnchorEl(event.currentTarget);
-    setMenuCity(city);
+    setMenuAsistenti(asistenti);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setMenuCity(null);
+    setMenuAsistenti(null);
   };
 
   const handleEditClick = () => {
-    if (menuCity) {
-      setSelectedCity(menuCity);
+    if (menuAsistenti) {
+      setSelectedAsistenti(menuAsistenti);
       setIsEditDialogOpen(true);
     }
     handleMenuClose();
   };
 
   const handleDeleteClick = () => {
-    if (menuCity) {
-      setSelectedCity(menuCity);
+    if (menuAsistenti) {
+      setSelectedAsistenti(menuAsistenti);
       setIsDeleteDialogOpen(true);
     }
     handleMenuClose();
   };
 
   const handleDeleteConfirm = async () => {
-    if (selectedCity) {
+    if (selectedAsistenti) {
       try {
-        await deleteCity({ id: selectedCity.id });
+        // Note: Delete functionality would need to be implemented in the backend
+        // For now, we'll just close the dialog
+        console.log("Delete asistenti:", selectedAsistenti.id);
         handleCloseDeleteDialog();
+        refetchAsistentet();
       } catch (error) {
-        console.error("Failed to delete city:", error);
+        console.error("Failed to delete asistenti:", error);
       }
     }
   };
 
   // Filter handlers
-  const handleStateFilterChange = (stateId: string) => {
-    filterByState(stateId === "all" ? null : stateId);
+  const handleDepartmentFilterChange = (departmentId: string) => {
+    filterByDepartment(departmentId === "all" ? null : departmentId);
   };
 
-  const handleClearStateFilter = () => {
-    filterByState(null);
+  const handleClearDepartmentFilter = () => {
+    filterByDepartment(null);
   };
 
   // Success handlers
-  const handleCreateSuccess = (newCity: any) => {
-    console.log("City created successfully:", newCity);
+  const handleCreateSuccess = (newAsistenti: any) => {
+    console.log("Asistenti created successfully:", newAsistenti);
   };
 
-  const handleUpdateSuccess = (updatedCity: any) => {
-    console.log("City updated successfully:", updatedCity);
+  const handleUpdateSuccess = (updatedAsistenti: any) => {
+    console.log("Asistenti updated successfully:", updatedAsistenti);
   };
 
   // Enhanced columns with actions
   const enhancedColumns = [
-    ...cityColumns,
+    ...asistentiColumns,
     {
       accessorKey: "actions",
       label: "Actions",
-      accessorFn: (row: CityModel) => row,
+      accessorFn: (row: AsistentiModel) => row,
       size: 120,
-      cell: ({ row }: { row: { original: CityModel } }) => (
+      cell: ({ row }: { row: { original: AsistentiModel } }) => (
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <IconButton
             size="small"
             onClick={() => {
-              setSelectedCity(row.original);
+              setSelectedAsistenti(row.original);
               setIsEditDialogOpen(true);
             }}
             sx={{
               color: "primary.main",
               "&:hover": { backgroundColor: "primary.light", color: "white" },
             }}
-            title="Edit City"
+            title="Edit Asistenti"
           >
             <PencilEditIcon width={14} height={14} />
           </IconButton>
@@ -174,10 +176,10 @@ export default function CityPage() {
 
   if (error) {
     return (
-      <PageLayout title="Cities" showProfile={true}>
+      <PageLayout title="Asistentet" showProfile={true}>
         <div style={{ padding: "20px", textAlign: "center" }}>
-          <p>Error loading cities: {error.message}</p>
-          <Button variant="contained" onClick={() => refetchCities()}>
+          <p>Error loading asistentet: {error.message}</p>
+          <Button variant="contained" onClick={() => refetchAsistentet()}>
             Retry
           </Button>
         </div>
@@ -185,12 +187,12 @@ export default function CityPage() {
     );
   }
 
-  const selectedStateName = states.find(
-    (state) => state.id === selectedState
-  )?.name;
+  const selectedDepartmentName = departments.find(
+    (dept) => dept.id === selectedDepartment
+  )?.emri_departmentit;
 
   return (
-    <PageLayout title="Cities" showProfile={true}>
+    <PageLayout title="Asistentet" showProfile={true}>
       {/* Filter Section */}
       <Box
         sx={{
@@ -204,32 +206,32 @@ export default function CityPage() {
         <Button
           variant="outlined"
           startIcon={<FilterIcon width={16} height={16} />}
-          onClick={() => setShowStateFilter(!showStateFilter)}
+          onClick={() => setShowDepartmentFilter(!showDepartmentFilter)}
         >
-          Filter by State
+          Filter by Department
         </Button>
 
-        {selectedState && (
+        {selectedDepartment && (
           <Chip
-            label={`State: ${selectedStateName}`}
-            onDelete={handleClearStateFilter}
+            label={`Department: ${selectedDepartmentName}`}
+            onDelete={handleClearDepartmentFilter}
             color="primary"
             variant="outlined"
           />
         )}
 
-        {showStateFilter && (
+        {showDepartmentFilter && (
           <FormControl size="small" sx={{ minWidth: 200 }}>
-            <InputLabel>Select State</InputLabel>
+            <InputLabel>Select Department</InputLabel>
             <Select
-              value={selectedState || "all"}
-              label="Select State"
-              onChange={(e) => handleStateFilterChange(e.target.value)}
+              value={selectedDepartment || "all"}
+              label="Select Department"
+              onChange={(e) => handleDepartmentFilterChange(e.target.value)}
             >
-              <MenuItem value="all">All States</MenuItem>
-              {states.map((state) => (
-                <MenuItem key={state.id} value={state.id}>
-                  {state.name}
+              <MenuItem value="all">All Departments</MenuItem>
+              {departments.map((dept) => (
+                <MenuItem key={dept.id} value={dept.id}>
+                  {dept.emri_departmentit}
                 </MenuItem>
               ))}
             </Select>
@@ -239,15 +241,15 @@ export default function CityPage() {
 
       <Table
         columns={enhancedColumns}
-        store={useCityOperations}
+        store={useAsistentiOperations}
         rightActions={
           <Button
             variant="contained"
             size="medium"
             startIcon={<PlusIcon width={16} height={16} />}
-            onClick={handleAddCity}
+            onClick={handleAddAsistenti}
           >
-            Add City
+            Add Asistenti
           </Button>
         }
       />
@@ -274,19 +276,19 @@ export default function CityPage() {
         </MenuItem>
       </Menu>
 
-      {/* Create City Dialog */}
-      <CreateCityDialog
+      {/* Create Asistenti Dialog */}
+      <CreateAsistentiDialog
         open={isCreateDialogOpen}
         onClose={handleCloseCreateDialog}
         onSuccess={handleCreateSuccess}
       />
 
-      {/* Edit City Dialog */}
-      <EditCityDialog
+      {/* Edit Asistenti Dialog */}
+      <EditAsistentiDialog
         open={isEditDialogOpen}
         onClose={handleCloseEditDialog}
         onSuccess={handleUpdateSuccess}
-        city={selectedCity}
+        asistenti={selectedAsistenti}
       />
 
       {/* Delete Confirmation Dialog */}
@@ -296,28 +298,28 @@ export default function CityPage() {
         aria-labelledby="delete-dialog-title"
         aria-describedby="delete-dialog-description"
       >
-        <DialogTitle id="delete-dialog-title">Delete City</DialogTitle>
+        <DialogTitle id="delete-dialog-title">Delete Asistenti</DialogTitle>
         <DialogContent>
           <DialogContentText id="delete-dialog-description">
-            Are you sure you want to delete the city &ldquo;{selectedCity?.name}
-            &rdquo; from {selectedCity?.state?.name}? This action cannot be
-            undone and may affect related data.
+            Are you sure you want to delete &ldquo;{selectedAsistenti?.emri} {selectedAsistenti?.mbiemri}
+            &rdquo;? This action cannot be undone and may affect related data.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDeleteDialog} disabled={deleteLoading}>
+          <Button onClick={handleCloseDeleteDialog} disabled={updateLoading}>
             Cancel
           </Button>
           <Button
             onClick={handleDeleteConfirm}
             color="error"
             variant="contained"
-            disabled={deleteLoading}
+            disabled={updateLoading}
           >
-            {deleteLoading ? "Deleting..." : "Delete"}
+            {updateLoading ? "Deleting..." : "Delete"}
           </Button>
         </DialogActions>
       </Dialog>
     </PageLayout>
   );
 }
+

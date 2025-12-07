@@ -5,7 +5,7 @@ import PageLayout from "@/components/Layout/PageLayout";
 import { Table } from "@/components/Table";
 import { Button } from "@mui/material";
 import { PlusIcon } from "@/components/icons/PlusIcon";
-import { useProperty, propertyColumns } from "../../../store/useProperties";
+import { useProperty, propertyColumns } from "../../../../store/useProperties";
 import { useRouter } from "next/navigation";
 // import { CreateTeamMemberDialog } from "@/components/Dialog";
 import PropertyDetailsComponent from "@/components/Property/PropertyDetailsComponent";

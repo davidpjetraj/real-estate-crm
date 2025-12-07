@@ -19,7 +19,7 @@ import { PlusIcon } from "@/components/icons/PlusIcon";
 import { MoreIcon } from "@/components/icons/MoreIcon";
 import { PencilEditIcon } from "@/components/icons/PencilEditIcon";
 import { ErrorColorDeleteIcon } from "@/components/icons/ErrorColorDeleteIcon";
-import { useStateOperations, stateColumns } from "../../../store/useState";
+import { useStateOperations, stateColumns } from "../../../../store/useState";
 import { CreateStateDialog, EditStateDialog } from "@/components/Dialog";
 import { StateModel } from "@/lib/graphql/generated/graphql";
 

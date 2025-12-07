@@ -13,48 +13,36 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControl,
-  InputLabel,
-  Select,
   Box,
-  Chip,
 } from "@mui/material";
 import { PlusIcon } from "@/components/icons/PlusIcon";
 import { MoreIcon } from "@/components/icons/MoreIcon";
 import { PencilEditIcon } from "@/components/icons/PencilEditIcon";
 import { ErrorColorDeleteIcon } from "@/components/icons/ErrorColorDeleteIcon";
-import { FilterIcon } from "@/components/icons/FilterIcon";
-import { useAsistentiOperations, asistentiColumns } from "../../../store/useAsistenti";
-import { useDepartmentOperations } from "../../../store/useDepartment";
-import { CreateAsistentiDialog, EditAsistentiDialog } from "@/components/Dialog";
-import { AsistentiModel } from "@/lib/graphql/generated/graphql";
+import { useDepartmentOperations, departmentColumns } from "../../../../store/useDepartment";
+import { CreateDepartmentDialog, EditDepartmentDialog } from "@/components/Dialog";
+import { DepartmentModel } from "@/lib/graphql/generated/graphql";
 
-export default function AsistentiPage() {
+export default function DepartmentPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedAsistenti, setSelectedAsistenti] = useState<AsistentiModel | null>(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<DepartmentModel | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [menuAsistenti, setMenuAsistenti] = useState<AsistentiModel | null>(null);
-  const [showDepartmentFilter, setShowDepartmentFilter] = useState(false);
+  const [menuDepartment, setMenuDepartment] = useState<DepartmentModel | null>(null);
 
   const {
     error,
-    refetchAsistentet,
+    refetchDepartments,
     updateLoading,
-    selectedDepartment,
-    filterByDepartment,
-  } = useAsistentiOperations();
-
-  const { data: departments, refetchDepartments } = useDepartmentOperations();
+  } = useDepartmentOperations();
 
   useEffect(() => {
-    refetchAsistentet();
     refetchDepartments();
-  }, [refetchAsistentet, refetchDepartments]);
+  }, [refetchDepartments]);
 
   // Action handlers
-  const handleAddAsistenti = () => {
+  const handleAddDepartment = () => {
     setIsCreateDialogOpen(true);
   };
 
@@ -64,97 +52,88 @@ export default function AsistentiPage() {
 
   const handleCloseEditDialog = () => {
     setIsEditDialogOpen(false);
-    setSelectedAsistenti(null);
+    setSelectedDepartment(null);
   };
 
   const handleCloseDeleteDialog = () => {
     setIsDeleteDialogOpen(false);
-    setSelectedAsistenti(null);
+    setSelectedDepartment(null);
   };
 
   // Menu handlers
   const handleMenuClick = (
     event: React.MouseEvent<HTMLElement>,
-    asistenti: AsistentiModel
+    department: DepartmentModel
   ) => {
     setAnchorEl(event.currentTarget);
-    setMenuAsistenti(asistenti);
+    setMenuDepartment(department);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setMenuAsistenti(null);
+    setMenuDepartment(null);
   };
 
   const handleEditClick = () => {
-    if (menuAsistenti) {
-      setSelectedAsistenti(menuAsistenti);
+    if (menuDepartment) {
+      setSelectedDepartment(menuDepartment);
       setIsEditDialogOpen(true);
     }
     handleMenuClose();
   };
 
   const handleDeleteClick = () => {
-    if (menuAsistenti) {
-      setSelectedAsistenti(menuAsistenti);
+    if (menuDepartment) {
+      setSelectedDepartment(menuDepartment);
       setIsDeleteDialogOpen(true);
     }
     handleMenuClose();
   };
 
   const handleDeleteConfirm = async () => {
-    if (selectedAsistenti) {
+    if (selectedDepartment) {
       try {
         // Note: Delete functionality would need to be implemented in the backend
         // For now, we'll just close the dialog
-        console.log("Delete asistenti:", selectedAsistenti.id);
+        console.log("Delete department:", selectedDepartment.id);
         handleCloseDeleteDialog();
-        refetchAsistentet();
+        refetchDepartments();
       } catch (error) {
-        console.error("Failed to delete asistenti:", error);
+        console.error("Failed to delete department:", error);
       }
     }
   };
 
-  // Filter handlers
-  const handleDepartmentFilterChange = (departmentId: string) => {
-    filterByDepartment(departmentId === "all" ? null : departmentId);
-  };
-
-  const handleClearDepartmentFilter = () => {
-    filterByDepartment(null);
-  };
-
   // Success handlers
-  const handleCreateSuccess = (newAsistenti: any) => {
-    console.log("Asistenti created successfully:", newAsistenti);
+  const handleCreateSuccess = (newDepartment: any) => {
+    console.log("Department created successfully:", newDepartment);
   };
 
-  const handleUpdateSuccess = (updatedAsistenti: any) => {
-    console.log("Asistenti updated successfully:", updatedAsistenti);
+  const handleUpdateSuccess = (updatedDepartment: any) => {
+    console.log("Department updated successfully:", updatedDepartment);
   };
 
   // Enhanced columns with actions
   const enhancedColumns = [
-    ...asistentiColumns,
+    ...departmentColumns,
     {
       accessorKey: "actions",
       label: "Actions",
-      accessorFn: (row: AsistentiModel) => row,
+      accessorFn: (row: DepartmentModel) => row,
       size: 120,
-      cell: ({ row }: { row: { original: AsistentiModel } }) => (
+      cell: ({ row }: { row: { original: DepartmentModel } }) => (
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <IconButton
             size="small"
             onClick={() => {
-              setSelectedAsistenti(row.original);
+              setSelectedDepartment(row.original);
               setIsEditDialogOpen(true);
             }}
             sx={{
               color: "primary.main",
               "&:hover": { backgroundColor: "primary.light", color: "white" },
             }}
-            title="Edit Asistenti"
+            title="Edit Department"
           >
             <PencilEditIcon width={14} height={14} />
           </IconButton>
@@ -176,10 +155,10 @@ export default function AsistentiPage() {
 
   if (error) {
     return (
-      <PageLayout title="Asistentet" showProfile={true}>
+      <PageLayout title="Departments" showProfile={true}>
         <div style={{ padding: "20px", textAlign: "center" }}>
-          <p>Error loading asistentet: {error.message}</p>
-          <Button variant="contained" onClick={() => refetchAsistentet()}>
+          <p>Error loading departments: {error.message}</p>
+          <Button variant="contained" onClick={() => refetchDepartments()}>
             Retry
           </Button>
         </div>
@@ -187,69 +166,19 @@ export default function AsistentiPage() {
     );
   }
 
-  const selectedDepartmentName = departments.find(
-    (dept) => dept.id === selectedDepartment
-  )?.emri_departmentit;
-
   return (
-    <PageLayout title="Asistentet" showProfile={true}>
-      {/* Filter Section */}
-      <Box
-        sx={{
-          mb: 2,
-          display: "flex",
-          gap: 2,
-          alignItems: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        <Button
-          variant="outlined"
-          startIcon={<FilterIcon width={16} height={16} />}
-          onClick={() => setShowDepartmentFilter(!showDepartmentFilter)}
-        >
-          Filter by Department
-        </Button>
-
-        {selectedDepartment && (
-          <Chip
-            label={`Department: ${selectedDepartmentName}`}
-            onDelete={handleClearDepartmentFilter}
-            color="primary"
-            variant="outlined"
-          />
-        )}
-
-        {showDepartmentFilter && (
-          <FormControl size="small" sx={{ minWidth: 200 }}>
-            <InputLabel>Select Department</InputLabel>
-            <Select
-              value={selectedDepartment || "all"}
-              label="Select Department"
-              onChange={(e) => handleDepartmentFilterChange(e.target.value)}
-            >
-              <MenuItem value="all">All Departments</MenuItem>
-              {departments.map((dept) => (
-                <MenuItem key={dept.id} value={dept.id}>
-                  {dept.emri_departmentit}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
-      </Box>
-
+    <PageLayout title="Departments" showProfile={true}>
       <Table
         columns={enhancedColumns}
-        store={useAsistentiOperations}
+        store={useDepartmentOperations}
         rightActions={
           <Button
             variant="contained"
             size="medium"
             startIcon={<PlusIcon width={16} height={16} />}
-            onClick={handleAddAsistenti}
+            onClick={handleAddDepartment}
           >
-            Add Asistenti
+            Add Department
           </Button>
         }
       />
@@ -276,19 +205,19 @@ export default function AsistentiPage() {
         </MenuItem>
       </Menu>
 
-      {/* Create Asistenti Dialog */}
-      <CreateAsistentiDialog
+      {/* Create Department Dialog */}
+      <CreateDepartmentDialog
         open={isCreateDialogOpen}
         onClose={handleCloseCreateDialog}
         onSuccess={handleCreateSuccess}
       />
 
-      {/* Edit Asistenti Dialog */}
-      <EditAsistentiDialog
+      {/* Edit Department Dialog */}
+      <EditDepartmentDialog
         open={isEditDialogOpen}
         onClose={handleCloseEditDialog}
         onSuccess={handleUpdateSuccess}
-        asistenti={selectedAsistenti}
+        department={selectedDepartment}
       />
 
       {/* Delete Confirmation Dialog */}
@@ -298,10 +227,10 @@ export default function AsistentiPage() {
         aria-labelledby="delete-dialog-title"
         aria-describedby="delete-dialog-description"
       >
-        <DialogTitle id="delete-dialog-title">Delete Asistenti</DialogTitle>
+        <DialogTitle id="delete-dialog-title">Delete Department</DialogTitle>
         <DialogContent>
           <DialogContentText id="delete-dialog-description">
-            Are you sure you want to delete &ldquo;{selectedAsistenti?.emri} {selectedAsistenti?.mbiemri}
+            Are you sure you want to delete the department &ldquo;{selectedDepartment?.emri_departmentit}
             &rdquo;? This action cannot be undone and may affect related data.
           </DialogContentText>
         </DialogContent>
