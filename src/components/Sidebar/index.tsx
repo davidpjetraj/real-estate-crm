@@ -23,7 +23,6 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
 import RouteIcon from "@mui/icons-material/Route";
-import BusinessIcon from "@mui/icons-material/Business";
 import MenuIcon from "@mui/icons-material/Menu";
 import InviteMemberDialog from "../Dialog/InviteMemberDialog";
 import Logo from "@/app/logo";
@@ -349,20 +348,6 @@ export default function Sidebar() {
               </Item>
               <Item href="/street" icon={<RouteIcon />} includes="street">
                 <span>Streets</span>
-              </Item>
-              <Item
-                href="/department"
-                icon={<BusinessIcon />}
-                includes="department"
-              >
-                <span>Departments</span>
-              </Item>
-              <Item
-                href="/asistenti"
-                icon={<PeopleAltOutlinedIcon />}
-                includes="asistenti"
-              >
-                <span>Asistentet</span>
               </Item>
             </div>
             <div className="bottom">

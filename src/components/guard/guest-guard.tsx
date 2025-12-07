@@ -15,7 +15,7 @@ export default function GuestGuard({
   const { user, loading, getAccount } = useAuth(useShallow((state) => state));
   const router = useRouter();
   const searchParams = useSearchParams();
-  const returnUrl = searchParams.get("returnUrl") || `/dashboard`;
+  const returnUrl = searchParams.get("returnUrl") || `/`;
 
   const [isPending, startTransition] = useTransition();
 

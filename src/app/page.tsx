@@ -9,175 +9,18 @@ import {
   CardContent,
   Grid,
   styled,
-  keyframes,
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-
-// Keyframe animations
-const gradientShift = keyframes`
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-`;
-
-const float = keyframes`
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  33% { transform: translateY(-15px) rotate(5deg); }
-  66% { transform: translateY(-10px) rotate(-3deg); }
-`;
-
-const pulse = keyframes`
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
-`;
-
-const slideInLeft = keyframes`
-  from { opacity: 0; transform: translateX(-60px); }
-  to { opacity: 1; transform: translateX(0); }
-`;
-
-const slideInRight = keyframes`
-  from { opacity: 0; transform: translateX(60px); }
-  to { opacity: 1; transform: translateX(0); }
-`;
-
-const slideUp = keyframes`
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
-
-const shimmer = keyframes`
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-`;
+import { useEffect } from "react";
 
 const HeroSection = styled(Box)`
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  padding: 150px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding: 80px 0;
-
-  @media (max-width: 990px) {
-    padding: 60px 20px;
-    min-height: auto;
-  }
-`;
-
-const GlowOrb = styled(Box)`
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  animation: ${pulse} 8s ease-in-out infinite;
-  pointer-events: none;
-`;
-
-const GridPattern = styled(Box)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.03) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  opacity: 0.5;
-`;
-
-const FloatingShape = styled(Box)`
-  position: absolute;
-  animation: ${float} 8s ease-in-out infinite;
-  opacity: 0.6;
-`;
-
-const AccentText = styled("span")`
-  background: linear-gradient(135deg, #00d4aa 0%, #00bcd4 50%, #7c4dff 100%);
-  background-size: 200% 200%;
-  animation: ${gradientShift} 4s ease infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-`;
-
-const GlassCard = styled(Card)`
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 32px;
-  overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.05),
-      transparent
-    );
-    transition: left 0.5s ease;
-  }
-
-  &:hover {
-    transform: translateY(-16px) scale(1.02);
-    border-color: rgba(0, 212, 170, 0.3);
-    box-shadow: 0 30px 60px rgba(0, 212, 170, 0.15),
-      0 0 40px rgba(0, 212, 170, 0.1);
-
-    &::before {
-      left: 100%;
-    }
-  }
-`;
-
-const FeatureIcon = styled(Box)`
-  width: 80px;
-  height: 80px;
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 24px;
-  position: relative;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 212, 170, 0.1) 0%,
-    rgba(124, 77, 255, 0.1) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-
-  .MuiCard-root:hover & {
-    box-shadow: 0 0 30px rgba(0, 212, 170, 0.3);
-    border-color: rgba(0, 212, 170, 0.4);
-  }
-`;
-
-const PrimaryButton = styled(Button)`
-  border-radius: 16px;
-  padding: 16px 40px;
-  font-weight: 700;
-  text-transform: none;
-  font-size: 17px;
-  letter-spacing: 0.5px;
-  background: linear-gradient(135deg, #00d4aa 0%, #00bcd4 100%);
-  color: #0a0a0a;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
 
   &::before {
     content: "";
@@ -186,83 +29,86 @@ const PrimaryButton = styled(Button)`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.3),
-      transparent
-    );
-    background-size: 200% 100%;
-    animation: ${shimmer} 3s linear infinite;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
   }
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 212, 170, 0.4);
+  @media (max-width: 990px) {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
   }
 `;
 
-const SecondaryButton = styled(Button)`
-  border-radius: 16px;
-  padding: 16px 40px;
-  font-weight: 700;
-  text-transform: none;
-  font-size: 17px;
-  letter-spacing: 0.5px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    border-color: #00d4aa;
-    background: rgba(0, 212, 170, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 212, 170, 0.2);
-  }
-`;
-
-const StatBox = styled(Box)`
-  text-align: center;
-  padding: 24px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
-
-  &:hover {
-    border-color: rgba(0, 212, 170, 0.3);
-    background: rgba(0, 212, 170, 0.05);
-  }
-`;
-
-const FooterCTA = styled(Box)`
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+const FeatureCard = styled(Card)`
+  height: 100%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 24px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   position: relative;
   overflow: hidden;
-  padding: 120px 0;
 
   &::before {
     content: "";
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(
-      circle,
-      rgba(0, 212, 170, 0.1) 0%,
-      transparent 50%
-    );
-    animation: ${pulse} 10s ease-in-out infinite;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+`;
+
+const StyledButton = styled(Button)`
+  border-radius: 12px;
+  padding: 12px 32px;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+`;
+
+const FloatingElement = styled(Box)`
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  animation: float 6s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(180deg);
+    }
   }
 `;
 
 export default function Home() {
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const checkAuth = async () => {
       const { getTokens } = await import("@/lib/graphql/utils");
       const { access_token } = await getTokens();
@@ -275,177 +121,90 @@ export default function Home() {
 
   const features = [
     {
-      title: "Smart Property Hub",
+      title: "Property Management",
       description:
-        "AI-powered property management that learns your workflow. Automate listings, track performance, and predict market trends with precision.",
-      icon: "⚡",
-      gradient: "linear-gradient(135deg, #00d4aa 0%, #00bcd4 100%)",
+        "Efficiently manage your real estate portfolio with our comprehensive dashboard. Track properties, tenants, and maintenance all in one place.",
+      icon: "🏠",
+      color: "#667eea",
     },
     {
-      title: "Real-Time Analytics",
+      title: "Analytics & Reports",
       description:
-        "Live dashboards that breathe with your business. Interactive visualizations reveal insights hidden in your data, powering smarter decisions.",
-      icon: "📈",
-      gradient: "linear-gradient(135deg, #7c4dff 0%, #536dfe 100%)",
+        "Get detailed insights and analytics to make informed decisions. Visualize your portfolio performance with interactive charts and reports.",
+      icon: "📊",
+      color: "#764ba2",
     },
     {
-      title: "Seamless Collaboration",
+      title: "Team Collaboration",
       description:
-        "Break down silos with integrated team workspaces. Share, assign, and communicate—all within a unified ecosystem built for speed.",
-      icon: "🚀",
-      gradient: "linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)",
+        "Work seamlessly with your team using our collaboration tools. Share documents, assign tasks, and communicate effectively.",
+      icon: "👥",
+      color: "#f093fb",
     },
-  ];
-
-  const stats = [
-    { value: "10K+", label: "Properties Managed" },
-    { value: "98%", label: "Client Satisfaction" },
-    { value: "24/7", label: "Support Available" },
-    { value: "50+", label: "Integrations" },
   ];
 
   return (
-    <Box sx={{ backgroundColor: "#0a0a0a", minHeight: "100vh" }}>
-      {/* Hero Section */}
+    <Box>
       <HeroSection>
-        <GridPattern />
-
-        {/* Glow Orbs */}
-        <GlowOrb
+        <FloatingElement
           sx={{
-            width: 600,
-            height: 600,
-            background: "radial-gradient(circle, #00d4aa 0%, transparent 70%)",
-            top: "-20%",
-            right: "-10%",
+            width: 100,
+            height: 100,
+            top: "10%",
+            left: "10%",
             animationDelay: "0s",
           }}
         />
-        <GlowOrb
-          sx={{
-            width: 400,
-            height: 400,
-            background: "radial-gradient(circle, #7c4dff 0%, transparent 70%)",
-            bottom: "-10%",
-            left: "-5%",
-            animationDelay: "4s",
-          }}
-        />
-
-        {/* Floating Shapes */}
-        <FloatingShape
-          sx={{
-            width: 120,
-            height: 120,
-            top: "15%",
-            left: "8%",
-            background:
-              "linear-gradient(135deg, rgba(0,212,170,0.2) 0%, transparent 50%)",
-            borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
-            animationDelay: "0s",
-          }}
-        />
-        <FloatingShape
-          sx={{
-            width: 80,
-            height: 80,
-            top: "25%",
-            right: "12%",
-            background:
-              "linear-gradient(135deg, rgba(124,77,255,0.2) 0%, transparent 50%)",
-            borderRadius: "70% 30% 30% 70% / 70% 70% 30% 30%",
-            animationDelay: "2s",
-          }}
-        />
-        <FloatingShape
+        <FloatingElement
           sx={{
             width: 60,
             height: 60,
-            bottom: "30%",
-            left: "15%",
-            background:
-              "linear-gradient(135deg, rgba(0,188,212,0.3) 0%, transparent 50%)",
-            borderRadius: "50%",
+            top: "20%",
+            right: "15%",
+            animationDelay: "2s",
+          }}
+        />
+        <FloatingElement
+          sx={{
+            width: 80,
+            height: 80,
+            bottom: "20%",
+            left: "20%",
             animationDelay: "4s",
           }}
         />
 
-        <Container maxWidth="xl" sx={{ position: "relative", zIndex: 1 }}>
-          <Grid container spacing={8} alignItems="center">
-            <Grid size={{ xs: 12, lg: 6 }}>
-              <Box
-                sx={{
-                  textAlign: { xs: "center", lg: "left" },
-                  animation: mounted ? `${slideInLeft} 1s ease-out` : "none",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 1,
-                    px: 3,
-                    py: 1,
-                    mb: 4,
-                    borderRadius: "100px",
-                    background: "rgba(0, 212, 170, 0.1)",
-                    border: "1px solid rgba(0, 212, 170, 0.3)",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: "50%",
-                      background: "#00d4aa",
-                      animation: `${pulse} 2s ease infinite`,
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      color: "#00d4aa",
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    NOW IN BETA • FREE ACCESS
-                  </Typography>
-                </Box>
-
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+          <Grid container spacing={6} alignItems="center">
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
                 <Typography
                   variant="h1"
                   sx={{
-                    fontSize: { xs: "3rem", md: "4rem", lg: "5rem" },
-                    fontWeight: 900,
+                    fontSize: { xs: "2.5rem", md: "3.5rem", lg: "4rem" },
+                    fontWeight: 800,
                     color: "white",
                     mb: 3,
-                    lineHeight: 1.1,
-                    letterSpacing: "-2px",
+                    lineHeight: 1.2,
+                    textShadow: "0 4px 20px rgba(0,0,0,0.3)",
                   }}
                 >
-                  The Future of
+                  Real Estate
                   <br />
-                  <AccentText>Real Estate</AccentText>
-                  <br />
-                  Management
+                  <span style={{ color: "#FFD700" }}>Dashboard</span>
                 </Typography>
 
                 <Typography
-                  variant="h6"
+                  variant="h5"
                   sx={{
-                    color: "rgba(255,255,255,0.6)",
-                    mb: 5,
+                    color: "rgba(255,255,255,0.9)",
+                    mb: 4,
                     fontWeight: 400,
-                    lineHeight: 1.8,
-                    maxWidth: "500px",
-                    mx: { xs: "auto", lg: 0 },
-                    fontSize: "1.1rem",
+                    lineHeight: 1.6,
                   }}
                 >
-                  Elevate your property portfolio with next-gen tools.
-                  Intelligent automation, stunning analytics, and seamless team
-                  collaboration—all in one powerful platform.
+                  Streamline your property management with our powerful,
+                  intuitive dashboard designed for real estate professionals.
                 </Typography>
 
                 <Box
@@ -453,271 +212,96 @@ export default function Home() {
                     display: "flex",
                     gap: 2,
                     flexWrap: "wrap",
-                    justifyContent: { xs: "center", lg: "flex-start" },
-                    mb: 6,
+                    justifyContent: { xs: "center", md: "flex-start" },
                   }}
                 >
                   <Link href="/login" style={{ textDecoration: "none" }}>
-                    <PrimaryButton variant="contained" size="large">
-                      Launch Dashboard →
-                    </PrimaryButton>
+                    <StyledButton
+                      variant="contained"
+                      size="large"
+                      sx={{
+                        backgroundColor: "#FFD700",
+                        color: "#333",
+                        "&:hover": {
+                          backgroundColor: "#FFC107",
+                        },
+                      }}
+                    >
+                      Get Started
+                    </StyledButton>
                   </Link>
 
                   <Link href="/register" style={{ textDecoration: "none" }}>
-                    <SecondaryButton variant="outlined" size="large">
+                    <StyledButton
+                      variant="outlined"
+                      size="large"
+                      sx={{
+                        borderColor: "white",
+                        color: "white",
+                        "&:hover": {
+                          borderColor: "#FFD700",
+                          backgroundColor: "rgba(255, 215, 0, 0.1)",
+                        },
+                      }}
+                    >
                       Create Account
-                    </SecondaryButton>
+                    </StyledButton>
                   </Link>
                 </Box>
-
-                {/* Stats Row */}
-                <Grid container spacing={2}>
-                  {stats.map((stat, index) => (
-                    <Grid size={{ xs: 6, sm: 3 }} key={index}>
-                      <StatBox
-                        sx={{
-                          animation: mounted
-                            ? `${slideUp} 1s ease-out ${
-                                0.2 + index * 0.1
-                              }s both`
-                            : "none",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            fontSize: "1.8rem",
-                            fontWeight: 800,
-                            color: "#00d4aa",
-                            mb: 0.5,
-                          }}
-                        >
-                          {stat.value}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            fontSize: "0.75rem",
-                            color: "rgba(255,255,255,0.5)",
-                            fontWeight: 500,
-                            letterSpacing: "0.5px",
-                          }}
-                        >
-                          {stat.label}
-                        </Typography>
-                      </StatBox>
-                    </Grid>
-                  ))}
-                </Grid>
               </Box>
             </Grid>
 
-            <Grid size={{ xs: 12, lg: 6 }}>
-              <Box
-                sx={{
-                  position: "relative",
-                  animation: mounted ? `${slideInRight} 1s ease-out` : "none",
-                }}
-              >
-                {/* Dashboard Preview */}
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Box sx={{ position: "relative", textAlign: "center" }}>
                 <Box
                   sx={{
                     position: "relative",
-                    borderRadius: "32px",
+                    borderRadius: "24px",
                     background:
-                      "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
-                    backdropFilter: "blur(40px)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    padding: { xs: "40px 30px", md: "60px 50px" },
-                    boxShadow: "0 40px 80px rgba(0,0,0,0.4)",
-                    overflow: "hidden",
-                  }}
-                >
-                  {/* Mock Dashboard Elements */}
-                  <Box sx={{ mb: 4 }}>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 2,
-                        mb: 3,
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: 12,
-                          height: 12,
-                          borderRadius: "50%",
-                          background: "#ff6b6b",
-                        }}
-                      />
-                      <Box
-                        sx={{
-                          width: 12,
-                          height: 12,
-                          borderRadius: "50%",
-                          background: "#feca57",
-                        }}
-                      />
-                      <Box
-                        sx={{
-                          width: 12,
-                          height: 12,
-                          borderRadius: "50%",
-                          background: "#00d4aa",
-                        }}
-                      />
-                    </Box>
-
-                    <Typography
-                      sx={{
-                        color: "rgba(255,255,255,0.4)",
-                        fontSize: "12px",
-                        fontWeight: 600,
-                        letterSpacing: "2px",
-                        mb: 2,
-                      }}
-                    >
-                      PORTFOLIO OVERVIEW
-                    </Typography>
-
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontSize: { xs: "2rem", md: "2.5rem" },
-                        fontWeight: 800,
-                        mb: 1,
-                      }}
-                    >
-                      $2.4M
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#00d4aa",
-                        fontSize: "14px",
-                        fontWeight: 600,
-                      }}
-                    >
-                      ↑ 12.5% this month
-                    </Typography>
-                  </Box>
-
-                  {/* Mini Chart Bars */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "flex-end",
-                      gap: 1,
-                      mb: 4,
-                    }}
-                  >
-                    {[40, 65, 45, 80, 55, 95, 70].map((height, i) => (
-                      <Box
-                        key={i}
-                        sx={{
-                          flex: 1,
-                          height: height,
-                          borderRadius: "8px",
-                          background:
-                            i === 5
-                              ? "linear-gradient(180deg, #00d4aa 0%, #00bcd4 100%)"
-                              : "rgba(255,255,255,0.1)",
-                          transition: "all 0.3s ease",
-                          "&:hover": {
-                            background:
-                              "linear-gradient(180deg, #00d4aa 0%, #00bcd4 100%)",
-                          },
-                        }}
-                      />
-                    ))}
-                  </Box>
-
-                  {/* Property Cards */}
-                  <Grid container spacing={2}>
-                    {[
-                      {
-                        name: "Downtown Loft",
-                        price: "$450K",
-                        status: "Active",
-                      },
-                      {
-                        name: "Beach Villa",
-                        price: "$1.2M",
-                        status: "Pending",
-                      },
-                    ].map((property, i) => (
-                      <Grid size={{ xs: 6 }} key={i}>
-                        <Box
-                          sx={{
-                            p: 2,
-                            borderRadius: "16px",
-                            background: "rgba(255,255,255,0.03)",
-                            border: "1px solid rgba(255,255,255,0.05)",
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              width: "100%",
-                              height: 60,
-                              borderRadius: "12px",
-                              background: `linear-gradient(135deg, ${
-                                i === 0 ? "#00d4aa20" : "#7c4dff20"
-                              } 0%, transparent 100%)`,
-                              mb: 2,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <Typography sx={{ fontSize: "1.5rem" }}>
-                              {i === 0 ? "🏢" : "🏖️"}
-                            </Typography>
-                          </Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: "13px",
-                              fontWeight: 600,
-                              mb: 0.5,
-                            }}
-                          >
-                            {property.name}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "rgba(255,255,255,0.5)",
-                              fontSize: "12px",
-                            }}
-                          >
-                            {property.price}
-                          </Typography>
-                        </Box>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Box>
-
-                {/* Floating Badge */}
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: -20,
-                    right: { xs: 20, md: -20 },
-                    px: 3,
-                    py: 1.5,
-                    borderRadius: "100px",
-                    background:
-                      "linear-gradient(135deg, #7c4dff 0%, #536dfe 100%)",
-                    boxShadow: "0 10px 30px rgba(124,77,255,0.4)",
-                    animation: `${float} 4s ease-in-out infinite`,
+                      "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)",
+                    backdropFilter: "blur(20px)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    padding: "60px 40px",
+                    boxShadow: "0 25px 50px rgba(0,0,0,0.2)",
+                    transform:
+                      "perspective(1000px) rotateY(-5deg) rotateX(5deg)",
+                    transition: "transform 0.3s ease",
+                    "&:hover": {
+                      transform:
+                        "perspective(1000px) rotateY(0deg) rotateX(0deg)",
+                    },
                   }}
                 >
                   <Typography
+                    variant="h3"
                     sx={{
                       color: "white",
-                      fontSize: "13px",
                       fontWeight: 700,
+                      mb: 2,
+                      fontSize: { xs: "2rem", md: "2.5rem" },
                     }}
                   >
-                    ✨ AI-Powered
+                    🏢
+                  </Typography>
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      color: "white",
+                      fontWeight: 600,
+                      mb: 2,
+                    }}
+                  >
+                    Professional Dashboard
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: "rgba(255,255,255,0.8)",
+                      fontWeight: 400,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    Modern interface designed for real estate professionals
                   </Typography>
                 </Box>
               </Box>
@@ -726,209 +310,136 @@ export default function Home() {
         </Container>
       </HeroSection>
 
-      {/* Features Section */}
-      <Box sx={{ py: { xs: 10, md: 16 }, backgroundColor: "#0a0a0a" }}>
+      <Box sx={{ py: 8, backgroundColor: "#f8f9fa" }}>
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: "center", mb: 10 }}>
-            <Typography
-              sx={{
-                color: "#00d4aa",
-                fontSize: "14px",
-                fontWeight: 700,
-                letterSpacing: "3px",
-                mb: 2,
-              }}
-            >
-              POWERFUL FEATURES
-            </Typography>
-            <Typography
-              variant="h2"
-              sx={{
-                color: "white",
-                fontWeight: 800,
-                fontSize: { xs: "2rem", md: "3rem" },
-                mb: 3,
-                letterSpacing: "-1px",
-              }}
-            >
-              Everything You Need to
-              <br />
-              <AccentText>Dominate the Market</AccentText>
-            </Typography>
-            <Typography
-              sx={{
-                color: "rgba(255,255,255,0.5)",
-                maxWidth: "600px",
-                mx: "auto",
-                fontSize: "1.1rem",
-                lineHeight: 1.8,
-              }}
-            >
-              Built for ambitious real estate professionals who demand
-              excellence. Our platform combines cutting-edge technology with
-              intuitive design.
-            </Typography>
-          </Box>
+          <Typography
+            variant="h2"
+            sx={{
+              textAlign: "center",
+              mb: 2,
+              fontWeight: 700,
+              color: "#333",
+            }}
+          >
+            Why Choose Our Platform?
+          </Typography>
+
+          <Typography
+            variant="h6"
+            sx={{
+              textAlign: "center",
+              mb: 6,
+              color: "#666",
+              maxWidth: "600px",
+              mx: "auto",
+            }}
+          >
+            Built specifically for real estate professionals who need powerful
+            tools to manage their business efficiently.
+          </Typography>
 
           <Grid container spacing={4}>
             {features.map((feature, index) => (
               <Grid size={{ xs: 12, md: 4 }} key={index}>
-                <GlassCard
-                  sx={{
-                    height: "100%",
-                    animation: mounted
-                      ? `${slideUp} 0.8s ease-out ${0.2 + index * 0.15}s both`
-                      : "none",
-                  }}
-                >
+                <FeatureCard>
                   <CardContent
-                    sx={{ p: 4, textAlign: "center", height: "100%" }}
+                    sx={{ p: 3, textAlign: "center", height: "100%" }}
                   >
-                    <FeatureIcon>
-                      <Typography sx={{ fontSize: "2rem" }}>
+                    <Box
+                      sx={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: "50%",
+                        background: `linear-gradient(135deg, ${feature.color}20 0%, ${feature.color}10 100%)`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "0 auto 16px",
+                        border: `2px solid ${feature.color}30`,
+                      }}
+                    >
+                      <Typography
+                        variant="h2"
+                        sx={{
+                          fontSize: "1.8rem",
+                          filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
+                        }}
+                      >
                         {feature.icon}
                       </Typography>
-                    </FeatureIcon>
+                    </Box>
 
                     <Typography
-                      variant="h5"
+                      variant="h6"
                       sx={{
                         mb: 2,
                         fontWeight: 700,
-                        color: "white",
-                        fontSize: "1.4rem",
+                        color: "#2d3748",
+                        fontSize: "1.25rem",
                       }}
                     >
                       {feature.title}
                     </Typography>
 
                     <Typography
+                      variant="body2"
                       sx={{
-                        color: "rgba(255,255,255,0.5)",
-                        lineHeight: 1.8,
-                        fontSize: "0.95rem",
+                        color: "#718096",
+                        lineHeight: 1.6,
+                        fontSize: "0.9rem",
                       }}
                     >
                       {feature.description}
                     </Typography>
                   </CardContent>
-                </GlassCard>
+                </FeatureCard>
               </Grid>
             ))}
           </Grid>
         </Container>
       </Box>
 
-      {/* CTA Section */}
-      <FooterCTA>
-        <Container maxWidth="md" sx={{ position: "relative", zIndex: 1 }}>
+      <Box sx={{ py: 8, backgroundColor: "#333", color: "white" }}>
+        <Container maxWidth="lg">
           <Box sx={{ textAlign: "center" }}>
             <Typography
-              variant="h2"
+              variant="h3"
               sx={{
-                color: "white",
-                fontWeight: 800,
-                fontSize: { xs: "2rem", md: "3rem" },
                 mb: 3,
-                letterSpacing: "-1px",
+                fontWeight: 700,
               }}
             >
-              Ready to Transform
-              <br />
-              <AccentText>Your Business?</AccentText>
+              Ready to Transform Your Real Estate Business?
             </Typography>
 
             <Typography
+              variant="h6"
               sx={{
-                color: "rgba(255,255,255,0.6)",
-                mb: 5,
-                maxWidth: "500px",
+                mb: 4,
+                color: "rgba(255,255,255,0.8)",
+                maxWidth: "600px",
                 mx: "auto",
-                fontSize: "1.1rem",
-                lineHeight: 1.8,
               }}
             >
-              Join thousands of forward-thinking real estate professionals who
-              are already leveraging our platform to scale their success.
+              Join thousands of real estate professionals who trust our platform
+              to manage their properties and grow their business.
             </Typography>
 
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-                justifyContent: "center",
-                flexWrap: "wrap",
-              }}
-            >
-              <Link href="/register" style={{ textDecoration: "none" }}>
-                <PrimaryButton variant="contained" size="large">
-                  Start Free Trial →
-                </PrimaryButton>
-              </Link>
-              <Link href="/login" style={{ textDecoration: "none" }}>
-                <SecondaryButton variant="outlined" size="large">
-                  Sign In
-                </SecondaryButton>
-              </Link>
-            </Box>
-
-            <Typography
-              sx={{
-                color: "rgba(255,255,255,0.3)",
-                mt: 4,
-                fontSize: "13px",
-              }}
-            >
-              No credit card required • Free 14-day trial • Cancel anytime
-            </Typography>
-          </Box>
-        </Container>
-      </FooterCTA>
-
-      {/* Footer */}
-      <Box
-        sx={{
-          py: 4,
-          backgroundColor: "#050505",
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-        }}
-      >
-        <Container maxWidth="lg">
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: 2,
-            }}
-          >
-            <Typography
-              sx={{
-                color: "rgba(255,255,255,0.4)",
-                fontSize: "14px",
-              }}
-            >
-              © 2025 Real Estate Dashboard. All rights reserved.
-            </Typography>
-            <Box sx={{ display: "flex", gap: 3 }}>
-              {["Privacy", "Terms", "Contact"].map((link) => (
-                <Typography
-                  key={link}
-                  sx={{
-                    color: "rgba(255,255,255,0.4)",
-                    fontSize: "14px",
-                    cursor: "pointer",
-                    transition: "color 0.2s ease",
-                    "&:hover": {
-                      color: "#00d4aa",
-                    },
-                  }}
-                >
-                  {link}
-                </Typography>
-              ))}
-            </Box>
+            <Link href="/register" style={{ textDecoration: "none" }}>
+              <StyledButton
+                variant="contained"
+                size="large"
+                sx={{
+                  backgroundColor: "#FFD700",
+                  color: "#333",
+                  "&:hover": {
+                    backgroundColor: "#FFC107",
+                  },
+                }}
+              >
+                Start Your Free Trial
+              </StyledButton>
+            </Link>
           </Box>
         </Container>
       </Box>

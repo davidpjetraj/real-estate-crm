@@ -24,8 +24,8 @@ import { MoreIcon } from "@/components/icons/MoreIcon";
 import { PencilEditIcon } from "@/components/icons/PencilEditIcon";
 import { ErrorColorDeleteIcon } from "@/components/icons/ErrorColorDeleteIcon";
 import { FilterIcon } from "@/components/icons/FilterIcon";
-import { useCityOperations, cityColumns } from "../../../../store/useCity";
-import { useStateOperations } from "../../../../store/useState";
+import { useCityOperations, cityColumns } from "../../../store/useCity";
+import { useStateOperations } from "../../../store/useState";
 import { CreateCityDialog, EditCityDialog } from "@/components/Dialog";
 import { CityModel } from "@/lib/graphql/generated/graphql";
 

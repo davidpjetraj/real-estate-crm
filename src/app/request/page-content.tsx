@@ -5,7 +5,7 @@ import PageLayout from "@/components/Layout/PageLayout";
 import { Table } from "@/components/Table";
 import { Button } from "@mui/material";
 import { PlusIcon } from "@/components/icons/PlusIcon";
-import { requestColumns, useRequest } from "../../../../store/useRequest";
+import { requestColumns, useRequest } from "../../../store/useRequest";
 import CreateRequestDialog from "@/components/Dialog/CreateRequestDialog";
 
 export default function RequestPage() {

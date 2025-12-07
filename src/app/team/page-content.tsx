@@ -5,7 +5,7 @@ import PageLayout from "@/components/Layout/PageLayout";
 import { Table } from "@/components/Table";
 import { Button } from "@mui/material";
 import { PlusIcon } from "@/components/icons/PlusIcon";
-import { useTeam, teamColumns } from "../../../../store/useTeam";
+import { useTeam, teamColumns } from "../../../store/useTeam";
 import { CreateTeamMemberDialog } from "@/components/Dialog";
 import TeamDetailsComponent from "@/components/Team/TeamDetailsComponent";
 

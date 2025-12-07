@@ -24,9 +24,9 @@ import { MoreIcon } from "@/components/icons/MoreIcon";
 import { PencilEditIcon } from "@/components/icons/PencilEditIcon";
 import { ErrorColorDeleteIcon } from "@/components/icons/ErrorColorDeleteIcon";
 import { FilterIcon } from "@/components/icons/FilterIcon";
-import { useStreetOperations, streetColumns } from "../../../../store/useStreet";
-import { useStateOperations } from "../../../../store/useState";
-import { useCityOperations } from "../../../../store/useCity";
+import { useStreetOperations, streetColumns } from "../../../store/useStreet";
+import { useStateOperations } from "../../../store/useState";
+import { useCityOperations } from "../../../store/useCity";
 import { CreateStreetDialog, EditStreetDialog } from "@/components/Dialog";
 import { StreetModel } from "@/lib/graphql/generated/graphql";
 

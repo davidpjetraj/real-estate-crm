@@ -2,23 +2,20 @@
 
 import { Box, styled } from "@mui/material";
 import React from "react";
+import AppLayout from "./AppLayout";
 import ThemeSwitcher from "../ThemeSwitcher";
 import Profile from "../Profile";
 import Inbox from "../Inbox";
-
-const Wrapper = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-`;
 
 const Content = styled(Box)`
   flex: 1;
   min-width: 0;
   padding: 10px;
   background-color: ${({ theme }) => theme.palette.background.paper};
-  overflow: auto;
+  border-radius: ${({ theme }) => theme.shape.borderRadius}px;
+  border: 1px solid ${({ theme }) => theme.palette.divider};
+  box-shadow: none;
+  overflow: hidden;
 `;
 
 const TopBar = styled("div")`
@@ -27,7 +24,8 @@ const TopBar = styled("div")`
   justify-content: flex-start;
   gap: 20px;
   height: 64px;
-  padding: 0 16px;
+  padding: 0 10px;
+  margin: -10px -10px 0 -10px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
 `;
 
@@ -53,7 +51,7 @@ export default function PageLayout({
   topBarActions,
 }: PageLayoutProps) {
   return (
-    <Wrapper>
+    <AppLayout>
       <Content>
         <TopBar>
           <h1>{title}</h1>
@@ -82,6 +80,6 @@ export default function PageLayout({
 
         {children}
       </Content>
-    </Wrapper>
+    </AppLayout>
   );
 }

@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useTransition } from "react";
 import * as yup from "yup";
 import { useShallow } from "zustand/shallow";
-import useAuth from "../../../../store/useAuth";
+import useAuth from "../../../store/useAuth";
 import { CodeInput } from "@/components/CodeInput";
 import { LoadingButton } from "@/components/LoadingButton";
 import Link from "@/components/Link";

@@ -5,7 +5,7 @@ import PageLayout from "@/components/Layout/PageLayout";
 import { Table } from "@/components/Table";
 import { Button } from "@mui/material";
 import { PlusIcon } from "@/components/icons/PlusIcon";
-import { useClient, clientColumns } from "../../../../store/useClient";
+import { useClient, clientColumns } from "../../../store/useClient";
 import { CreateClientDialog } from "@/components/Dialog";
 
 export default function ClientPage() {
