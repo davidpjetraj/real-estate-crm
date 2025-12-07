@@ -19,27 +19,30 @@ import { PlusIcon } from "@/components/icons/PlusIcon";
 import { MoreIcon } from "@/components/icons/MoreIcon";
 import { PencilEditIcon } from "@/components/icons/PencilEditIcon";
 import { ErrorColorDeleteIcon } from "@/components/icons/ErrorColorDeleteIcon";
-import { useStateOperations, stateColumns } from "../../../store/useState";
-import { CreateStateDialog, EditStateDialog } from "@/components/Dialog";
-import { StateModel } from "@/lib/graphql/generated/graphql";
+import { useDepartmentOperations, departmentColumns } from "../../../../store/useDepartment";
+import { CreateDepartmentDialog, EditDepartmentDialog } from "@/components/Dialog";
+import { DepartmentModel } from "@/lib/graphql/generated/graphql";
 
-export default function StatePage() {
+export default function DepartmentPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedState, setSelectedState] = useState<StateModel | null>(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<DepartmentModel | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [menuState, setMenuState] = useState<StateModel | null>(null);
+  const [menuDepartment, setMenuDepartment] = useState<DepartmentModel | null>(null);
 
-  const { error, refetchStates, deleteState, deleteLoading } =
-    useStateOperations();
+  const {
+    error,
+    refetchDepartments,
+    updateLoading,
+  } = useDepartmentOperations();
 
   useEffect(() => {
-    refetchStates();
-  }, [refetchStates]);
+    refetchDepartments();
+  }, [refetchDepartments]);
 
   // Action handlers
-  const handleAddState = () => {
+  const handleAddDepartment = () => {
     setIsCreateDialogOpen(true);
   };
 
@@ -49,87 +52,88 @@ export default function StatePage() {
 
   const handleCloseEditDialog = () => {
     setIsEditDialogOpen(false);
-    setSelectedState(null);
+    setSelectedDepartment(null);
   };
 
   const handleCloseDeleteDialog = () => {
     setIsDeleteDialogOpen(false);
-    setSelectedState(null);
+    setSelectedDepartment(null);
   };
 
   // Menu handlers
   const handleMenuClick = (
     event: React.MouseEvent<HTMLElement>,
-    state: StateModel
+    department: DepartmentModel
   ) => {
     setAnchorEl(event.currentTarget);
-    setMenuState(state);
+    setMenuDepartment(department);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setMenuState(null);
+    setMenuDepartment(null);
   };
 
   const handleEditClick = () => {
-    if (menuState) {
-      setSelectedState(menuState);
+    if (menuDepartment) {
+      setSelectedDepartment(menuDepartment);
       setIsEditDialogOpen(true);
     }
     handleMenuClose();
   };
 
   const handleDeleteClick = () => {
-    if (menuState) {
-      setSelectedState(menuState);
+    if (menuDepartment) {
+      setSelectedDepartment(menuDepartment);
       setIsDeleteDialogOpen(true);
     }
     handleMenuClose();
   };
 
   const handleDeleteConfirm = async () => {
-    if (selectedState) {
+    if (selectedDepartment) {
       try {
-        await deleteState({ id: selectedState.id });
+        // Note: Delete functionality would need to be implemented in the backend
+        // For now, we'll just close the dialog
+        console.log("Delete department:", selectedDepartment.id);
         handleCloseDeleteDialog();
+        refetchDepartments();
       } catch (error) {
-        console.error("Failed to delete state:", error);
+        console.error("Failed to delete department:", error);
       }
     }
   };
 
   // Success handlers
-  const handleCreateSuccess = (newState: any) => {
-    // The state will be automatically added via the mutation's onCompleted callback
-    console.log("State created successfully:", newState);
+  const handleCreateSuccess = (newDepartment: any) => {
+    console.log("Department created successfully:", newDepartment);
   };
 
-  const handleUpdateSuccess = (updatedState: any) => {
-    // The state will be automatically updated via the mutation's onCompleted callback
-    console.log("State updated successfully:", updatedState);
+  const handleUpdateSuccess = (updatedDepartment: any) => {
+    console.log("Department updated successfully:", updatedDepartment);
   };
 
   // Enhanced columns with actions
   const enhancedColumns = [
-    ...stateColumns,
+    ...departmentColumns,
     {
       accessorKey: "actions",
       label: "Actions",
-      accessorFn: (row: StateModel) => row,
+      accessorFn: (row: DepartmentModel) => row,
       size: 120,
-      cell: ({ row }: { row: { original: StateModel } }) => (
+      cell: ({ row }: { row: { original: DepartmentModel } }) => (
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <IconButton
             size="small"
             onClick={() => {
-              setSelectedState(row.original);
+              setSelectedDepartment(row.original);
               setIsEditDialogOpen(true);
             }}
             sx={{
               color: "primary.main",
               "&:hover": { backgroundColor: "primary.light", color: "white" },
             }}
-            title="Edit State"
+            title="Edit Department"
           >
             <PencilEditIcon width={14} height={14} />
           </IconButton>
@@ -151,10 +155,10 @@ export default function StatePage() {
 
   if (error) {
     return (
-      <PageLayout title="States" showProfile={true}>
+      <PageLayout title="Departments" showProfile={true}>
         <div style={{ padding: "20px", textAlign: "center" }}>
-          <p>Error loading states: {error.message}</p>
-          <Button variant="contained" onClick={() => refetchStates()}>
+          <p>Error loading departments: {error.message}</p>
+          <Button variant="contained" onClick={() => refetchDepartments()}>
             Retry
           </Button>
         </div>
@@ -163,18 +167,18 @@ export default function StatePage() {
   }
 
   return (
-    <PageLayout title="States" showProfile={true}>
+    <PageLayout title="Departments" showProfile={true}>
       <Table
         columns={enhancedColumns}
-        store={useStateOperations}
+        store={useDepartmentOperations}
         rightActions={
           <Button
             variant="contained"
             size="medium"
             startIcon={<PlusIcon width={16} height={16} />}
-            onClick={handleAddState}
+            onClick={handleAddDepartment}
           >
-            Add State
+            Add Department
           </Button>
         }
       />
@@ -201,19 +205,19 @@ export default function StatePage() {
         </MenuItem>
       </Menu>
 
-      {/* Create State Dialog */}
-      <CreateStateDialog
+      {/* Create Department Dialog */}
+      <CreateDepartmentDialog
         open={isCreateDialogOpen}
         onClose={handleCloseCreateDialog}
         onSuccess={handleCreateSuccess}
       />
 
-      {/* Edit State Dialog */}
-      <EditStateDialog
+      {/* Edit Department Dialog */}
+      <EditDepartmentDialog
         open={isEditDialogOpen}
         onClose={handleCloseEditDialog}
         onSuccess={handleUpdateSuccess}
-        state={selectedState}
+        department={selectedDepartment}
       />
 
       {/* Delete Confirmation Dialog */}
@@ -223,28 +227,28 @@ export default function StatePage() {
         aria-labelledby="delete-dialog-title"
         aria-describedby="delete-dialog-description"
       >
-        <DialogTitle id="delete-dialog-title">Delete State</DialogTitle>
+        <DialogTitle id="delete-dialog-title">Delete Department</DialogTitle>
         <DialogContent>
           <DialogContentText id="delete-dialog-description">
-            Are you sure you want to delete the state &ldquo;
-            {selectedState?.name}&rdquo;? This action cannot be undone and may
-            affect related data.
+            Are you sure you want to delete the department &ldquo;{selectedDepartment?.emri_departmentit}
+            &rdquo;? This action cannot be undone and may affect related data.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDeleteDialog} disabled={deleteLoading}>
+          <Button onClick={handleCloseDeleteDialog} disabled={updateLoading}>
             Cancel
           </Button>
           <Button
             onClick={handleDeleteConfirm}
             color="error"
             variant="contained"
-            disabled={deleteLoading}
+            disabled={updateLoading}
           >
-            {deleteLoading ? "Deleting..." : "Delete"}
+            {updateLoading ? "Deleting..." : "Delete"}
           </Button>
         </DialogActions>
       </Dialog>
     </PageLayout>
   );
 }
+

@@ -8,4 +8,8 @@ export { CreateCityDialog } from "./CreateCityDialog";
 export { EditCityDialog } from "./EditCityDialog";
 export { CreateStreetDialog } from "./CreateStreetDialog";
 export { EditStreetDialog } from "./EditStreetDialog";
+export { CreateDepartmentDialog } from "./CreateDepartmentDialog";
+export { EditDepartmentDialog } from "./EditDepartmentDialog";
+export { CreateAsistentiDialog } from "./CreateAsistentiDialog";
+export { EditAsistentiDialog } from "./EditAsistentiDialog";
 export { default as CreateRequestDialog } from "./CreateRequestDialog";

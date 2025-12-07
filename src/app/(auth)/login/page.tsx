@@ -2,7 +2,7 @@
 import React, { useTransition } from "react";
 import { Alert, Button, Container, Grid } from "@mui/material";
 import { Formik, Form } from "formik";
-import useAuth from "../../../store/useAuth";
+import useAuth from "../../../../store/useAuth";
 import { useRouter } from "next/navigation";
 import { Input, yup } from "@/components/Form";
 import { LoadingButton } from "@/components/LoadingButton";
