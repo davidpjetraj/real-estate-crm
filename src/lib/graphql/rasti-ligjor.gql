@@ -1,0 +1,39 @@
+mutation CreateRastiLigjor($input: CreateRastiLigjorInput!) {
+  createRastiLigjor(input: $input) {
+    id
+    emri
+    lloji_rastit
+    created_at
+  }
+}
+
+mutation UpdateRastiLigjor($input: UpdateRastiLigjorInput!) {
+  updateRastiLigjor(input: $input) {
+    id
+    emri
+    lloji_rastit
+    created_at
+  }
+}
+
+query RastetLigjore($input: GetAllRastet!) {
+  rastetLigjore(input: $input) {
+    id
+    emri
+    lloji_rastit
+    created_at
+  }
+}
+
+mutation DeleteRastiLigjor($input: UpdateRastiLigjorInput!) {
+  deleteRastiLigjor(input: $input)
+}
+
+query RastiLigjor($input: GetRastiLigjorInput!) {
+  rastiLigjor(input: $input) {
+    id
+    emri
+    lloji_rastit
+    created_at
+  }
+}

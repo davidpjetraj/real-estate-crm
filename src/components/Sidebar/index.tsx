@@ -362,6 +362,9 @@ export default function Sidebar() {
                 includes="asistenti"
               >
                 <span>Asistentet</span>
+              </Item> */}
+              <Item href="/rasti-ligjor" includes="rasti-ligjor">
+                <span>Rastet Ligjore</span>
               </Item>
             </div>
             <div className="bottom">
